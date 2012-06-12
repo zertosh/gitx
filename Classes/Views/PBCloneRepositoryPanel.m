@@ -10,7 +10,7 @@
 #import "PBRemoteProgressSheet.h"
 #import "PBRepositoryDocumentController.h"
 #import "PBGitDefaults.h"
-
+#import "PBGitRepository.h"
 
 
 @implementation PBCloneRepositoryPanel
@@ -131,11 +131,13 @@
 	
 	NSString *description = [NSString stringWithFormat:@"Cloning repository at: %@", url];
 	NSString *title = @"Cloning Repository";
-	[PBRemoteProgressSheet beginRemoteProgressSheetForArguments:arguments
-														  title:title
-													description:description
-														  inDir:nil
-											   windowController:nil/*self?*/];
+
+	progressSheet = [[PBRemoteProgressSheet alloc] initForWindow:self];
+	
+	[progressSheet beginRemoteProgressSheetForArguments:arguments
+												  title:title
+											description:description
+									  hideSuccessScreen:NO];
 }
 
 

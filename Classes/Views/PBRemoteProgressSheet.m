@@ -46,81 +46,42 @@ NSString * const kGitXProgressErrorInfo          = @"PBGitXProgressErrorInfo";
 
 @implementation PBRemoteProgressSheet
 
-
 @synthesize progressDescription;
 @synthesize progressIndicator;
 
+@synthesize repository;
+@synthesize parentWindow;
 
 
 #pragma mark -
 #pragma mark PBRemoteProgressSheet
 
-+ (void) beginRemoteProgressSheetForArguments:(NSArray *)args
-										title:(NSString *)theTitle
-								  description:(NSString *)theDescription
-										inDir:(NSString *)dir
-							 windowController:(PBGitWindowController *)windowController
+- (id) initForRepo:(PBGitRepository *)_repository
 {
-	PBRemoteProgressSheet *sheet = [[self alloc] initWithWindowNibName:@"PBRemoteProgressSheet"
-															   forRepo:windowController.repository];
-	[sheet beginRemoteProgressSheetForArguments:args
-										  title:theTitle
-									description:theDescription
-										  inDir:dir
-							   windowController:windowController
-							  hideSuccessScreen:false];
+	self = [super initWithWindowNibName:@"PBRemoteProgressSheet"];
+
+	if (self)
+	{
+		self.repository = _repository;
+		self.parentWindow = _repository.windowController;
+	}
+	return self;
 }
 
-+ (void) beginRemoteProgressSheetForArguments:(NSArray *)args
-										title:(NSString *)theTitle
-								  description:(NSString *)theDescription
-										inDir:(NSString *)dir
-							 windowController:(PBGitWindowController *)windowController
-							hideSuccessScreen:(bool)hideSucc
+- (id) initForWindow:(NSWindowController *)_parentWindow
 {
-	PBRemoteProgressSheet *sheet = [[self alloc] initWithWindowNibName:@"PBRemoteProgressSheet"
-															   forRepo:windowController.repository];
-	[sheet beginRemoteProgressSheetForArguments:args
-										  title:theTitle
-									description:theDescription
-										  inDir:dir
-							   windowController:windowController
-							  hideSuccessScreen:hideSucc];
+	self = [super initWithWindowNibName:@"PBRemoteProgressSheet"];
+	
+	if (self)
+	{
+		self.parentWindow = _parentWindow;
+	}
+	return self;
 }
-
-
-+ (void) beginRemoteProgressSheetForArguments:(NSArray *)args
-										title:(NSString *)theTitle
-								  description:(NSString *)theDescription
-								 inRepository:(PBGitRepository *)repo
-{
-	[PBRemoteProgressSheet beginRemoteProgressSheetForArguments:args
-														  title:theTitle
-													description:theDescription
-														  inDir:[repo workingDirectory]
-											   windowController:repo.windowController];
-}
-
-+ (void) beginRemoteProgressSheetForArguments:(NSArray *)args
-										title:(NSString *)theTitle
-								  description:(NSString *)theDescription
-								 inRepository:(PBGitRepository *)repo
-							hideSuccessScreen:(bool)hideSucc
-{
-	[PBRemoteProgressSheet beginRemoteProgressSheetForArguments:args
-														  title:theTitle
-													description:theDescription
-														  inDir:[repo workingDirectory]
-											   windowController:repo.windowController
-											  hideSuccessScreen:hideSucc];
-}
-
 
 - (void) beginRemoteProgressSheetForArguments:(NSArray *)args
 										title:(NSString *)theTitle
 								  description:(NSString *)theDescription
-										inDir:(NSString *)dir
-							 windowController:(PBGitWindowController *)windowController
 							hideSuccessScreen:(bool)hideSucc
 {
 	arguments   = args;
@@ -150,7 +111,7 @@ NSString * const kGitXProgressErrorInfo          = @"PBGitXProgressErrorInfo";
 
 	gitTask = [PBEasyPipe taskForCommand:[PBGitBinary path]
 								withArgs:arguments
-								   inDir:dir];
+								   inDir:self.repository.workingDirectory];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(taskCompleted:)
 												 name:NSTaskDidTerminateNotification
@@ -162,6 +123,20 @@ NSString * const kGitXProgressErrorInfo          = @"PBGitXProgressErrorInfo";
 	[gitTask launch];
 }
 
+- (void)show
+{
+	[NSApp beginSheet:self.window
+	   modalForWindow:self.parentWindow.window
+		modalDelegate:self
+	   didEndSelector:nil
+		  contextInfo:NULL];
+}
+
+- (void)hide
+{
+	[NSApp endSheet:self.window];
+	[self.window orderOut:self];
+}
 
 
 #pragma mark Notifications
@@ -209,8 +184,11 @@ NSString * const kGitXProgressErrorInfo          = @"PBGitXProgressErrorInfo";
 	[info appendString:[self successDescription]];
 	[info appendString:[self commandDescription]];
 	[info appendString:[self standardOutputDescription]];
-
-	[self.repoWindow showMessageSheet:self.successTitle infoText:info];
+	
+	if (self.repository)
+	{
+		[self.repository.windowController showMessageSheet:self.successTitle infoText:info];
+	}
 }
 
 
@@ -228,7 +206,10 @@ NSString * const kGitXProgressErrorInfo          = @"PBGitXProgressErrorInfo";
 								   nil];
 	NSError *error = [NSError errorWithDomain:PBGitRepositoryErrorDomain code:0 userInfo:errorUserInfo];
 
-	[self.repoWindow showErrorSheet:error];
+	if (self.repository)
+	{
+		[self.repository.windowController showErrorSheet:error];
+	}
 }
 
 

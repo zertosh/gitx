@@ -19,7 +19,7 @@ extern NSString * const kGitXProgressErrorInfo;
 @class PBGitWindowController;
 @class PBGitRepository;
 
-@interface PBRemoteProgressSheet : RJModalRepoSheet {
+@interface PBRemoteProgressSheet : NSWindowController {
 	NSArray  *arguments;
 	NSString *title;
 	NSString *description;
@@ -28,35 +28,25 @@ extern NSString * const kGitXProgressErrorInfo;
 	NSTask    *gitTask;
 	NSInteger  returnCode;
 
-	NSTextField         *progressDescription;
-	NSProgressIndicator *progressIndicator;
-
 	NSTimer *taskTimer;
 }
 
-+ (void) beginRemoteProgressSheetForArguments:(NSArray *)args
+- (id) initForRepo:(PBGitRepository*)repository;
+- (id) initForWindow:(NSWindowController*)parentWindow;
+
+- (void) beginRemoteProgressSheetForArguments:(NSArray *)args
 										title:(NSString *)theTitle
 								  description:(NSString *)theDescription
-										inDir:(NSString *)dir
-							 windowController:(PBGitWindowController *)windowController;
-+ (void) beginRemoteProgressSheetForArguments:(NSArray *)args
-										title:(NSString *)theTitle
-								  description:(NSString *)theDescription
-										inDir:(NSString *)dir
-							 windowController:(PBGitWindowController *)windowController 
 							hideSuccessScreen:(bool)hideSucc;
 
-+ (void) beginRemoteProgressSheetForArguments:(NSArray *)args
-										title:(NSString *)theTitle
-								  description:(NSString *)theDescription
-								 inRepository:(PBGitRepository *)repo;
-+ (void) beginRemoteProgressSheetForArguments:(NSArray *)args
-										title:(NSString *)theTitle
-								  description:(NSString *)theDescription
-								 inRepository:(PBGitRepository *)repo
-							hideSuccessScreen:(bool)hideSucc;
 
-@property  IBOutlet NSTextField         *progressDescription;
-@property  IBOutlet NSProgressIndicator *progressIndicator;
+@property (nonatomic, dct_weak) IBOutlet NSTextField         *progressDescription;
+@property (nonatomic, dct_weak) IBOutlet NSProgressIndicator *progressIndicator;
+
+@property (nonatomic, strong) PBGitRepository* repository;
+@property (nonatomic, strong) NSWindowController* parentWindow;
+
+- (void) show;
+- (void) hide;
 
 @end

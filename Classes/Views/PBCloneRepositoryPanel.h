@@ -8,8 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class PBRemoteProgressSheet;
 
 @interface PBCloneRepositoryPanel : NSWindowController {
+	__strong PBRemoteProgressSheet* progressSheet;
 	NSOpenPanel *browseRepositoryPanel;
 	NSOpenPanel *browseDestinationPanel;
 

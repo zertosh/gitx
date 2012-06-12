@@ -613,7 +613,12 @@
 
 	NSString *description = [NSString stringWithFormat:@"Cloning the repository %@ to %@", [self projectName], path];
 	NSString *title = @"Cloning Repository";
-	[PBRemoteProgressSheet beginRemoteProgressSheetForArguments:arguments title:title description:description inRepository:self];
+	
+	PBRemoteProgressSheet* progressSheet = [[PBRemoteProgressSheet alloc] initForRepo:self];
+	[progressSheet beginRemoteProgressSheetForArguments:arguments
+												  title:title
+											description:description
+									  hideSuccessScreen:YES];
 }
 
 - (void) beginAddRemote:(NSString *)remoteName forURL:(NSString *)remoteURL
@@ -622,7 +627,12 @@
 
 	NSString *description = [NSString stringWithFormat:@"Adding the remote %@ and fetching tracking branches", remoteName];
 	NSString *title = @"Adding a remote";
-	[PBRemoteProgressSheet beginRemoteProgressSheetForArguments:arguments title:title description:description inRepository:self];
+	
+	PBRemoteProgressSheet* progressSheet = [[PBRemoteProgressSheet alloc] initForRepo:self];
+	[progressSheet beginRemoteProgressSheetForArguments:arguments
+												  title:title
+											description:description
+									  hideSuccessScreen:NO];
 }
 
 - (void) beginFetchFromRemoteForRef:(PBGitRef *)ref
@@ -643,7 +653,12 @@
 
 	NSString *description = [NSString stringWithFormat:@"Fetching all tracking branches from %@", remoteName];
 	NSString *title = @"Fetching from remote";
-	[PBRemoteProgressSheet beginRemoteProgressSheetForArguments:arguments title:title description:description inRepository:self];
+
+	PBRemoteProgressSheet* progressSheet = [[PBRemoteProgressSheet alloc] initForRepo:self];
+	[progressSheet beginRemoteProgressSheetForArguments:arguments
+												  title:title
+											description:description
+									  hideSuccessScreen:NO];
 }
 
 - (void) beginPullFromRemote:(PBGitRef *)remoteRef forRef:(PBGitRef *)ref
@@ -665,7 +680,12 @@
 
 	NSString *description = [NSString stringWithFormat:@"Pulling all tracking branches from %@", remoteName];
 	NSString *title = @"Pulling from remote";
-	[PBRemoteProgressSheet beginRemoteProgressSheetForArguments:arguments title:title description:description inRepository:self hideSuccessScreen:true];
+
+	PBRemoteProgressSheet* progressSheet = [[PBRemoteProgressSheet alloc] initForRepo:self];
+	[progressSheet beginRemoteProgressSheetForArguments:arguments
+												  title:title
+											description:description
+									  hideSuccessScreen:YES];
 }
 
 - (void) beginPushRef:(PBGitRef *)ref toRemote:(PBGitRef *)remoteRef
@@ -701,7 +721,12 @@
 
 	NSString *description = [NSString stringWithFormat:@"Pushing %@ to %@", branchName, remoteName];
 	NSString *title = @"Pushing to remote";
-	[PBRemoteProgressSheet beginRemoteProgressSheetForArguments:arguments title:title description:description inRepository:self hideSuccessScreen:true];
+	
+	PBRemoteProgressSheet* progressSheet = [[PBRemoteProgressSheet alloc] initForRepo:self];
+	[progressSheet beginRemoteProgressSheetForArguments:arguments
+												  title:title
+											description:description
+									  hideSuccessScreen:YES];
 }
 
 - (BOOL) checkoutRefish:(id <PBGitRefish>)ref
