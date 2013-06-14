@@ -13,7 +13,7 @@ var showMultipleFilesSelection = function(files)
 	for (var i = 0; i < files.length; ++i)
 	{
 		var file = files[i];
-		contents += "<li>" + file.path + "</li>";
+		contents += "<li>" + file.path() + "</li>";
 	}
 	contents += "</ul></div>";
 
