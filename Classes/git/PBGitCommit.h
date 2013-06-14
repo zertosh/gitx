@@ -16,31 +16,16 @@
 extern NSString * const kGitXCommitType;
 
 
-@interface PBGitCommit : NSObject <PBGitRefish> {
-	PBGitSHA *sha;
-
-	NSString* subject;
-	NSString* author;
-	NSString *committer;
-	NSString* details;
-	NSString *_patch;
-	NSArray *parents;
-	NSString *realSHA;
-    NSString *SVNRevision;
-
-	int timestamp;
-	char sign;
-	id lineInfo;
-}
+@interface PBGitCommit : NSObject <PBGitRefish>
 
 + (PBGitCommit *)commitWithRepository:(PBGitRepository*)repo andSha:(PBGitSHA *)newSha;
+
 - (id)initWithRepository:(PBGitRepository *)repo andSha:(PBGitSHA *)newSha;
 
 - (void) addRef:(PBGitRef *)ref;
 - (void) removeRef:(id)ref;
 - (BOOL) hasRef:(PBGitRef *)ref;
 
-- (NSString *)realSha;
 - (BOOL) isOnSameBranchAs:(PBGitCommit *)other;
 - (BOOL) isOnHeadBranch;
 
@@ -49,7 +34,8 @@ extern NSString * const kGitXCommitType;
 - (NSString *) shortName;
 - (NSString *) refishType;
 
-@property (readonly) PBGitSHA *sha;
+@property (nonatomic, strong, readonly) PBGitSHA *sha;
+@property (readonly) NSString *realSha;
 @property (copy) NSString* subject;
 @property (copy) NSString* author;
 @property (copy) NSString *committer;
@@ -61,7 +47,7 @@ extern NSString * const kGitXCommitType;
 @property  NSMutableArray* refs;
 @property (readonly) NSDate *date;
 @property (readonly) NSString* dateString;
-@property (readonly) NSString* patch;
+@property (nonatomic, strong, readonly) NSString* patch;
 @property (assign) char sign;
 
 @property (readonly) NSString* details;

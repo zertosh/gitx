@@ -11,16 +11,24 @@
 #import "PBGitCommit.h"
 #import "PBGitDefaults.h"
 
+@interface PBDiffWindowController ()
+
+@property (nonatomic, strong) NSString *diff;
+
+@end
 
 @implementation PBDiffWindowController
-@synthesize diff;
+
 
 - (id) initWithDiff:(NSString *)aDiff
 {
     self = [super initWithWindowNibName:@"PBDiffWindow"];
 
-    if (self)
-        diff = aDiff;
+    if (!self) {
+		return nil;
+	}
+	
+	self.diff = aDiff;
     
 	return self;
 }
@@ -34,7 +42,7 @@
 	if (!diffCommit)
 		diffCommit = [startCommit.repository headCommit];
 
-	NSString *commitSelector = [NSString stringWithFormat:@"%@..%@", [startCommit realSha], [diffCommit realSha]];
+	NSString *commitSelector = [NSString stringWithFormat:@"%@..%@", startCommit.realSha, diffCommit.realSha];
 	NSMutableArray *arguments = [NSMutableArray arrayWithObjects:@"diff", @"--no-ext-diff", commitSelector, nil];
 
 	if (![PBGitDefaults showWhitespaceDifferences])

@@ -13,18 +13,19 @@
 
 NSString * const kGitXCommitType = @"commit";
 
+@interface PBGitCommit ()
+
+@property (nonatomic, strong) PBGitSHA *sha;
+@property (nonatomic, strong) NSString* patch;
+
+@end
+
 
 @implementation PBGitCommit
 
-@synthesize repository, subject, timestamp, author, sign, lineInfo, SVNRevision;
-@synthesize sha;
-@synthesize parents;
-@synthesize committer;
-
-
 - (NSDate *)date
 {
-	return [NSDate dateWithTimeIntervalSince1970:timestamp];
+	return [NSDate dateWithTimeIntervalSince1970:self.timestamp];
 }
 
 - (NSString *) dateString
@@ -45,15 +46,14 @@ NSString * const kGitXCommitType = @"commit";
 
 - (id)initWithRepository:(PBGitRepository*) repo andSha:(PBGitSHA *)newSha
 {
-	details = nil;
-	repository = repo;
-	sha = newSha;
+	self.repository = repo;
+	self.sha = newSha;
 	return self;
 }
 
 - (NSString *)realSha
 {
-	return sha.string;
+	return self.sha.string;
 }
 
 - (BOOL) isOnSameBranchAs:(PBGitCommit *)otherCommit
@@ -64,12 +64,12 @@ NSString * const kGitXCommitType = @"commit";
 	if ([self isEqual:otherCommit])
 		return YES;
 
-	return [repository isOnSameBranch:otherCommit.sha asSHA:self.sha];
+	return [self.repository isOnSameBranch:otherCommit.sha asSHA:self.sha];
 }
 
 - (BOOL) isOnHeadBranch
 {
-	return [self isOnSameBranchAs:[repository headCommit]];
+	return [self isOnSameBranchAs:[self.repository headCommit]];
 }
 
 - (BOOL)isEqual:(id)otherCommit
@@ -83,7 +83,7 @@ NSString * const kGitXCommitType = @"commit";
 	if (![otherCommit isMemberOfClass:[PBGitCommit class]])
 		return NO;
 
-	return [self->sha isEqual:((PBGitCommit *)otherCommit)->sha];
+	return [self->_sha isEqual:((PBGitCommit *)otherCommit)->_sha];
 }
 
 - (NSUInteger)hash
@@ -99,10 +99,10 @@ NSString * const kGitXCommitType = @"commit";
 
 - (NSString *) patch
 {
-	if (_patch != nil)
+	if (self->_patch != nil)
 		return _patch;
 
-	NSString *p = [repository outputForArguments:[NSArray arrayWithObjects:@"format-patch",  @"-1", @"--stdout", [self realSha], nil]];
+	NSString *p = [self.repository outputForArguments:[NSArray arrayWithObjects:@"format-patch",  @"-1", @"--stdout", [self realSha], nil]];
 	// Add a GitX identifier to the patch ;)
 	_patch = [[p substringToIndex:[p length] -1] stringByAppendingString:@"+GitX"];
 	return _patch;
@@ -143,12 +143,12 @@ NSString * const kGitXCommitType = @"commit";
 
 - (NSMutableArray *)refs
 {
-	return [[repository refs] objectForKey:[self sha]];
+	return [[self.repository refs] objectForKey:[self sha]];
 }
 
 - (void) setRefs:(NSMutableArray *)refs
 {
-	[[repository refs] setObject:refs forKey:[self sha]];
+	[[self.repository refs] setObject:refs forKey:[self sha]];
 }
 
 
