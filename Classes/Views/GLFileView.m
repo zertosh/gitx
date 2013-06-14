@@ -34,7 +34,7 @@
 {
 	NSString *formatFile = [[NSBundle mainBundle] pathForResource:@"format" ofType:@"html" inDirectory:@"html/views/log"];
 	if(formatFile!=nil)
-		logFormat=[NSString stringWithContentsOfURL:[NSURL fileURLWithPath:formatFile] encoding:NSUTF8StringEncoding error:nil];
+		self.logFormat=[NSString stringWithContentsOfURL:[NSURL fileURLWithPath:formatFile] encoding:NSUTF8StringEncoding error:nil];
 	
 	
 	startFile = GROUP_ID_FILEVIEW;
@@ -87,7 +87,7 @@
 		else if([startFile isEqualToString:GROUP_ID_BLAME])
 			fileTxt = [self parseBlame:[file blame]];
 		else if([startFile isEqualToString:GROUP_ID_LOG])
-			fileTxt = [file log:logFormat];
+			fileTxt = [file log:self.logFormat];
 
 		id script = [view windowScriptObject];
 		NSString *filePath = [file fullPath];
@@ -326,10 +326,5 @@
 	[fileListSplitView setPosition:position ofDividerAtIndex:0];
 	[fileListSplitView setHidden:NO];
 }
-
-
-
-@synthesize groups;
-@synthesize logFormat;
 
 @end

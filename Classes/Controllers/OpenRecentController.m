@@ -11,20 +11,17 @@
 
 @implementation OpenRecentController
 
-@synthesize currentResults;
-@synthesize possibleResults;
-
 - (id)init
 {
 	self = [super initWithWindowNibName:@"OpenRecentPopup"];
 	if (!self)
 		return nil;
 	
-	currentResults = [NSMutableArray array];
+	self.currentResults = [NSMutableArray array];
 	
-	possibleResults = [NSMutableArray array];
+	self.possibleResults = [NSMutableArray array];
 	for (NSURL *url in [[NSDocumentController sharedDocumentController] recentDocumentURLs]) {
-		[possibleResults addObject: url];
+		[self.possibleResults addObject: url];
 	}
 	
 	
@@ -46,21 +43,22 @@
 {
 	NSString *searchString = [searchField stringValue];
 	
-	while( [currentResults count] > 0 ) [currentResults removeLastObject];
+	[self.currentResults removeAllObjects];
 	
-    for(NSURL* url in possibleResults){
+    for(NSURL* url in self.possibleResults){
 		NSString* label = [url lastPathComponent];
 		if([searchString length] > 0) {
 			NSRange aRange = [label rangeOfString: searchString options: NSCaseInsensitiveSearch];
 			if (aRange.location == NSNotFound) continue;
 		}
-		[currentResults addObject: url];
+		[self.currentResults addObject: url];
     }   
 	
-	if( [currentResults count] > 0 )
-		selectedResult = [currentResults objectAtIndex:0];
-	else
+	if( [self.currentResults count] > 0 ) {
+		selectedResult = [self.currentResults objectAtIndex:0];
+	} else {
 		selectedResult = nil;
+	}
 	
 	[resultViewer reloadData];
 }
@@ -101,9 +99,9 @@
 	}
 	else if(commandSelector == @selector(moveUp:)) {
 		if(selectedResult != nil) {
-			int index = [currentResults indexOfObject: selectedResult]-1;
+			int index = [self.currentResults indexOfObject: selectedResult]-1;
 			if(index < 0) index = 0;
-			selectedResult = [currentResults objectAtIndex:index];
+			selectedResult = [self.currentResults objectAtIndex:index];
 			[resultViewer selectRowIndexes:[NSIndexSet indexSetWithIndex:index] byExtendingSelection:FALSE];
 			[resultViewer scrollRowToVisible:index];
 		}
@@ -111,9 +109,9 @@
 	}
 	else if(commandSelector == @selector(moveDown:)) {
 		if(selectedResult != nil) {
-			int index = [currentResults indexOfObject: selectedResult]+1;
-			if(index >= [currentResults count]) index = [currentResults count] - 1;
-			selectedResult = [currentResults objectAtIndex:index];
+			int index = [self.currentResults indexOfObject: selectedResult]+1;
+			if(index >= [self.currentResults count]) index = [self.currentResults count] - 1;
+			selectedResult = [self.currentResults objectAtIndex:index];
 			[resultViewer selectRowIndexes:[NSIndexSet indexSetWithIndex:index] byExtendingSelection:FALSE];
 			[resultViewer scrollRowToVisible:index];
 		}
@@ -125,9 +123,9 @@
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {	
     id theValue = nil;
-    NSParameterAssert(rowIndex >= 0 && rowIndex < [currentResults count]);
+    NSParameterAssert(rowIndex >= 0 && rowIndex < [self.currentResults count]);
 	
-    NSURL* row = [currentResults objectAtIndex:rowIndex];
+    NSURL* row = [self.currentResults objectAtIndex:rowIndex];
 	if( [[aTableColumn identifier] isEqualToString: @"icon"] ) {
 		id icon;
 		NSError* error;
@@ -142,15 +140,16 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [currentResults count];
+    return [self.currentResults count];
 }
 
 - (IBAction)changeSelection:(id) sender {
 	int i = [resultViewer selectedRow];
-	if(i >= 0 && i < [currentResults count])
-		selectedResult = [currentResults objectAtIndex: i];
-	else 
+	if(i >= 0 && i < [self.currentResults count]) {
+		selectedResult = [self.currentResults objectAtIndex: i];
+	} else {
 		selectedResult = nil;
+	}
 }
 
 @end

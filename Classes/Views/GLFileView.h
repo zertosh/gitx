@@ -18,8 +18,6 @@
 @interface GLFileView : PBWebController <MGScopeBarDelegate> {
 	IBOutlet PBGitHistoryController* historyController;
 	IBOutlet MGScopeBar *typeBar;
-	NSMutableArray *groups;
-	NSString *logFormat;
 	IBOutlet NSView *accessoryView;
 	IBOutlet NSSplitView *fileListSplitView;
 }
