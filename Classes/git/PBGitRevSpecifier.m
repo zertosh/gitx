@@ -8,30 +8,37 @@
 
 #import "PBGitRevSpecifier.h"
 
+@interface PBGitRevSpecifier ()
+
+@property(nonatomic, strong) NSString *description;
+@property(nonatomic, strong) NSArray *parameters;
+@property(nonatomic, assign) BOOL isSimpleRef;
+
+@end
 
 @implementation PBGitRevSpecifier
-
-@synthesize parameters, description, workingDirectory;
-@synthesize isSimpleRef;
-
 
 // internal designated init
 - (id) initWithParameters:(NSArray *)params description:(NSString *)descrip
 {
     self = [super init];
-	parameters = params;
-	description = descrip;
+	if (!self) {
+		return nil;
+	}
+	
+	self.parameters = params;
+	self.description = descrip;
 
-	if (([parameters count] > 1) || ([parameters count] == 0))
-		isSimpleRef =  NO;
+	if (([self.parameters count] > 1) || ([self.parameters count] == 0))
+		self.isSimpleRef =  NO;
 	else {
-		NSString *param = [parameters objectAtIndex:0];
+		NSString *param = [self.parameters objectAtIndex:0];
 		if ([param hasPrefix:@"-"] ||
 			[param rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"^@{}~:"]].location != NSNotFound ||
 			[param rangeOfString:@".."].location != NSNotFound)
-			isSimpleRef =  NO;
+			self.isSimpleRef =  NO;
 		else
-			isSimpleRef =  YES;
+			self.isSimpleRef =  YES;
 	}
 
 	return self;
@@ -39,21 +46,18 @@
 
 - (id) initWithParameters:(NSArray *)params
 {
-    self = [super init];
 	self = [self initWithParameters:params description:nil];
 	return self;
 }
 
 - (id) initWithRef:(PBGitRef *)ref
 {
-    self = [super init];
 	self = [self initWithParameters:[NSArray arrayWithObject:ref.ref] description:ref.shortName];
 	return self;
 }
 
 - (id) initWithCoder:(NSCoder *)coder
 {
-    self = [super init];
 	self = [self initWithParameters:[coder decodeObjectForKey:@"Parameters"] description:[coder decodeObjectForKey:@"Description"]];
 	return self;
 }
@@ -73,7 +77,7 @@
 {
 	if (![self isSimpleRef])
 		return nil;
-	return [parameters objectAtIndex:0];
+	return [self.parameters objectAtIndex:0];
 }
 
 - (PBGitRef *) ref
@@ -86,17 +90,11 @@
 
 - (NSString *) description
 {
-	if (!description)
-		return [parameters componentsJoinedByString:@" "];
-
-	return description;
+	if (!self->_description) {
+		return [self.parameters componentsJoinedByString:@" "];
+	}
+	return self->_description;
 }
-
-- (void) setDescription:(NSString *)newDescription
-{
-	description = newDescription;
-}
-
 
 - (NSString *) title
 {
@@ -122,17 +120,21 @@
 
 - (BOOL) hasPathLimiter;
 {
-	for (NSString* param in parameters)
-		if ([param isEqualToString:@"--"])
+	for (NSString* param in self.parameters) {
+		if ([param isEqualToString:@"--"]) {
 			return YES;
+		}
+	}
 	return NO;
 }
 
 - (BOOL) hasLeftRight
 {
-	for (NSString* param in parameters)
-		if ([param isEqualToString:@"--left-right"])
+	for (NSString* param in self.parameters) {
+		if ([param isEqualToString:@"--left-right"]) {
 			return YES;
+		}
+	}
 	return NO;
 }
 
@@ -167,8 +169,8 @@
 
 - (void) encodeWithCoder:(NSCoder *)coder
 {
-	[coder encodeObject:description forKey:@"Description"];
-	[coder encodeObject:parameters forKey:@"Parameters"];
+	[coder encodeObject:self.description forKey:@"Description"];
+	[coder encodeObject:self.parameters forKey:@"Parameters"];
 }
 
 - (id)copyWithZone:(NSZone *)zone

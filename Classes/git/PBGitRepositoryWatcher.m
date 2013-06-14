@@ -6,7 +6,10 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 #import <CoreServices/CoreServices.h>
+
 #import "PBGitRepositoryWatcher.h"
+
+#import "PBGitRepository.h"
 #import "PBEasyPipe.h"
 #import "PBGitDefaults.h"
 #import "PBGitRepositoryWatcherEventPath.h"
@@ -18,6 +21,9 @@ NSString *kPBGitRepositoryEventTypeUserInfoKey = @"kPBGitRepositoryEventTypeUser
 NSString *kPBGitRepositoryEventPathsUserInfoKey = @"kPBGitRepositoryEventPathsUserInfoKey";
 
 @interface PBGitRepositoryWatcher ()
+
+@property (readonly, weak) PBGitRepository *repository;
+
 - (void) _handleEventCallback:(NSArray *)eventPaths;
 @end
 

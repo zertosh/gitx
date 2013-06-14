@@ -24,7 +24,8 @@ using namespace std;
 
 @interface PBGitRevList ()
 
-@property (assign) BOOL isParsing;
+@property (nonatomic, strong) NSMutableArray *commitsRW;
+@property (nonatomic, assign) BOOL isParsing;
 
 @end
 
@@ -34,9 +35,6 @@ using namespace std;
 
 
 @implementation PBGitRevList
-
-@synthesize commits;
-@synthesize isParsing;
 
 
 - (id) initWithRepository:(PBGitRepository *)repo rev:(PBGitRevSpecifier *)rev shouldGraph:(BOOL)graph
@@ -59,6 +57,10 @@ using namespace std;
 	[parseThread start];
 }
 
+- (NSArray*)commits
+{
+	return self.commitsRW;
+}
 
 - (void)cancel
 {
@@ -82,15 +84,15 @@ using namespace std;
 		return;
 
 	if (resetCommits) {
-		self.commits = [NSMutableArray array];
+		self.commitsRW = [NSMutableArray array];
 		resetCommits = NO;
 	}
 
-	NSRange range = NSMakeRange([commits count], [revisions count]);
+	NSRange range = NSMakeRange([self.commitsRW count], [revisions count]);
 	NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
 
 	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"commits"];
-	[commits addObjectsFromArray:revisions];
+	[self.commitsRW addObjectsFromArray:revisions];
 	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"commits"];
 }
 
@@ -98,7 +100,7 @@ using namespace std;
 - (void) walkRevisionListWithSpecifier:(PBGitRevSpecifier*)rev
 {
 	@autoreleasepool {
-		NSDate *start = [NSDate date];
+		//NSDate *start = [NSDate date];
 		NSDate *lastUpdate = [NSDate date];
 		NSMutableArray *revisions = [NSMutableArray array];
 		PBGitGrapher *g = [[PBGitGrapher alloc] initWithRepository:repository];
@@ -267,7 +269,7 @@ using namespace std;
 		}
 		
 		if (![currentThread isCancelled]) {
-			NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:start];
+			//NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:start];
 			//NSLog(@"Loaded %i commits in %f seconds (%f/sec)", num, duration, num/duration);
 			
 			// Make sure the commits are stored before exiting.

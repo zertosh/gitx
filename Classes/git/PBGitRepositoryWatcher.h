@@ -9,7 +9,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PBGitRepository.h"
+
+@class PBGitRepository;
 
 typedef UInt32 PBGitRepositoryWatcherEventType;
 enum {
@@ -31,8 +32,6 @@ extern NSString *kPBGitRepositoryEventPathsUserInfoKey;
     BOOL _running;
 	NSDictionary* lastStatus;
 }
-
-@property (readonly, weak) PBGitRepository *repository;
 
 - (id) initWithRepository:(PBGitRepository *)repository;
 - (void) start;

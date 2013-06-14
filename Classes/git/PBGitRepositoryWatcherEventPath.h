@@ -10,11 +10,8 @@
 
 
 @interface PBGitRepositoryWatcherEventPath : NSObject
-{
-	NSString *path;
-	FSEventStreamEventFlags flag;
-}
 
-@property  NSString *path;
-@property (assign) FSEventStreamEventFlags flag;
+@property (nonatomic, assign) FSEventStreamEventFlags flag;
+@property (nonatomic, strong) NSString * path;
+
 @end

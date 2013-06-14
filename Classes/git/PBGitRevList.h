@@ -12,14 +12,11 @@
 @class PBGitRevSpecifier;
 
 @interface PBGitRevList : NSObject {
-	NSMutableArray *commits;
-
 	__weak PBGitRepository *repository;
 	PBGitRevSpecifier *currentRev;
 	BOOL isGraphing;
 
 	NSThread *parseThread;
-	BOOL isParsing;
 	BOOL resetCommits;
 }
 
@@ -27,7 +24,7 @@
 - (void) loadRevisons;
 - (void)cancel;
 
-@property  NSMutableArray *commits;
-@property (readonly) BOOL isParsing;
+@property (nonatomic, assign, readonly) BOOL isParsing;
+@property (nonatomic, readonly) NSArray *commits;
 
 @end

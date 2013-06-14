@@ -10,6 +10,5 @@
 
 
 @implementation PBGitRepositoryWatcherEventPath
-@synthesize path, flag;
 
 @end
