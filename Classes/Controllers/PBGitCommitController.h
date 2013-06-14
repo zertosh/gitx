@@ -13,10 +13,6 @@
 @class PBNiceSplitView;
 
 @interface PBGitCommitController : PBViewController {
-	// This might have to transfer over to the PBGitRepository
-	// object sometime
-	PBGitIndex *index;
-	
 	IBOutlet NSTextView *commitMessageView;
 	IBOutlet NSArrayController *unstagedFilesController;
 	IBOutlet NSArrayController *cachedFilesController;
@@ -27,7 +23,7 @@
 	IBOutlet PBNiceSplitView *commitSplitView;
 }
 
-@property(readonly) PBGitIndex *index;
+@property(nonatomic, strong, readonly) PBGitIndex *index;
 
 - (IBAction) refresh:(id) sender;
 - (IBAction) commit:(id) sender;

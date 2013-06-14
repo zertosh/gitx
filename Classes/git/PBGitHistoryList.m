@@ -17,6 +17,9 @@
 
 @interface PBGitHistoryList ()
 
+@property (nonatomic, assign) BOOL isUpdating;
+@property (nonatomic, strong) NSMutableArray *commits;
+
 - (void) resetGraphing;
 
 - (PBGitHistoryGrapher *) grapher;
@@ -33,13 +36,6 @@
 @implementation PBGitHistoryList
 
 
-@synthesize projectRevList;
-@synthesize commits;
-@synthesize isUpdating;
-@dynamic projectCommits;
-
-
-
 #pragma mark -
 #pragma mark Public
 
@@ -49,7 +45,7 @@
     if (!self)
         return nil;
     
-	commits = [NSMutableArray array];
+	self.commits = [NSMutableArray array];
 	repository = repo;
 	lastBranchFilter = -1;
 	[repository addObserver:self forKeyPath:@"currentBranch" options:0 context:@"currentBranch"];
@@ -57,7 +53,7 @@
 	[repository addObserver:self forKeyPath:@"hasChanged" options:0 context:@"repositoryHasChanged"];
 
 	shouldReloadProjectHistory = YES;
-	projectRevList = [[PBGitRevList alloc] initWithRepository:repository rev:[PBGitRevSpecifier allBranchesRevSpec] shouldGraph:NO];
+	self.projectRevList = [[PBGitRevList alloc] initWithRepository:repository rev:[PBGitRevSpecifier allBranchesRevSpec] shouldGraph:NO];
 
 	return self;
 }
@@ -104,7 +100,7 @@
 
 - (NSArray *) projectCommits
 {
-	return [projectRevList.commits copy];
+	return [self.projectRevList.commits copy];
 }
 
 
@@ -122,11 +118,11 @@
 		resetCommits = NO;
 	}
 
-	NSRange range = NSMakeRange([commits count], [array count]);
+	NSRange range = NSMakeRange([self.commits count], [array count]);
 	NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
 
 	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"commits"];
-	[commits addObjectsFromArray:array];
+	[self.commits addObjectsFromArray:array];
 	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"commits"];
 }
 
@@ -308,7 +304,7 @@
 
 - (void) updateProjectHistoryForRev:(PBGitRevSpecifier *)rev
 {
-	[self setCurrentRevList:projectRevList];
+	[self setCurrentRevList:self.projectRevList];
 
 	if ([self haveRefsBeenModified])
 		shouldReloadProjectHistory = YES;
@@ -324,11 +320,11 @@
 		lastRemoteRef = nil;
 		lastSHA = nil;
 		self.commits = [NSMutableArray array];
-		[projectRevList loadRevisons];
+		[self.projectRevList loadRevisons];
 		return;
 	}
 
-	[graphQueue addOperation:[self operationForCommits:projectRevList.commits]];
+	[graphQueue addOperation:[self operationForCommits:self.projectRevList.commits]];
 }
 
 

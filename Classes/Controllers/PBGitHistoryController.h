@@ -23,17 +23,12 @@
 @class PBHistorySearchController;
 
 @interface PBGitHistoryController : PBViewController {
-	IBOutlet PBRefController *refController;
 	IBOutlet NSSearchField *searchField;
-	IBOutlet NSArrayController* commitController;
-	IBOutlet NSTreeController* treeController;
 	IBOutlet NSOutlineView* fileBrowser;
 	NSArray *currentFileBrowserSelectionPath;
-	IBOutlet PBCommitList* commitList;
 	IBOutlet PBCollapsibleSplitView *historySplitView;
 	IBOutlet PBWebHistoryController *webHistoryController;
     QLPreviewPanel* previewPanel;
-	IBOutlet PBHistorySearchController *searchController;
 	IBOutlet GLFileView *fileView;
 
 	IBOutlet PBGitGradientBarView *upperToolbarView;
@@ -50,8 +45,6 @@
 	int selectedCommitDetailsIndex;
 	BOOL forceSelectionUpdate;
 	
-	PBGitTree *gitTree;
-	PBGitCommit *webCommit;
 	PBGitCommit *selectedCommit;
 }
 
@@ -59,10 +52,10 @@
 @property (assign) int selectedCommitDetailsIndex;
 @property  PBGitCommit *webCommit;
 @property  PBGitTree* gitTree;
-@property (readonly) NSArrayController *commitController;
-@property (readonly) PBRefController *refController;
-@property (readonly) PBHistorySearchController *searchController;
-@property (readonly) PBCommitList *commitList;
+@property (nonatomic, strong) IBOutlet NSArrayController *commitController;
+@property (nonatomic, strong) IBOutlet PBRefController *refController;
+@property (nonatomic, strong) IBOutlet PBHistorySearchController *searchController;
+@property (nonatomic, strong) IBOutlet PBCommitList *commitList;
 
 - (IBAction) setDetailedView:(id)sender;
 - (IBAction) setTreeView:(id)sender;

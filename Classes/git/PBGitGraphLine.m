@@ -10,7 +10,7 @@
 
 /*
 @implementation PBGitGraphLine
-@synthesize upper, from, to, colorIndex;
+
 - (id)initWithUpper: (char) u From: (char) f to: (char) t  color: (char) c;
 {
 	upper = u;

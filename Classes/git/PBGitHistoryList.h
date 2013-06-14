@@ -19,7 +19,6 @@
 @interface PBGitHistoryList : NSObject {
 	__weak PBGitRepository *repository;
 
-	PBGitRevList *projectRevList;
 	PBGitRevList *currentRevList;
 
 	PBGitSHA *lastSHA;
@@ -31,9 +30,6 @@
 
 	PBGitHistoryGrapher *grapher;
 	NSOperationQueue *graphQueue;
-
-	NSMutableArray *commits;
-	BOOL isUpdating;
 }
 
 - (id) initWithRepository:(PBGitRepository *)repo;
@@ -44,9 +40,8 @@
 - (void) updateCommitsFromGrapher:(NSDictionary *)commitData;
 
 
-@property  PBGitRevList *projectRevList;
-@property  NSMutableArray *commits;
-@property (readonly) NSArray *projectCommits;
-@property (assign) BOOL isUpdating;
+@property (nonatomic, strong) PBGitRevList *projectRevList;
+@property (nonatomic, strong, readonly) NSArray *projectCommits;
+@property (nonatomic, assign, readonly) BOOL isUpdating;
 
 @end

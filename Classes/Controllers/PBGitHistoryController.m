@@ -44,18 +44,14 @@
 
 
 @implementation PBGitHistoryController
-@synthesize webCommit, gitTree, commitController, refController;
-@synthesize searchController;
-@synthesize commitList;
-@synthesize treeController;
 
 - (void)awakeFromNib
 {
 	self.selectedCommitDetailsIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kHistorySelectedDetailIndexKey];
 
-	[commitController addObserver:self forKeyPath:@"selection" options:0 context:@"commitChange"];
-	[commitController addObserver:self forKeyPath:@"arrangedObjects.@count" options:NSKeyValueObservingOptionInitial context:@"updateCommitCount"];
-	[treeController addObserver:self forKeyPath:@"selection" options:0 context:@"treeChange"];
+	[self.commitController addObserver:self forKeyPath:@"selection" options:0 context:@"commitChange"];
+	[self.commitController addObserver:self forKeyPath:@"arrangedObjects.@count" options:NSKeyValueObservingOptionInitial context:@"updateCommitCount"];
+	[self.treeController addObserver:self forKeyPath:@"selection" options:0 context:@"treeChange"];
 
 	[repository.revisionList addObserver:self forKeyPath:@"isUpdating" options:0 context:@"revisionListUpdating"];
 	[repository addObserver:self forKeyPath:@"currentBranch" options:0 context:@"branchChange"];
@@ -63,9 +59,9 @@
 	[repository addObserver:self forKeyPath:@"currentBranchFilter" options:0 context:@"branchFilterChange"];
 
 	forceSelectionUpdate = YES;
-	NSSize cellSpacing = [commitList intercellSpacing];
+	NSSize cellSpacing = [self.commitList intercellSpacing];
 	cellSpacing.height = 0;
-	[commitList setIntercellSpacing:cellSpacing];
+	[self.commitList setIntercellSpacing:cellSpacing];
 	[fileBrowser setTarget:self];
 	[fileBrowser setDoubleAction:@selector(openSelectedFile:)];
 
@@ -79,14 +75,14 @@
     if (![repository hasSVNRemote])
     {
         // Remove the SVN revision table column for repositories with no SVN remote configured
-        [commitList removeTableColumn:[commitList tableColumnWithIdentifier:@"GitSVNRevision"]];
+        [self.commitList removeTableColumn:[self.commitList tableColumnWithIdentifier:@"GitSVNRevision"]];
     }
 
 	// Set a sort descriptor for the subject column in the history list, as
 	// It can't be sorted by default (because it's bound to a PBGitCommit)
-	[[commitList tableColumnWithIdentifier:@"SubjectColumn"] setSortDescriptorPrototype:[[NSSortDescriptor alloc] initWithKey:@"subject" ascending:YES]];
+	[[self.commitList tableColumnWithIdentifier:@"SubjectColumn"] setSortDescriptorPrototype:[[NSSortDescriptor alloc] initWithKey:@"subject" ascending:YES]];
 	// Add a menu that allows a user to select which columns to view
-	[[commitList headerView] setMenu:[self tableColumnMenu]];
+	[[self.commitList headerView] setMenu:[self tableColumnMenu]];
 
 	[historySplitView setTopMin:58.0 andBottomMin:100.0];
 	[historySplitView setHidden:YES];
@@ -113,7 +109,7 @@
 
 - (void)updateKeys
 {
-	PBGitCommit *lastObject = [[commitController selectedObjects] lastObject];
+	PBGitCommit *lastObject = [[self.commitController selectedObjects] lastObject];
 	if (lastObject) {
 		if (![selectedCommit isEqual:lastObject]) {
 			selectedCommit = lastObject;
@@ -170,7 +166,7 @@
 
 - (PBGitCommit *) firstCommit
 {
-	NSArray *arrangedObjects = [commitController arrangedObjects];
+	NSArray *arrangedObjects = [self.commitController arrangedObjects];
 	if ([arrangedObjects count] > 0)
 		return [arrangedObjects objectAtIndex:0];
 
@@ -179,7 +175,7 @@
 
 - (BOOL)isCommitSelected
 {
-	return [selectedCommit isEqual:[[commitController selectedObjects] lastObject]];
+	return [selectedCommit isEqual:[[self.commitController selectedObjects] lastObject]];
 }
 
 - (void) setSelectedCommitDetailsIndex:(int)detailsIndex
@@ -201,7 +197,7 @@
 - (void) updateStatus
 {
 	self.isBusy = repository.revisionList.isUpdating;
-	self.status = [NSString stringWithFormat:@"%lu commits loaded", [[commitController arrangedObjects] count]];
+	self.status = [NSString stringWithFormat:@"%lu commits loaded", [[self.commitController arrangedObjects] count]];
 }
 
 - (void) restoreFileBrowserSelection
@@ -209,7 +205,7 @@
 	if (self.selectedCommitDetailsIndex != kHistoryTreeViewIndex)
 		return;
 
-	NSArray *children = [treeController content];
+	NSArray *children = [self.treeController content];
 	if ([children count] == 0)
 		return;
 
@@ -233,13 +229,13 @@
 		}
 	}
 
-	[treeController setSelectionIndexPath:path];
+	[self.treeController setSelectionIndexPath:path];
 }
 
 - (void) saveFileBrowserSelection
 {
-	NSArray *objects = [treeController selectedObjects];
-	NSArray *content = [treeController content];
+	NSArray *objects = [self.treeController selectedObjects];
+	NSArray *content = [self.treeController content];
 
 	if ([objects count] && [content count]) {
 		PBGitTree *treeItem = [objects objectAtIndex:0];
@@ -264,14 +260,14 @@
 
 	if([strContext isEqualToString:@"branchChange"]) {
 		// Reset the sorting
-		if ([[commitController sortDescriptors] count])
-			[commitController setSortDescriptors:[NSArray array]];
+		if ([[self.commitController sortDescriptors] count])
+			[self.commitController setSortDescriptors:[NSArray array]];
 		[self updateBranchFilterMatrix];
 		return;
 	}
 
 	if([strContext isEqualToString:@"updateRefs"]) {
-		[commitController rearrangeObjects];
+		[self.commitController rearrangeObjects];
 		return;
 	}
 
@@ -296,7 +292,7 @@
 
 - (IBAction) openSelectedFile:(id)sender
 {
-	NSArray* selectedFiles = [treeController selectedObjects];
+	NSArray* selectedFiles = [self.treeController selectedObjects];
 	if ([selectedFiles count] == 0)
 		return;
 	PBGitTree* tree = [selectedFiles objectAtIndex:0];
@@ -353,7 +349,7 @@
 		return;
 	}
 
-	[searchController selectNextResult];
+	[self.searchController selectNextResult];
 }
 - (IBAction)selectPrevious:(id)sender
 {
@@ -363,12 +359,12 @@
 		return;
 	}
 
-	[searchController selectPreviousResult];
+	[self.searchController selectPreviousResult];
 }
 
 - (void) copyCommitInfo
 {
-	PBGitCommit *commit = [[commitController selectedObjects] objectAtIndex:0];
+	PBGitCommit *commit = [[self.commitController selectedObjects] objectAtIndex:0];
 	if (!commit)
 		return;
 	NSString *info = [NSString stringWithFormat:@"%@ (%@)", [[commit realSha] substringToIndex:10], [commit subject]];
@@ -381,7 +377,7 @@
 
 - (void) copyCommitSHA
 {
-	PBGitCommit *commit = [[commitController selectedObjects] objectAtIndex:0];
+	PBGitCommit *commit = [[self.commitController selectedObjects] objectAtIndex:0];
 	if (!commit)
 		return;
 	NSString *info = [[commit realSha] substringWithRange:NSMakeRange(0, 7)];
@@ -423,7 +419,7 @@
 	}
 	else {
 		// Private QL API (10.5 only)
-		NSArray *selectedFiles = [treeController selectedObjects];
+		NSArray *selectedFiles = [self.treeController selectedObjects];
 
 		NSMutableArray *fileNames = [NSMutableArray array];
 		for (PBGitTree *tree in selectedFiles) {
@@ -449,7 +445,7 @@
 
 - (NSResponder *)firstResponder;
 {
-	return commitList;
+	return self.commitList;
 }
 
 - (void) scrollSelectionToTopOfViewFrom:(NSInteger)oldIndex
@@ -457,29 +453,29 @@
 	if (oldIndex == NSNotFound)
 		oldIndex = 0;
 
-	NSInteger newIndex = [[commitController selectionIndexes] firstIndex];
+	NSInteger newIndex = [[self.commitController selectionIndexes] firstIndex];
 
 	if (newIndex > oldIndex) {
-        CGFloat sviewHeight = [[commitList superview] bounds].size.height;
-        CGFloat rowHeight = [commitList rowHeight];
+        CGFloat sviewHeight = [[self.commitList superview] bounds].size.height;
+        CGFloat rowHeight = [self.commitList rowHeight];
 		NSInteger visibleRows = roundf(sviewHeight / rowHeight );
 		newIndex += (visibleRows - 1);
-		if (newIndex >= [[commitController content] count])
-			newIndex = [[commitController content] count] - 1;
+		if (newIndex >= [[self.commitController content] count])
+			newIndex = [[self.commitController content] count] - 1;
 	}
 
     if (newIndex != oldIndex) {
-        commitList.useAdjustScroll = YES;
+        self.commitList.useAdjustScroll = YES;
     }
 
-	[commitList scrollRowToVisible:newIndex];
-    commitList.useAdjustScroll = NO;
+	[self.commitList scrollRowToVisible:newIndex];
+    self.commitList.useAdjustScroll = NO;
 }
 
 - (NSArray *) selectedObjectsForSHA:(PBGitSHA *)commitSHA
 {
 	NSPredicate *selection = [NSPredicate predicateWithFormat:@"sha == %@", commitSHA];
-	NSArray *selectedCommits = [[commitController content] filteredArrayUsingPredicate:selection];
+	NSArray *selectedCommits = [[self.commitController content] filteredArrayUsingPredicate:selection];
 
 	if (([selectedCommits count] == 0) && [self firstCommit])
 		selectedCommits = [NSArray arrayWithObject:[self firstCommit]];
@@ -489,13 +485,13 @@
 
 - (void)selectCommit:(PBGitSHA *)commitSHA
 {
-	if (!forceSelectionUpdate && [[[[commitController selectedObjects] lastObject] sha] isEqual:commitSHA])
+	if (!forceSelectionUpdate && [[[[self.commitController selectedObjects] lastObject] sha] isEqual:commitSHA])
 		return;
 
-	NSInteger oldIndex = [[commitController selectionIndexes] firstIndex];
+	NSInteger oldIndex = [[self.commitController selectionIndexes] firstIndex];
 
 	NSArray *selectedCommits = [self selectedObjectsForSHA:commitSHA];
-	[commitController setSelectedObjects:selectedCommits];
+	[self.commitController setSelectedObjects:selectedCommits];
 
 	[self scrollSelectionToTopOfViewFrom:oldIndex];
 
@@ -504,18 +500,18 @@
 
 - (BOOL) hasNonlinearPath
 {
-	return [commitController filterPredicate] || [[commitController sortDescriptors] count] > 0;
+	return [self.commitController filterPredicate] || [[self.commitController sortDescriptors] count] > 0;
 }
 
 - (void)closeView
 {
 	[self saveSplitViewPosition];
 
-	if (commitController) {
+	if (self.commitController) {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-		[commitController removeObserver:self forKeyPath:@"selection"];
-		[commitController removeObserver:self forKeyPath:@"arrangedObjects.@count"];
-		[treeController removeObserver:self forKeyPath:@"selection"];
+		[self.commitController removeObserver:self forKeyPath:@"selection"];
+		[self.commitController removeObserver:self forKeyPath:@"arrangedObjects.@count"];
+		[self.treeController removeObserver:self forKeyPath:@"selection"];
 
 		[repository.revisionList removeObserver:self forKeyPath:@"isUpdating"];
 		[repository removeObserver:self forKeyPath:@"currentBranch"];
@@ -533,7 +529,7 @@
 - (NSMenu *)tableColumnMenu
 {
 	NSMenu *menu = [[NSMenu alloc] initWithTitle:@"Table columns menu"];
-	for (NSTableColumn *column in [commitList tableColumns]) {
+	for (NSTableColumn *column in [self.commitList tableColumns]) {
 		NSMenuItem *item = [[NSMenuItem alloc] init];
 		[item setTitle:[[column headerCell] stringValue]];
 		[item bind:@"value"
@@ -550,7 +546,7 @@
 - (void)showCommitsFromTree:(id)sender
 {
 	NSString *searchString = [(NSArray *)[sender representedObject] componentsJoinedByString:@" "];
-	[searchController setHistorySearch:searchString mode:kGitXPathSearchMode];
+	[self.searchController setHistorySearch:searchString mode:kGitXPathSearchMode];
 }
 
 - (void)showInFinderAction:(id)sender
@@ -594,7 +590,7 @@
 
 - (NSMenu *)contextMenuForTreeView
 {
-	NSArray *filePaths = [[treeController selectedObjects] valueForKey:@"fullPath"];
+	NSArray *filePaths = [[self.treeController selectedObjects] valueForKey:@"fullPath"];
 
 	NSMenu *menu = [[NSMenu alloc] init];
 	for (NSMenuItem *item in [self menuItemsForPaths:filePaths])
@@ -796,7 +792,7 @@
 
 - (id <QLPreviewItem>)previewPanel:(id)panel previewItemAtIndex:(NSInteger)index
 {
-	PBGitTree *treeItem = (PBGitTree *)[[treeController selectedObjects] objectAtIndex:index];
+	PBGitTree *treeItem = (PBGitTree *)[[self.treeController selectedObjects] objectAtIndex:index];
 	NSURL *previewURL = [NSURL fileURLWithPath:[treeItem tmpFileNameForContents]];
 
     return (id <QLPreviewItem>)previewURL;
@@ -817,7 +813,7 @@
 // This delegate method provides the rect on screen from which the panel will zoom.
 - (NSRect)previewPanel:(id)panel sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item
 {
-    NSInteger index = [fileBrowser rowForItem:[[treeController selectedNodes] objectAtIndex:0]];
+    NSInteger index = [fileBrowser rowForItem:[[self.treeController selectedNodes] objectAtIndex:0]];
     if (index == NSNotFound) {
         return NSZeroRect;
     }

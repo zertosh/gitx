@@ -20,6 +20,9 @@
 #define kCommitSplitViewPositionDefault @"Commit SplitView Position"
 
 @interface PBGitCommitController ()
+
+@property (nonatomic, strong) PBGitIndex *index;
+
 - (void)refreshFinished:(NSNotification *)notification;
 - (void)commitWithVerification:(BOOL) doVerify;
 - (void)commitStatusUpdated:(NSNotification *)notification;
@@ -34,24 +37,24 @@
 
 @implementation PBGitCommitController
 
-@synthesize index;
-
 - (id)initWithRepository:(PBGitRepository *)theRepository superController:(PBGitWindowController *)controller
 {
-	if (!(self = [super initWithRepository:theRepository superController:controller]))
+	self = [super initWithRepository:theRepository superController:controller];
+	if (!self) {
 		return nil;
+	}
+	
+	self.index = [[PBGitIndex alloc] initWithRepository:theRepository];
+	[self.index refresh];
 
-	index = [[PBGitIndex alloc] initWithRepository:theRepository];
-	[index refresh];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFinished:) name:PBGitIndexFinishedIndexRefresh object:index];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commitStatusUpdated:) name:PBGitIndexCommitStatus object:index];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commitFinished:) name:PBGitIndexFinishedCommit object:index];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commitFailed:) name:PBGitIndexCommitFailed object:index];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commitHookFailed:) name:PBGitIndexCommitHookFailed object:index];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(amendCommit:) name:PBGitIndexAmendMessageAvailable object:index];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(indexChanged:) name:PBGitIndexIndexUpdated object:index];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(indexOperationFailed:) name:PBGitIndexOperationFailed object:index];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFinished:) name:PBGitIndexFinishedIndexRefresh object:self.index];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commitStatusUpdated:) name:PBGitIndexCommitStatus object:self.index];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commitFinished:) name:PBGitIndexFinishedCommit object:self.index];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commitFailed:) name:PBGitIndexCommitFailed object:self.index];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commitHookFailed:) name:PBGitIndexCommitHookFailed object:self.index];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(amendCommit:) name:PBGitIndexAmendMessageAvailable object:self.index];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(indexChanged:) name:PBGitIndexIndexUpdated object:self.index];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(indexOperationFailed:) name:PBGitIndexOperationFailed object:self.index];
 
 	return self;
 }
@@ -123,7 +126,7 @@
 {
 	self.isBusy = YES;
 	self.status = @"Refreshing index…";
-	[index refresh];
+	[self.index refresh];
 
 	// Reload refs (in case HEAD changed)
 	[repository reloadRefs];
@@ -168,7 +171,7 @@
 	self.isBusy = YES;
 	[commitMessageView setEditable:NO];
 
-	[index commitWithMessage:commitMessage andVerify:doVerify];
+	[self.index commitWithMessage:commitMessage andVerify:doVerify];
 }
 
 
