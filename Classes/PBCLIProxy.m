@@ -13,8 +13,14 @@
 #import "PBGitBinary.h"
 #import "PBDiffWindowController.h"
 
+#define ConnectionName @"GitX DO Connection"
+#define PBCLIProxyErrorDomain @"PBCLIProxyErrorDomain"
+
+@interface PBCLIProxy ()
+@property (retain) NSConnection* connection;
+@end
+
 @implementation PBCLIProxy
-@synthesize connection;
 
 - (id)init
 {
@@ -70,4 +76,5 @@
 	[diffController showWindow:nil];
 	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 }
+
 @end

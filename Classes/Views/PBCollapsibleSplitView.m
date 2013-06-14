@@ -8,12 +8,19 @@
 
 #import "PBCollapsibleSplitView.h"
 
+@interface PBCollapsibleSplitView ()
+
+@property (nonatomic, assign) CGFloat topViewMin;
+@property (nonatomic, assign) CGFloat bottomViewMin;
+@property (nonatomic, assign) CGFloat splitterPosition;
+
+@end
+
 @implementation PBCollapsibleSplitView
-@synthesize topViewMin, bottomViewMin;
 
 - (void)setTopMin:(CGFloat)topMin andBottomMin:(CGFloat)bottomMin {
-	topViewMin = topMin;
-	bottomViewMin = bottomMin;
+	self.topViewMin = topMin;
+	self.bottomViewMin = bottomMin;
 }
 
 - (void)uncollapse {
@@ -28,13 +35,13 @@
 - (void)collapseSubview:(NSInteger)index {
 	// Already collapsed, just uncollapse
 	if ([self isSubviewCollapsed:[[self subviews] objectAtIndex:index]]) {
-		[self setPosition:splitterPosition ofDividerAtIndex:0];
+		[self setPosition:self.splitterPosition ofDividerAtIndex:0];
 		return;
 	}
 
 	// Store splitterposition if the other view isn't collapsed
 	if (![self isSubviewCollapsed:[[self subviews] objectAtIndex:(index + 1) % 2]])
-		splitterPosition = [[[self subviews] objectAtIndex:0] frame].size.height;
+		self.splitterPosition = [[[self subviews] objectAtIndex:0] frame].size.height;
 
 	if (index == 0) // Top view
 		[self setPosition:0.0 ofDividerAtIndex:0];

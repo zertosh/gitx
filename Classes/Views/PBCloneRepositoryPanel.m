@@ -10,19 +10,16 @@
 #import "PBRemoteProgressSheet.h"
 #import "PBGitDefaults.h"
 
+@interface PBCloneRepositoryPanel ()
+
+@property (nonatomic, strong) NSOpenPanel *browseRepositoryPanel;
+@property (nonatomic, strong) NSOpenPanel *browseDestinationPanel;
+@property (nonatomic, strong) NSString *path;
+
+@end
 
 
 @implementation PBCloneRepositoryPanel
-
-
-@synthesize repositoryURL;
-@synthesize destinationPath;
-@synthesize errorMessage;
-@synthesize repositoryAccessoryView;
-
-@synthesize isBare;
-
-
 
 #pragma mark -
 #pragma mark PBCloneRepositoryPanel
@@ -52,28 +49,29 @@
 {
 	[self window];
 	[self.errorMessage setStringValue:@""];
-	path = [PBGitDefaults recentCloneDestination];
-	if (path)
-		[self.destinationPath setStringValue:path];
+	self.path = [PBGitDefaults recentCloneDestination];
+	if (self.path) {
+		[self.destinationPath setStringValue:self.path];
+	}
 	
-	browseRepositoryPanel = [NSOpenPanel openPanel];
-	[browseRepositoryPanel setTitle:@"Browse for git repository"];
-	[browseRepositoryPanel setMessage:@"Select a folder with a git repository"];
-	[browseRepositoryPanel setPrompt:@"Select"];
-    [browseRepositoryPanel setCanChooseFiles:NO];
-    [browseRepositoryPanel setCanChooseDirectories:YES];
-    [browseRepositoryPanel setAllowsMultipleSelection:NO];
-	[browseRepositoryPanel setCanCreateDirectories:NO];
-	[browseRepositoryPanel setAccessoryView:repositoryAccessoryView];
+	self.browseRepositoryPanel = [NSOpenPanel openPanel];
+	[self.browseRepositoryPanel setTitle:@"Browse for git repository"];
+	[self.browseRepositoryPanel setMessage:@"Select a folder with a git repository"];
+	[self.browseRepositoryPanel setPrompt:@"Select"];
+    [self.browseRepositoryPanel setCanChooseFiles:NO];
+    [self.browseRepositoryPanel setCanChooseDirectories:YES];
+    [self.browseRepositoryPanel setAllowsMultipleSelection:NO];
+	[self.browseRepositoryPanel setCanCreateDirectories:NO];
+	[self.browseRepositoryPanel setAccessoryView:self.repositoryAccessoryView];
 	
-	browseDestinationPanel = [NSOpenPanel openPanel];
-	[browseDestinationPanel setTitle:@"Browse clone destination"];
-	[browseDestinationPanel setMessage:@"Select a folder to clone the git repository into"];
-	[browseDestinationPanel setPrompt:@"Select"];
-    [browseDestinationPanel setCanChooseFiles:NO];
-    [browseDestinationPanel setCanChooseDirectories:YES];
-    [browseDestinationPanel setAllowsMultipleSelection:NO];
-	[browseDestinationPanel setCanCreateDirectories:YES];
+	self.browseDestinationPanel = [NSOpenPanel openPanel];
+	[self.browseDestinationPanel setTitle:@"Browse clone destination"];
+	[self.browseDestinationPanel setMessage:@"Select a folder to clone the git repository into"];
+	[self.browseDestinationPanel setPrompt:@"Select"];
+    [self.browseDestinationPanel setCanChooseFiles:NO];
+    [self.browseDestinationPanel setCanChooseDirectories:YES];
+    [self.browseDestinationPanel setAllowsMultipleSelection:NO];
+	[self.browseDestinationPanel setCanCreateDirectories:YES];
 }
 
 
@@ -105,15 +103,16 @@
 		return;
 	}
 	
-	path = [self.destinationPath stringValue];
-	if ([path isEqualToString:@""]) {
+	self.path = [self.destinationPath stringValue];
+	if ([self.path isEqualToString:@""]) {
 		[self.errorMessage setStringValue:@"Destination path is required"];
 		return;
 	}
 
-	NSMutableArray *arguments = [NSMutableArray arrayWithObjects:@"clone", @"--", url, path, nil];
-	if (isBare)
+	NSMutableArray *arguments = [NSMutableArray arrayWithObjects:@"clone", @"--", url, self.path, nil];
+	if (self.isBare) {
 		[arguments insertObject:@"--bare" atIndex:1];
+	}
 	
 	NSString *description = [NSString stringWithFormat:@"Cloning repository at: %@", url];
 	NSString *title = @"Cloning Repository";
@@ -127,10 +126,10 @@
 
 - (IBAction) browseRepository:(id)sender
 {
-    [browseRepositoryPanel beginSheetModalForWindow:[self window]
+    [self.browseRepositoryPanel beginSheetModalForWindow:[self window]
                                   completionHandler:^(NSInteger result) {
                                       if (result == NSOKButton) {
-                                          NSURL *url = [[browseRepositoryPanel URLs] lastObject];
+                                          NSURL *url = [[self.browseRepositoryPanel URLs] lastObject];
                                           [self.repositoryURL setStringValue:[url path]];
                                       }
                                   }];
@@ -141,16 +140,16 @@
 {
 	// This uses undocumented OpenPanel features to show hidden files (required for 10.5 support)
 	NSNumber *showHidden = [NSNumber numberWithBool:[sender state] == NSOnState];
-	[[browseRepositoryPanel valueForKey:@"_navView"] setValue:showHidden forKey:@"showsHiddenFiles"];
+	[[self.browseRepositoryPanel valueForKey:@"_navView"] setValue:showHidden forKey:@"showsHiddenFiles"];
 }
 
 
 - (IBAction) browseDestination:(id)sender
 {
-    [browseDestinationPanel beginSheetModalForWindow:[self window]
+    [self.browseDestinationPanel beginSheetModalForWindow:[self window]
                                    completionHandler:^(NSInteger result) {
                                        if (result == NSOKButton) {
-                                           NSURL *url = [[browseDestinationPanel URLs] lastObject];
+                                           NSURL *url = [[self.browseDestinationPanel URLs] lastObject];
                                            [self.destinationPath setStringValue:[url path]];
                                        }
                                    }];
@@ -162,7 +161,7 @@
 
 - (void) messageSheetDidEnd:(NSOpenPanel *)sheet returnCode:(NSInteger)code contextInfo:(void *)info
 {
-	NSURL *documentURL = [NSURL fileURLWithPath:path];
+	NSURL *documentURL = [NSURL fileURLWithPath:self.path];
 	
 	NSError *error = nil;
 	id document = [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:documentURL display:YES error:&error];
@@ -171,7 +170,7 @@
 	else {
 		[self close];
 		
-		NSString *containingPath = [path stringByDeletingLastPathComponent];
+		NSString *containingPath = [self.path stringByDeletingLastPathComponent];
 		[PBGitDefaults setRecentCloneDestination:containingPath];
 		[self.destinationPath setStringValue:containingPath];
 		[self.repositoryURL setStringValue:@""];

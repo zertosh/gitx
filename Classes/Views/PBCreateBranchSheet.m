@@ -23,16 +23,6 @@
 
 @implementation PBCreateBranchSheet
 
-
-@synthesize repository;
-@synthesize startRefish;
-@synthesize shouldCheckoutBranch;
-
-@synthesize branchNameField;
-@synthesize errorMessageField;
-
-
-
 #pragma mark -
 #pragma mark PBCreateBranchSheet
 

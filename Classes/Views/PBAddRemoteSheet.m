@@ -12,15 +12,6 @@
 
 @implementation PBAddRemoteSheet
 
-@synthesize remoteName;
-@synthesize remoteURL;
-@synthesize errorMessage;
-
-@synthesize browseSheet;
-@synthesize browseAccessoryView;
-
-
-
 #pragma mark -
 #pragma mark PBAddRemoteSheet
 
@@ -47,19 +38,19 @@
 
     self.browseSheet = [NSOpenPanel openPanel];
 
-	[browseSheet setTitle:@"Add remote"];
-    [browseSheet setMessage:@"Select a folder with a git repository"];
-    [browseSheet setCanChooseFiles:NO];
-    [browseSheet setCanChooseDirectories:YES];
-    [browseSheet setAllowsMultipleSelection:NO];
-    [browseSheet setCanCreateDirectories:NO];
-	[browseSheet setAccessoryView:browseAccessoryView];
+	[self.browseSheet setTitle:@"Add remote"];
+    [self.browseSheet setMessage:@"Select a folder with a git repository"];
+    [self.browseSheet setCanChooseFiles:NO];
+    [self.browseSheet setCanChooseDirectories:YES];
+    [self.browseSheet setAllowsMultipleSelection:NO];
+    [self.browseSheet setCanCreateDirectories:NO];
+	[self.browseSheet setAccessoryView:self.browseAccessoryView];
 
-    [browseSheet beginSheetModalForWindow:self.repoWindow.window
+    [self.browseSheet beginSheetModalForWindow:self.repoWindow.window
                         completionHandler:^(NSInteger result) {
                             [self hide];
                             if (result == NSOKButton) {
-                                NSString* directory = browseSheet.directoryURL.path;
+                                NSString* directory = self.browseSheet.directoryURL.path;
                                 [self.remoteURL setStringValue:directory];
                             }
                             [self show];

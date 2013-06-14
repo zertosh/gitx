@@ -8,16 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-
-@interface PBCloneRepositoryPanel : NSWindowController {
-	NSOpenPanel *browseRepositoryPanel;
-	NSOpenPanel *browseDestinationPanel;
-
-	NSString *path;
-	BOOL isBare;
-}
-
-+ (id) panel;
+@interface PBCloneRepositoryPanel : NSWindowController+ (id) panel;
 + (void)beginCloneRepository:(NSString *)repository toURL:(NSURL *)targetURL isBare:(BOOL)bare;
 
 - (void)showErrorSheet:(NSError *)error;
@@ -33,6 +24,6 @@
 @property (nonatomic, weak) IBOutlet NSTextField *errorMessage;
 @property (nonatomic, weak) IBOutlet NSView      *repositoryAccessoryView;
 
-@property (assign) BOOL isBare;
+@property (nonatomic, assign) BOOL isBare;
 
 @end

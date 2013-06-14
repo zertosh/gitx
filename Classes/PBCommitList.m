@@ -11,10 +11,13 @@
 #import "PBWebHistoryController.h"
 #import "PBHistorySearchController.h"
 
-@implementation PBCommitList
+@interface PBCommitList ()
 
-@synthesize mouseDownPoint;
-@synthesize useAdjustScroll;
+@property (nonatomic, assign) NSPoint mouseDownPoint;
+
+@end
+
+@implementation PBCommitList
 
 - (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL) local
 {
@@ -68,7 +71,7 @@
 
     // !!! Andre Berg 20100330: only modify if -scrollSelectionToTopOfViewFrom: has set useAdjustScroll to YES
     // Otherwise we'd also constrain things like middle mouse scrolling.
-    if (useAdjustScroll) {
+    if (self.useAdjustScroll) {
         NSInteger rh = [self rowHeight];
         NSInteger ny = (NSInteger)proposedVisibleRect.origin.y % (NSInteger)rh;
         NSInteger adj = rh - ny;
@@ -91,7 +94,7 @@
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    mouseDownPoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    self.mouseDownPoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
 	[super mouseDown:theEvent];
 }
 
@@ -100,7 +103,7 @@
 								   event:(NSEvent *)dragEvent
 								  offset:(NSPointPointer)dragImageOffset
 {
-	NSPoint location = mouseDownPoint;
+	NSPoint location = self.mouseDownPoint;
 	int row = [self rowAtPoint:location];
 	int column = [self columnAtPoint:location];
 	PBGitRevisionCell *cell = (PBGitRevisionCell *)[self preparedCellAtColumn:column row:row];

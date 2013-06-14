@@ -13,11 +13,7 @@
 #import <Cocoa/Cocoa.h>
 #import "PBNiceSplitView.h"
 
-@interface PBCollapsibleSplitView : PBNiceSplitView {
-	CGFloat topViewMin;
-	CGFloat bottomViewMin;
-	CGFloat splitterPosition;
-}
+@interface PBCollapsibleSplitView : PBNiceSplitView
 
 @property (readonly) CGFloat topViewMin;
 @property (readonly) CGFloat bottomViewMin;

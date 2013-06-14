@@ -12,8 +12,6 @@
 
 @implementation PBCommitHookFailedSheet
 
-@synthesize commitController;
-
 #pragma mark -
 #pragma mark PBCommitHookFailedSheet
 

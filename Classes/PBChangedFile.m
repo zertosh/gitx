@@ -11,21 +11,21 @@
 
 @implementation PBChangedFile
 
-@synthesize path, status, hasStagedChanges, hasUnstagedChanges, commitBlobSHA, commitBlobMode;
-
 - (id) initWithPath:(NSString *)p
 {
     self = [super init];
     
-    if (self) {
-        path = p;
-    }
+    if (!self) {
+		return nil;
+	}
+	
+	self.path = p;
 	return self;
 }
 
 - (NSString *)indexInfo
 {
-	NSAssert(status == NEW || self.commitBlobSHA, @"File is not new, but doesn't have an index entry!");
+	NSAssert(self.status == NEW || self.commitBlobSHA, @"File is not new, but doesn't have an index entry!");
 	if (!self.commitBlobSHA)
 		return [NSString stringWithFormat:@"0 0000000000000000000000000000000000000000\t%@\0", self.path];
 	else
@@ -35,7 +35,7 @@
 - (NSImage *) icon
 {
 	NSString *filename;
-	switch (status) {
+	switch (self.status) {
 		case NEW:
 			filename = @"new_file";
 			break;
