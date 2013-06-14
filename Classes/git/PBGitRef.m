@@ -18,10 +18,11 @@ NSString * const kGitXTagRefPrefix    = @"refs/tags/";
 NSString * const kGitXBranchRefPrefix = @"refs/heads/";
 NSString * const kGitXRemoteRefPrefix = @"refs/remotes/";
 
+@interface PBGitRef ()
+@property(nonatomic, strong) NSString* ref;
+@end
 
 @implementation PBGitRef
-
-@synthesize ref;
 
 - (NSString *) tagName
 {
@@ -44,7 +45,7 @@ NSString * const kGitXRemoteRefPrefix = @"refs/remotes/";
 	if (![self isRemote])
 		return nil;
 
-	return (NSString *)[[ref componentsSeparatedByString:@"/"] objectAtIndex:2];
+	return (NSString *)[[self.ref componentsSeparatedByString:@"/"] objectAtIndex:2];
 }
 
 - (NSString *) remoteBranchName
@@ -68,17 +69,17 @@ NSString * const kGitXRemoteRefPrefix = @"refs/remotes/";
 
 - (BOOL) isBranch
 {
-	return [ref hasPrefix:kGitXBranchRefPrefix];
+	return [self.ref hasPrefix:kGitXBranchRefPrefix];
 }
 
 - (BOOL) isTag
 {
-	return [ref hasPrefix:kGitXTagRefPrefix];
+	return [self.ref hasPrefix:kGitXTagRefPrefix];
 }
 
 - (BOOL) isRemote
 {
-	return [ref hasPrefix:kGitXRemoteRefPrefix];
+	return [self.ref hasPrefix:kGitXRemoteRefPrefix];
 }
 
 - (BOOL) isRemoteBranch
@@ -86,12 +87,12 @@ NSString * const kGitXRemoteRefPrefix = @"refs/remotes/";
 	if (![self isRemote])
 		return NO;
 
-	return ([[ref componentsSeparatedByString:@"/"] count] > 3);
+	return ([[self.ref componentsSeparatedByString:@"/"] count] > 3);
 }
 
 - (BOOL) isEqualToRef:(PBGitRef *)otherRef
 {
-	return [ref isEqualToString:[otherRef ref]];
+	return [self.ref isEqualToString:[otherRef ref]];
 }
 
 - (PBGitRef *) remoteRef
@@ -109,7 +110,11 @@ NSString * const kGitXRemoteRefPrefix = @"refs/remotes/";
 
 - (PBGitRef*) initWithString: (NSString*) s
 {
-	ref = s;
+	self = [super init];
+	if (!self) {
+		return nil;
+	}
+	self.ref = s;
 	return self;
 }
 
@@ -127,14 +132,16 @@ NSString * const kGitXRemoteRefPrefix = @"refs/remotes/";
 
 - (NSString *) refishName
 {
-	return ref;
+	return self.ref;
 }
 
 - (NSString *) shortName
 {
-	if ([self type])
-		return [ref substringFromIndex:[[self type] length] + 7];
-	return ref;
+	if ([self type]) {
+		return [self.ref substringFromIndex:[[self type] length] + 7];
+	}
+	
+	return self.ref;
 }
 
 - (NSString *) refishType
