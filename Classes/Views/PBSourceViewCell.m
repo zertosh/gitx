@@ -15,8 +15,6 @@
 
 @implementation PBSourceViewCell
 
-@synthesize isCheckedOut;
-
 # pragma mark context menu delegate methods
 
 - (NSMenu *) menuForEvent:(NSEvent *)event inRect:(NSRect)rect ofView:(NSOutlineView *)view
@@ -34,7 +32,7 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)outlineView
 {
-	if (isCheckedOut) {
+	if (self.isCheckedOut) {
 		NSImage *checkedOutImage = [PBSourceViewBadge checkedOutBadgeForCell:self];
 		NSSize imageSize = [checkedOutImage size];
 		NSRect imageFrame;

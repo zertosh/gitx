@@ -12,9 +12,17 @@
 #import "PBEasyPipe.h"
 #import "PBEasyFS.h"
 
+@interface PBGitTree ()
+
+@property (nonatomic, assign) long long fileSize;
+@property (nonatomic, strong) NSString* localFileName;
+@property (nonatomic, strong) NSDate* localMtime;
+@property (nonatomic, strong) NSArray* children;
+
+@end
+
 @implementation PBGitTree
 
-@synthesize sha, path, repository, leaf, parent;
 
 + (PBGitTree*) rootForCommit:(id) commit
 {
@@ -38,11 +46,14 @@
 	return tree;
 }
 
-- init
+- (id)init
 {
-	children = nil;
-	localFileName = nil;
-	leaf = YES;
+	self = [super init];
+	if (!self) {
+		return nil;
+	}
+	
+	self.leaf = YES;
 	return self;
 }
 
@@ -54,10 +65,10 @@
 - (BOOL) isLocallyCached
 {
 	NSFileManager* fs = [NSFileManager defaultManager];
-	if (localFileName && [fs fileExistsAtPath:localFileName])
+	if (self.localFileName && [fs fileExistsAtPath:self.localFileName])
 	{
-		NSDate* mtime = [[fs attributesOfItemAtPath:localFileName error: nil] objectForKey:NSFileModificationDate];
-		if ([mtime compare:localMtime] == 0)
+		NSDate* mtime = [[fs attributesOfItemAtPath:self.localFileName error: nil] objectForKey:NSFileModificationDate];
+		if ([mtime compare:self.localMtime] == 0)
 			return YES;
 	}
 	return NO;
@@ -77,7 +88,7 @@
 {
 	@try {
 		// First ask git check-attr if the file has a binary attribute custom set
-		NSFileHandle *handle = [repository handleInWorkDirForArguments:
+		NSFileHandle *handle = [self.repository handleInWorkDirForArguments:
 								[NSArray arrayWithObjects:
 								 @"check-attr",
 								 @"binary",
@@ -112,23 +123,24 @@
 
 - (NSString*) contents
 {
-	if (!leaf)
+	if (!self.leaf) {
 		return [NSString stringWithFormat:@"This is a tree with path %@", [self fullPath]];
+	}
 
 	if ([self isLocallyCached]) {
-		NSData *data = [NSData dataWithContentsOfFile:localFileName];
+		NSData *data = [NSData dataWithContentsOfFile:self.localFileName];
 		NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		if (!string)
 			string = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 		return string;
 	}
 	
-	return [repository outputForArguments:[NSArray arrayWithObjects:@"show", [self refSpec], nil]];
+	return [self.repository outputForArguments:[NSArray arrayWithObjects:@"show", [self refSpec], nil]];
 }
 
 - (NSString *) blame
 {
-	if (!leaf)
+	if (!self.leaf)
 		return [NSString stringWithFormat:@"This is a tree with path %@", [self fullPath]];
 	
 	if ([self hasBinaryAttributes])
@@ -137,7 +149,7 @@
 	if ([self fileSize] > 52428800) // ~50MB
 		return [NSString stringWithFormat:@"%@ is too big to be displayed (%lld bytes)", [self fullPath], [self fileSize]];
 	
-	NSString *contents=[repository outputInWorkdirForArguments:[NSArray arrayWithObjects:@"blame", @"-p",  sha, @"--", [self fullPath], nil]];
+	NSString *contents=[self.repository outputInWorkdirForArguments:[NSArray arrayWithObjects:@"blame", @"-p", self.sha, @"--", [self fullPath], nil]];
 	
 	if ([self hasBinaryHeader:contents])
 		return [NSString stringWithFormat:@"%@ appears to be a binary file of %lld bytes", [self fullPath], [self fileSize]];
@@ -148,7 +160,7 @@
 
 - (NSString *) log:(NSString *)format
 {
-	if (!leaf)
+	if (!self.leaf)
 		return [NSString stringWithFormat:@"This is a tree with path %@", [self fullPath]];
 	
 	if ([self hasBinaryAttributes])
@@ -157,7 +169,7 @@
 	if ([self fileSize] > 52428800) // ~50MB
 		return [NSString stringWithFormat:@"%@ is too big to be displayed (%lld bytes)", [self fullPath], [self fileSize]];
 
-	NSString *contents=[repository outputInWorkdirForArguments:[NSArray arrayWithObjects:@"log", [NSString stringWithFormat:@"--pretty=format:%@",format], @"--", [self fullPath], nil]];
+	NSString *contents=[self.repository outputInWorkdirForArguments:[NSArray arrayWithObjects:@"log", [NSString stringWithFormat:@"--pretty=format:%@",format], @"--", [self fullPath], nil]];
 	
 	if ([self hasBinaryHeader:contents])
 		return [NSString stringWithFormat:@"%@ appears to be a binary file of %lld bytes", [self fullPath], [self fileSize]];
@@ -168,23 +180,24 @@
 
 - (long long)fileSize
 {
-	if (_fileSize)
-		return _fileSize;
+	if (self->_fileSize) {
+		return self->_fileSize;
+	}
 
-	NSFileHandle *handle = [repository handleForArguments:[NSArray arrayWithObjects:@"cat-file", @"-s", [self refSpec], nil]];
+	NSFileHandle *handle = [self.repository handleForArguments:[NSArray arrayWithObjects:@"cat-file", @"-s", [self refSpec], nil]];
 	NSString *sizeString = [[NSString alloc] initWithData:[handle readDataToEndOfFile] encoding:NSISOLatin1StringEncoding];
 
 	if (!sizeString)
-		_fileSize = -1;
+		self.fileSize = -1;
 	else
-		_fileSize = [sizeString longLongValue];
+		self.fileSize = [sizeString longLongValue];
 
-	return _fileSize;
+	return self->_fileSize;
 }
 
 - (NSString *)textContents
 {
-	if (!leaf)
+	if (!self.leaf)
 		return [NSString stringWithFormat:@"This is a tree with path %@", [self fullPath]];
 
 	if ([self hasBinaryAttributes])
@@ -203,10 +216,10 @@
 
 - (void) saveToFolder: (NSString *) dir
 {
-	NSString* newName = [dir stringByAppendingPathComponent:path];
+	NSString* newName = [dir stringByAppendingPathComponent:self.path];
 
-	if (leaf) {
-		NSFileHandle* handle = [repository handleForArguments:[NSArray arrayWithObjects:@"show", [self refSpec], nil]];
+	if (self.leaf) {
+		NSFileHandle* handle = [self.repository handleForArguments:[NSArray arrayWithObjects:@"show", [self refSpec], nil]];
 		NSData* data = [handle readDataToEndOfFile];
 		[data writeToFile:newName atomically:YES];
 	} else { // Directory
@@ -222,50 +235,55 @@
 
 - (NSString*) tmpDirWithContents
 {
-	if (leaf)
+	if (self.leaf) {
 		return nil;
+	}
 
-	if (!localFileName)
-		localFileName = [PBEasyFS tmpDirWithPrefix: path];
+	if (!self.localFileName) {
+		self.localFileName = [PBEasyFS tmpDirWithPrefix:self.path];
+	}
 
 	for (PBGitTree* child in [self children]) {
-		[child saveToFolder: localFileName];
+		[child saveToFolder:self.localFileName];
 	}
 	
-	return localFileName;
+	return self.localFileName;
 }
 
 	
 
 - (NSString*) tmpFileNameForContents
 {
-	if (!leaf)
+	if (!self.leaf) {
 		return [self tmpDirWithContents];
+	}
 	
-	if ([self isLocallyCached])
-		return localFileName;
+	if ([self isLocallyCached]) {
+		return self.localFileName;
+	}
 	
-	if (!localFileName)
-		localFileName = [[PBEasyFS tmpDirWithPrefix: sha] stringByAppendingPathComponent:path];
+	if (!self.localFileName)
+		self.localFileName = [[PBEasyFS tmpDirWithPrefix:self.sha] stringByAppendingPathComponent:self.path];
 	
-	NSFileHandle* handle = [repository handleForArguments:[NSArray arrayWithObjects:@"show", [self refSpec], nil]];
+	NSFileHandle* handle = [self.repository handleForArguments:[NSArray arrayWithObjects:@"show", [self refSpec], nil]];
 	NSData* data = [handle readDataToEndOfFile];
-	[data writeToFile:localFileName atomically:YES];
+	[data writeToFile:self.localFileName atomically:YES];
 	
 	NSFileManager* fs = [NSFileManager defaultManager];
-	localMtime = [[fs attributesOfItemAtPath:localFileName error: nil] objectForKey:NSFileModificationDate];
+	self.localMtime = [[fs attributesOfItemAtPath:self.localFileName error: nil] objectForKey:NSFileModificationDate];
 
-	return localFileName;
+	return self.localFileName;
 }
 
 - (NSArray*) children
 {
-	if (children != nil)
-		return children;
+	if (self->_children != nil) {
+		return self->_children;
+	}
 	
 	NSString* ref = [self refSpec];
 
-	NSFileHandle* handle = [repository handleForArguments:[NSArray arrayWithObjects:@"show", ref, nil]];
+	NSFileHandle* handle = [self.repository handleForArguments:[NSArray arrayWithObjects:@"show", ref, nil]];
 	[handle readLine];
 	[handle readLine];
 	
@@ -288,27 +306,27 @@
 		PBGitTree* tree2 = (PBGitTree*)obj2;
 		return [[tree1 path] localizedStandardCompare:[tree2 path]];
 	}];
-	children = c;
+	self.children = c;
 	return c;
 }
 
 - (NSString*) fullPath
 {
-	if (!parent)
+	if (!self.parent)
 		return @"";
 	
-	if ([parent.fullPath isEqualToString:@""])
+	if ([self.parent.fullPath isEqualToString:@""])
 		return self.path;
 	
-	return [parent.fullPath stringByAppendingPathComponent: self.path];
+	return [self.parent.fullPath stringByAppendingPathComponent: self.path];
 }
 
 - (void) dealloc
 {
-	if (localFileName) {
+	if (self.localFileName) {
         NSError *error = nil;
-		if (![[NSFileManager defaultManager] removeItemAtPath:localFileName error:&error]) {
-            NSLog(@"Failed to remove item %@: %@", localFileName, error);
+		if (![[NSFileManager defaultManager] removeItemAtPath:self.localFileName error:&error]) {
+            NSLog(@"Failed to remove item %@: %@", self.localFileName, error);
         }
     }
 }

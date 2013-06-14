@@ -10,6 +10,5 @@
 
 
 @implementation PBSourceViewAction
-@synthesize icon;
 
 @end

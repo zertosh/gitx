@@ -25,6 +25,7 @@
 #define QLPreviewPanel NSClassFromString(@"QLPreviewPanel")
 #import "PBQLTextView.h"
 #import "GLFileView.h"
+#import "PBGitWindowController.h"
 
 
 #define kHistorySelectedDetailIndexKey @"PBHistorySelectedDetailIndex"
@@ -53,10 +54,10 @@
 	[self.commitController addObserver:self forKeyPath:@"arrangedObjects.@count" options:NSKeyValueObservingOptionInitial context:@"updateCommitCount"];
 	[self.treeController addObserver:self forKeyPath:@"selection" options:0 context:@"treeChange"];
 
-	[repository.revisionList addObserver:self forKeyPath:@"isUpdating" options:0 context:@"revisionListUpdating"];
-	[repository addObserver:self forKeyPath:@"currentBranch" options:0 context:@"branchChange"];
-	[repository addObserver:self forKeyPath:@"refs" options:0 context:@"updateRefs"];
-	[repository addObserver:self forKeyPath:@"currentBranchFilter" options:0 context:@"branchFilterChange"];
+	[self.repository.revisionList addObserver:self forKeyPath:@"isUpdating" options:0 context:@"revisionListUpdating"];
+	[self.repository addObserver:self forKeyPath:@"currentBranch" options:0 context:@"branchChange"];
+	[self.repository addObserver:self forKeyPath:@"refs" options:0 context:@"updateRefs"];
+	[self.repository addObserver:self forKeyPath:@"currentBranchFilter" options:0 context:@"branchFilterChange"];
 
 	forceSelectionUpdate = YES;
 	NSSize cellSpacing = [self.commitList intercellSpacing];
@@ -65,14 +66,14 @@
 	[fileBrowser setTarget:self];
 	[fileBrowser setDoubleAction:@selector(openSelectedFile:)];
 
-	if (!repository.currentBranch) {
-		[repository reloadRefs];
-		[repository readCurrentBranch];
+	if (!self.repository.currentBranch) {
+		[self.repository reloadRefs];
+		[self.repository readCurrentBranch];
+	} else {
+		[self.repository lazyReload];
 	}
-	else
-		[repository lazyReload];
 
-    if (![repository hasSVNRemote])
+    if (![self.repository hasSVNRemote])
     {
         // Remove the SVN revision table column for repositories with no SVN remote configured
         [self.commitList removeTableColumn:[self.commitList tableColumnWithIdentifier:@"GitSVNRevision"]];
@@ -94,7 +95,7 @@
 	[self updateBranchFilterMatrix];
 
   // listen for updates
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_repositoryUpdatedNotification:) name:PBGitRepositoryEventNotification object:repository];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_repositoryUpdatedNotification:) name:PBGitRepositoryEventNotification object:self.repository];
 
 	[super awakeFromNib];
 }
@@ -139,11 +140,11 @@
 
 - (void) updateBranchFilterMatrix
 {
-	if ([repository.currentBranch isSimpleRef]) {
+	if ([self.repository.currentBranch isSimpleRef]) {
 		[allBranchesFilterItem setEnabled:YES];
 		[localRemoteBranchesFilterItem setEnabled:YES];
 
-		NSInteger filter = repository.currentBranchFilter;
+		NSInteger filter = self.repository.currentBranchFilter;
 		[allBranchesFilterItem setState:(filter == kGitXAllBranchesFilter)];
 		[localRemoteBranchesFilterItem setState:(filter == kGitXLocalRemoteBranchesFilter)];
 		[selectedBranchFilterItem setState:(filter == kGitXSelectedBranchFilter)];
@@ -158,10 +159,10 @@
 		[selectedBranchFilterItem setState:YES];
 	}
 
-	[selectedBranchFilterItem setTitle:[repository.currentBranch title]];
+	[selectedBranchFilterItem setTitle:[self.repository.currentBranch title]];
 	[selectedBranchFilterItem sizeToFit];
 
-	[localRemoteBranchesFilterItem setTitle:[[repository.currentBranch ref] isRemote] ? @"Remote" : @"Local"];
+	[localRemoteBranchesFilterItem setTitle:[[self.repository.currentBranch ref] isRemote] ? @"Remote" : @"Local"];
 }
 
 - (PBGitCommit *) firstCommit
@@ -196,7 +197,7 @@
 
 - (void) updateStatus
 {
-	self.isBusy = repository.revisionList.isUpdating;
+	self.isBusy = self.repository.revisionList.isUpdating;
 	self.status = [NSString stringWithFormat:@"%lu commits loaded", [[self.commitController arrangedObjects] count]];
 }
 
@@ -272,7 +273,7 @@
 	}
 
 	if ([strContext isEqualToString:@"branchFilterChange"]) {
-		[PBGitDefaults setBranchFilter:repository.currentBranchFilter];
+		[PBGitDefaults setBranchFilter:self.repository.currentBranchFilter];
 		[self updateBranchFilterMatrix];
 		return;
 	}
@@ -280,8 +281,8 @@
 	if([strContext isEqualToString:@"updateCommitCount"] || [(__bridge NSString *)context isEqualToString:@"revisionListUpdating"]) {
 		[self updateStatus];
 
-		if ([repository.currentBranch isSimpleRef])
-			[self selectCommit:[repository shaForRef:[repository.currentBranch ref]]];
+		if ([self.repository.currentBranch isSimpleRef])
+			[self selectCommit:[self.repository shaForRef:[self.repository.currentBranch ref]]];
 		else
 			[self selectCommit:[[self firstCommit] sha]];
 		return;
@@ -324,8 +325,8 @@
 
 - (IBAction) setBranchFilter:(id)sender
 {
-	repository.currentBranchFilter = [(NSView*)sender tag];
-	[PBGitDefaults setBranchFilter:repository.currentBranchFilter];
+	self.repository.currentBranchFilter = [(NSView*)sender tag];
+	[PBGitDefaults setBranchFilter:self.repository.currentBranchFilter];
 	[self updateBranchFilterMatrix];
 	forceSelectionUpdate = YES;
 }
@@ -333,7 +334,7 @@
 - (void)keyDown:(NSEvent*)event
 {
 	if ([[event charactersIgnoringModifiers] isEqualToString: @"f"] && [event modifierFlags] & NSAlternateKeyMask && [event modifierFlags] & NSCommandKeyMask)
-		[superController.window makeFirstResponder: searchField];
+		[self.superController.window makeFirstResponder: searchField];
 	else
 		[super keyDown: event];
 }
@@ -435,7 +436,7 @@
 
 - (IBAction) refresh:(id)sender
 {
-	[repository forceUpdateRevisions];
+	[self.repository forceUpdateRevisions];
 }
 
 - (void) updateView
@@ -513,10 +514,10 @@
 		[self.commitController removeObserver:self forKeyPath:@"arrangedObjects.@count"];
 		[self.treeController removeObserver:self forKeyPath:@"selection"];
 
-		[repository.revisionList removeObserver:self forKeyPath:@"isUpdating"];
-		[repository removeObserver:self forKeyPath:@"currentBranch"];
-		[repository removeObserver:self forKeyPath:@"refs"];
-		[repository removeObserver:self forKeyPath:@"currentBranchFilter"];
+		[self.repository.revisionList removeObserver:self forKeyPath:@"isUpdating"];
+		[self.repository removeObserver:self forKeyPath:@"currentBranch"];
+		[self.repository removeObserver:self forKeyPath:@"refs"];
+		[self.repository removeObserver:self forKeyPath:@"currentBranchFilter"];
 	}
 
 	[webHistoryController closeView];
@@ -551,7 +552,7 @@
 
 - (void)showInFinderAction:(id)sender
 {
-	NSString *workingDirectory = [[repository workingDirectory] stringByAppendingString:@"/"];
+	NSString *workingDirectory = [[self.repository workingDirectory] stringByAppendingString:@"/"];
 	NSString *path;
 	NSWorkspace *ws = [NSWorkspace sharedWorkspace];
 
@@ -564,7 +565,7 @@
 
 - (void)openFilesAction:(id)sender
 {
-	NSString *workingDirectory = [[repository workingDirectory] stringByAppendingString:@"/"];
+	NSString *workingDirectory = [[self.repository workingDirectory] stringByAppendingString:@"/"];
 	NSString *path;
 	NSWorkspace *ws = [NSWorkspace sharedWorkspace];
 
@@ -580,7 +581,7 @@
 	for (NSString *filePath in [sender representedObject])
 		[files addObject:[filePath stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
 
-	[repository checkoutFiles:files fromRefish:selectedCommit];
+	[self.repository checkoutFiles:files fromRefish:selectedCommit];
 }
 
 - (void) diffFilesAction:(id)sender
@@ -609,10 +610,10 @@
 														 action:@selector(showCommitsFromTree:)
 												  keyEquivalent:@""];
 
-	PBGitRef *headRef = [[repository headRef] ref];
+	PBGitRef *headRef = [[self.repository headRef] ref];
 	NSString *headRefName = [headRef shortName];
 	NSString *diffTitle = [NSString stringWithFormat:@"Diff %@ with %@", multiple ? @"files" : @"file", headRefName];
-	BOOL isHead = [[selectedCommit sha] isEqual:[repository headSHA]];
+	BOOL isHead = [[selectedCommit sha] isEqual:[self.repository headSHA]];
 	NSMenuItem *diffItem = [[NSMenuItem alloc] initWithTitle:diffTitle
 													  action:isHead ? nil : @selector(diffFilesAction:)
 											   keyEquivalent:@""];
@@ -715,20 +716,22 @@
 
 - (IBAction) createBranch:(id)sender
 {
-	PBGitRef *currentRef = [repository.currentBranch ref];
+	PBGitRef *currentRef = [self.repository.currentBranch ref];
 
-	if (!selectedCommit || [selectedCommit hasRef:currentRef])
+	if (!selectedCommit || [selectedCommit hasRef:currentRef]) {
 		[PBCreateBranchSheet beginCreateBranchSheetAtRefish:currentRef inRepository:self.repository];
-	else
+	} else {
 		[PBCreateBranchSheet beginCreateBranchSheetAtRefish:selectedCommit inRepository:self.repository];
+	}
 }
 
 - (IBAction) createTag:(id)sender
 {
-	if (!selectedCommit)
-		[PBCreateTagSheet beginCreateTagSheetAtRefish:[repository.currentBranch ref] inRepository:repository];
-	else
-		[PBCreateTagSheet beginCreateTagSheetAtRefish:selectedCommit inRepository:repository];
+	if (!selectedCommit) {
+		[PBCreateTagSheet beginCreateTagSheetAtRefish:[self.repository.currentBranch ref] inRepository:self.repository];
+	} else {
+		[PBCreateTagSheet beginCreateTagSheetAtRefish:selectedCommit inRepository:self.repository];
+	}
 }
 
 - (IBAction) showAddRemoteSheet:(id)sender
@@ -738,20 +741,23 @@
 
 - (IBAction) merge:(id)sender
 {
-	if (selectedCommit)
-		[repository mergeWithRefish:selectedCommit];
+	if (selectedCommit) {
+		[self.repository mergeWithRefish:selectedCommit];
+	}
 }
 
 - (IBAction) cherryPick:(id)sender
 {
-	if (selectedCommit)
-		[repository cherryPickRefish:selectedCommit];
+	if (selectedCommit) {
+		[self.repository cherryPickRefish:selectedCommit];
+	}
 }
 
 - (IBAction) rebase:(id)sender
 {
-	if (selectedCommit)
-		[repository rebaseBranch:nil onRefish:selectedCommit];
+	if (selectedCommit) {
+		[self.repository rebaseBranch:nil onRefish:selectedCommit];
+	}
 }
 
 #pragma mark -

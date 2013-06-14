@@ -9,20 +9,18 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
+@class PBGitRepository;
+
 @interface PBWebController : NSObject {
 	IBOutlet WebView* view;
-	NSString *startFile;
 	BOOL finishedLoading;
 
 	// For async git reading
 	NSMapTable *callbacks;
-
-	// For the repository access
-	IBOutlet id repository;
 }
 
-@property  NSString *startFile;
-@property  id repository;
+@property (nonatomic, strong) NSString *startFile;
+@property (nonatomic, strong) IBOutlet PBGitRepository *repository;
 
 - (WebScriptObject *) script;
 - (void) closeView;

@@ -13,6 +13,7 @@
 #import "PBGitIndex.h"
 #import "PBNiceSplitView.h"
 #import "PBGitRepositoryWatcher.h"
+#import "PBGitWindowController.h"
 
 #import <ObjectiveGit/GTRepository.h>
 #import <ObjectiveGit/GTConfiguration.h>
@@ -75,7 +76,7 @@
 		[[NSSortDescriptor alloc] initWithKey:@"path" ascending:true]]];
 
   // listen for updates
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_repositoryUpdatedNotification:) name:PBGitRepositoryEventNotification object:repository];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_repositoryUpdatedNotification:) name:PBGitRepositoryEventNotification object:self.repository];
 
 	[cachedFilesController setAutomaticallyRearrangesObjects:NO];
 	[unstagedFilesController setAutomaticallyRearrangesObjects:NO];
@@ -106,10 +107,10 @@
 
 - (IBAction)signOff:(id)sender
 {
-	NSString* userName = [repository.gtRepo.configuration stringForKey:@"user.name"];
-	NSString* userEmail = [repository.gtRepo.configuration stringForKey:@"user.email"];
+	NSString* userName = [self.repository.gtRepo.configuration stringForKey:@"user.name"];
+	NSString* userEmail = [self.repository.gtRepo.configuration stringForKey:@"user.email"];
 	if (!(userName && userEmail))
-		return [[repository windowController] showMessageSheet:@"User's name not set" infoText:@"Signing off a commit requires setting user.name and user.email in your git config"];
+		return [[self.repository windowController] showMessageSheet:@"User's name not set" infoText:@"Signing off a commit requires setting user.name and user.email in your git config"];
 	NSString *SOBline = [NSString stringWithFormat:@"Signed-off-by: %@ <%@>",
 				userName,
 				userEmail];
@@ -129,7 +130,7 @@
 	[self.index refresh];
 
 	// Reload refs (in case HEAD changed)
-	[repository reloadRefs];
+	[self.repository reloadRefs];
 }
 
 - (void) updateView
@@ -149,19 +150,19 @@
 
 - (void) commitWithVerification:(BOOL) doVerify
 {
-	if ([[NSFileManager defaultManager] fileExistsAtPath:[repository.gitURL.path stringByAppendingPathComponent:@"MERGE_HEAD"]]) {
-		[[repository windowController] showMessageSheet:@"Cannot commit merges" infoText:@"GitX cannot commit merges yet. Please commit your changes from the command line."];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:[self.repository.gitURL.path stringByAppendingPathComponent:@"MERGE_HEAD"]]) {
+		[[self.repository windowController] showMessageSheet:@"Cannot commit merges" infoText:@"GitX cannot commit merges yet. Please commit your changes from the command line."];
 		return;
 	}
 
 	if ([[cachedFilesController arrangedObjects] count] == 0) {
-		[[repository windowController] showMessageSheet:@"No changes to commit" infoText:@"You must first stage some changes before committing"];
+		[[self.repository windowController] showMessageSheet:@"No changes to commit" infoText:@"You must first stage some changes before committing"];
 		return;
 	}		
 	
 	NSString *commitMessage = [commitMessageView string];
 	if ([commitMessage length] < 3) {
-		[[repository windowController] showMessageSheet:@"Commitmessage missing" infoText:@"Please enter a commit message before committing"];
+		[[self.repository windowController] showMessageSheet:@"Commitmessage missing" infoText:@"Please enter a commit message before committing"];
 		return;
 	}
 
@@ -200,7 +201,7 @@
 	NSString *reason = [[notification userInfo] objectForKey:@"description"];
 	self.status = [@"Commit failed: " stringByAppendingString:reason];
 	[commitMessageView setEditable:YES];
-	[[repository windowController] showMessageSheet:@"Commit failed" infoText:reason];
+	[[self.repository windowController] showMessageSheet:@"Commit failed" infoText:reason];
 }
 
 - (void)commitHookFailed:(NSNotification *)notification
@@ -209,7 +210,7 @@
 	NSString *reason = [[notification userInfo] objectForKey:@"description"];
 	self.status = [@"Commit hook failed: " stringByAppendingString:reason];
 	[commitMessageView setEditable:YES];
-	[[repository windowController] showCommitHookFailedSheet:@"Commit hook failed" infoText:reason commitController:self];
+	[[self.repository windowController] showCommitHookFailedSheet:@"Commit hook failed" infoText:reason commitController:self];
 }
 
 - (void)amendCommit:(NSNotification *)notification
@@ -237,7 +238,7 @@
 
 - (void)indexOperationFailed:(NSNotification *)notification
 {
-	[[repository windowController] showMessageSheet:@"Index operation failed" infoText:[[notification userInfo] objectForKey:@"description"]];
+	[[self.repository windowController] showMessageSheet:@"Index operation failed" infoText:[[notification userInfo] objectForKey:@"description"]];
 }
 
 

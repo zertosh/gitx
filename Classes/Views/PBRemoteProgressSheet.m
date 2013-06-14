@@ -47,11 +47,6 @@ NSString * const kGitXProgressErrorInfo          = @"PBGitXProgressErrorInfo";
 @implementation PBRemoteProgressSheet
 
 
-@synthesize progressDescription;
-@synthesize progressIndicator;
-
-
-
 #pragma mark -
 #pragma mark PBRemoteProgressSheet
 

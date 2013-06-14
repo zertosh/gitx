@@ -37,7 +37,7 @@
 		self.logFormat=[NSString stringWithContentsOfURL:[NSURL fileURLWithPath:formatFile] encoding:NSUTF8StringEncoding error:nil];
 	
 	
-	startFile = GROUP_ID_FILEVIEW;
+	self.startFile = GROUP_ID_FILEVIEW;
 	//repository = historyController.repository;
 	[super awakeFromNib];
 	[historyController.treeController addObserver:self forKeyPath:@"selection" options:0 context:@"treeController"];
@@ -46,7 +46,7 @@
 	
 	NSArray *items = [NSArray arrayWithObjects:
 					  [NSDictionary dictionaryWithObjectsAndKeys:
-					   startFile, ITEM_IDENTIFIER,
+					   self.startFile, ITEM_IDENTIFIER,
 					   @"Source", ITEM_NAME,
 					   nil], 
 					  [NSDictionary dictionaryWithObjectsAndKeys:
@@ -82,11 +82,11 @@
 		PBGitTree *file = [files objectAtIndex:0];
 
 		NSString *fileTxt = @"";
-		if([startFile isEqualToString:GROUP_ID_FILEVIEW])
+		if([self.startFile isEqualToString:GROUP_ID_FILEVIEW])
 			fileTxt = [self parseHTML:[file textContents]];
-		else if([startFile isEqualToString:GROUP_ID_BLAME])
+		else if([self.startFile isEqualToString:GROUP_ID_BLAME])
 			fileTxt = [self parseBlame:[file blame]];
-		else if([startFile isEqualToString:GROUP_ID_LOG])
+		else if([self.startFile isEqualToString:GROUP_ID_LOG])
 			fileTxt = [file log:self.logFormat];
 
 		id script = [view windowScriptObject];
@@ -150,7 +150,7 @@
 
 - (void)scopeBar:(MGScopeBar *)theScopeBar selectedStateChanged:(BOOL)selected forItem:(NSString *)identifier inGroup:(int)groupNumber
 {
-	startFile=identifier;
+	self.startFile = identifier;
 	NSString *path = [NSString stringWithFormat:@"html/views/%@", identifier];
 	NSString *html = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:path];
 	NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:html]];

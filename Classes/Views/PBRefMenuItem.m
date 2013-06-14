@@ -10,7 +10,6 @@
 
 
 @implementation PBRefMenuItem
-@synthesize refish;
 
 + (PBRefMenuItem *) itemWithTitle:(NSString *)title action:(SEL)selector enabled:(BOOL)isEnabled
 {

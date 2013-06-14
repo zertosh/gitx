@@ -8,21 +8,27 @@
 
 #import "PBViewController.h"
 
+@interface PBViewController ()
+
+@property (nonatomic, assign) BOOL hasViewLoaded;
+@property (nonatomic, weak) PBGitWindowController *superController;
+@property (nonatomic, weak)  PBGitRepository *repository;
+
+@end
+
 
 @implementation PBViewController
-
-@synthesize repository;
-@synthesize status;
-@synthesize isBusy;
 
 - (id)initWithRepository:(PBGitRepository *)theRepository superController:(PBGitWindowController *)controller
 {
 	NSString *nibName = [[[self class] description] stringByReplacingOccurrencesOfString:@"Controller"
 																			  withString:@"View"];
-	if(self = [self initWithNibName:nibName bundle:nil]) {
-		repository = theRepository;
-		superController = controller;
+	self = [self initWithNibName:nibName bundle:nil];
+	if(!self) {
+		return nil;
 	}
+	self.repository = theRepository;
+	self.superController = controller;
 	
 	return self;
 }
@@ -30,13 +36,14 @@
 - (void)closeView
 {
 	[self unbind:@"repository"];
-	if (hasViewLoaded)
+	if (self.hasViewLoaded) {
 		[[self view] removeFromSuperview];	// remove the current view
+	}
 }
 
 - (void)awakeFromNib
 {
-	hasViewLoaded = YES;
+	self.hasViewLoaded = YES;
 }
 
 - (NSResponder *)firstResponder;

@@ -16,19 +16,13 @@
 @interface PBGitSidebarController : PBViewController<NSOutlineViewDelegate> {
 	IBOutlet NSWindow *window;
 	IBOutlet NSOutlineView *sourceView;
-	IBOutlet NSView *sourceListControlsView;
 	IBOutlet NSPopUpButton *actionButton;
 	IBOutlet NSSegmentedControl *remoteControls;
-
-	NSMutableArray *items;
 
 	/* Specific things */
 	PBSourceViewItem *stage;
 
 	PBSourceViewItem *branches, *remotes, *tags, *others, *submodules;
-
-	PBGitHistoryController *historyViewController;
-	PBGitCommitController *commitViewController;
 }
 
 - (void) selectStage;
@@ -41,9 +35,9 @@
 
 - (void)setHistorySearch:(NSString *)searchString mode:(NSInteger)mode;
 
-@property(readonly) NSMutableArray *items;
-@property(readonly) NSView *sourceListControlsView;
-@property(readonly) PBGitHistoryController *historyViewController;
-@property(readonly) PBGitCommitController *commitViewController;
+@property(nonatomic, strong, readonly) NSMutableArray *items;
+@property(nonatomic, strong) IBOutlet NSView *sourceListControlsView;
+@property(nonatomic, strong) IBOutlet PBGitHistoryController *historyViewController;
+@property(nonatomic, strong) IBOutlet PBGitCommitController *commitViewController;
 
 @end

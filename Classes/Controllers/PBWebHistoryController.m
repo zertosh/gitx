@@ -10,14 +10,16 @@
 #import "PBGitDefaults.h"
 #import "PBGitSHA.h"
 
-@implementation PBWebHistoryController
+@interface PBWebHistoryController ()
+@property (nonatomic, strong) NSString* diff;
+@end
 
-@synthesize diff;
+@implementation PBWebHistoryController
 
 - (void) awakeFromNib
 {
-	startFile = @"history";
-	repository = historyController.repository;
+	self.startFile = @"history";
+	self.repository = historyController.repository;
 	[super awakeFromNib];
 	[historyController addObserver:self forKeyPath:@"webCommit" options:0 context:@"ChangedCommit"];
 }
@@ -73,7 +75,7 @@
 	if (![PBGitDefaults showWhitespaceDifferences])
 		[taskArguments insertObject:@"-w" atIndex:1];
 
-	NSFileHandle *handle = [repository handleForArguments:taskArguments];
+	NSFileHandle *handle = [self.repository handleForArguments:taskArguments];
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	// Remove notification, in case we have another one running
 	[nc removeObserver:self name:NSFileHandleReadToEndOfFileCompletionNotification object:nil];

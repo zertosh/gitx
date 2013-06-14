@@ -21,12 +21,6 @@
 
 @implementation PBGitXMessageSheet
 
-@synthesize iconView;
-@synthesize messageField;
-@synthesize infoView;
-@synthesize scrollView;
-
-
 #pragma mark -
 #pragma mark PBGitXMessageSheet
 

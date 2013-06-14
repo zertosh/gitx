@@ -9,9 +9,6 @@
 #import <Cocoa/Cocoa.h>
 #import "PBSourceViewItem.h"
 
-@interface PBSourceViewAction : PBSourceViewItem {
-	NSImage *icon;
-}
+@interface PBSourceViewAction : PBSourceViewItem
 
-@property(retain) NSImage *icon;
 @end

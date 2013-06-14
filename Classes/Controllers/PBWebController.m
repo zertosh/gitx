@@ -19,11 +19,9 @@
 
 @implementation PBWebController
 
-@synthesize startFile, repository;
-
 - (void) awakeFromNib
 {
-	NSString *path = [NSString stringWithFormat:@"html/views/%@", startFile];
+	NSString *path = [NSString stringWithFormat:@"html/views/%@", self.startFile];
 	NSString* file = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:path];
 	NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:file]];
 	callbacks = [NSMapTable mapTableWithKeyOptions:(NSPointerFunctionsObjectPointerPersonality|NSPointerFunctionsStrongMemory) valueOptions:(NSPointerFunctionsObjectPointerPersonality|NSPointerFunctionsStrongMemory)];

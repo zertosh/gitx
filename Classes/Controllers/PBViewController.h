@@ -8,20 +8,16 @@
 
 #import <Cocoa/Cocoa.h>
 #import "PBGitRepository.h"
-#import "PBGitWindowController.h"
 
-@interface PBViewController : NSViewController {
-	__weak PBGitRepository *repository;
-	__weak PBGitWindowController *superController;
+@class PBGitRepository;
+@class PBGitWindowController;
 
-	NSString *status;
-	BOOL isBusy;
-	BOOL hasViewLoaded;
-}
+@interface PBViewController : NSViewController
 
-@property (weak, readonly)  PBGitRepository *repository;
-@property(copy) NSString *status;
-@property(assign) BOOL isBusy;
+@property (nonatomic, weak, readonly) PBGitWindowController *superController;
+@property (nonatomic, weak, readonly)  PBGitRepository *repository;
+@property (nonatomic, copy) NSString *status;
+@property (nonatomic, assign) BOOL isBusy;
 
 - (id)initWithRepository:(PBGitRepository *)theRepository superController:(PBGitWindowController *)controller;
 

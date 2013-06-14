@@ -16,8 +16,11 @@
 #import "PBAddRemoteSheet.h"
 #import "PBGitDefaults.h"
 #import "PBHistorySearchController.h"
+#import "PBGitWindowController.h"
 
 @interface PBGitSidebarController ()
+
+@property(nonatomic, strong) NSMutableArray *items;
 
 - (void)populateList;
 - (void)addRevSpec:(PBGitRevSpecifier *)revSpec;
@@ -28,16 +31,16 @@
 @end
 
 @implementation PBGitSidebarController
-@synthesize items;
-@synthesize sourceListControlsView;
-@synthesize historyViewController;
-@synthesize commitViewController;
 
 - (id)initWithRepository:(PBGitRepository *)theRepository superController:(PBGitWindowController *)controller
 {
 	self = [super initWithRepository:theRepository superController:controller];
+	if (!self) {
+		return nil;
+	}
+	
 	[sourceView setDelegate:self];
-	items = [NSMutableArray array];
+	self.items = [NSMutableArray array];
 
 	return self;
 }
@@ -48,11 +51,11 @@
 	window.contentView = self.view;
 	[self populateList];
 
-	historyViewController = [[PBGitHistoryController alloc] initWithRepository:repository superController:superController];
-	commitViewController = [[PBGitCommitController alloc] initWithRepository:repository superController:superController];
+	self.historyViewController = [[PBGitHistoryController alloc] initWithRepository:self.repository superController:self.superController];
+	self.commitViewController = [[PBGitCommitController alloc] initWithRepository:self.repository superController:self.superController];
 
-	[repository addObserver:self forKeyPath:@"currentBranch" options:0 context:@"currentBranchChange"];
-	[repository addObserver:self forKeyPath:@"branches" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:@"branchesModified"];
+	[self.repository addObserver:self forKeyPath:@"currentBranch" options:0 context:@"currentBranchChange"];
+	[self.repository addObserver:self forKeyPath:@"branches" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:@"branchesModified"];
 
     [sourceView setTarget:self];
     [sourceView setDoubleAction:@selector(doubleClicked:)];
@@ -67,11 +70,11 @@
 
 - (void)closeView
 {
-	[historyViewController closeView];
-	[commitViewController closeView];
+	[self.historyViewController closeView];
+	[self.commitViewController closeView];
 
-	[repository removeObserver:self forKeyPath:@"currentBranch"];
-	[repository removeObserver:self forKeyPath:@"branches"];
+	[self.repository removeObserver:self forKeyPath:@"currentBranch"];
+	[self.repository removeObserver:self forKeyPath:@"branches"];
 
 	[super closeView];
 }
@@ -122,15 +125,15 @@
 
 - (void) selectCurrentBranch
 {
-	PBGitRevSpecifier *rev = repository.currentBranch;
+	PBGitRevSpecifier *rev = self.repository.currentBranch;
 	if (!rev) {
-		[repository reloadRefs];
-		[repository readCurrentBranch];
+		[self.repository reloadRefs];
+		[self.repository readCurrentBranch];
 		return;
 	}
 	
 	PBSourceViewItem *item = nil;
-	for (PBSourceViewItem *it in items)
+	for (PBSourceViewItem *it in self.items)
 		if ( (item = [it findRev:rev]) != nil )
 			break;
 	
@@ -138,7 +141,7 @@
 		[self addRevSpec:rev];
 		// Try to find the just added item again.
 		// TODO: refactor with above.
-		for (PBSourceViewItem *it in items)
+		for (PBSourceViewItem *it in self.items)
 			if ( (item = [it findRev:rev]) != nil )
 				break;
 	}
@@ -152,7 +155,7 @@
 - (PBSourceViewItem *) itemForRev:(PBGitRevSpecifier *)rev
 {
 	PBSourceViewItem *foundItem = nil;
-	for (PBSourceViewItem *item in items)
+	for (PBSourceViewItem *item in self.items)
 		if ( (foundItem = [item findRev:rev]) != nil )
 			return foundItem;
 	return nil;
@@ -192,7 +195,7 @@
 
 - (void)setHistorySearch:(NSString *)searchString mode:(NSInteger)mode
 {
-	[historyViewController.searchController setHistorySearch:searchString mode:mode];
+	[self.historyViewController.searchController setHistorySearch:searchString mode:mode];
 }
 
 #pragma mark NSOutlineView delegate methods
@@ -203,14 +206,14 @@
 	PBSourceViewItem *item = [sourceView itemAtRow:index];
 
 	if ([item revSpecifier]) {
-		if (![repository.currentBranch isEqual:[item revSpecifier]])
-			repository.currentBranch = [item revSpecifier];
-		[superController changeContentController:historyViewController];
+		if (![self.repository.currentBranch isEqual:[item revSpecifier]])
+			self.repository.currentBranch = [item revSpecifier];
+		[self.superController changeContentController:self.historyViewController];
 		[PBGitDefaults setShowStageView:NO];
 	}
 
 	if (item == stage) {
-		[superController changeContentController:commitViewController];
+		[self.superController changeContentController:self.commitViewController];
 		[PBGitDefaults setShowStageView:YES];
 	}
 
@@ -247,7 +250,7 @@
 
 - (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(PBSourceViewCell *)cell forTableColumn:(NSTableColumn *)tableColumn item:(PBSourceViewItem *)item
 {
-	cell.isCheckedOut = [item.revSpecifier isEqual:[repository headRef]];
+	cell.isCheckedOut = [item.revSpecifier isEqual:[self.repository headRef]];
 
 	[cell setImage:[item icon]];
 }
@@ -268,7 +271,7 @@
 
 - (void)populateList
 {
-	PBSourceViewItem *project = [PBSourceViewItem groupItemWithTitle:[repository projectName]];
+	PBSourceViewItem *project = [PBSourceViewItem groupItemWithTitle:[self.repository projectName]];
 	project.isUncollapsible = YES;
 
 	stage = [PBGitSVStageItem stageItem];
@@ -280,18 +283,18 @@
 	submodules = [PBSourceViewItem groupItemWithTitle:@"Submodules"];
 	others = [PBSourceViewItem groupItemWithTitle:@"Other"];
 
-	for (PBGitRevSpecifier *rev in repository.branches)
+	for (PBGitRevSpecifier *rev in self.repository.branches)
 		[self addRevSpec:rev];
     
-    for (PBGitSubmodule *sub in repository.submodules)
+    for (PBGitSubmodule *sub in self.repository.submodules)
         [submodules addChild: [PBGitSVSubmoduleItem itemWithSubmodule:sub]];
     
-	[items addObject:project];
-	[items addObject:branches];
-	[items addObject:remotes];
-	[items addObject:tags];
-	[items addObject:submodules];
-	[items addObject:others];
+	[self.items addObject:project];
+	[self.items addObject:branches];
+	[self.items addObject:remotes];
+	[self.items addObject:tags];
+	[self.items addObject:submodules];
+	[self.items addObject:others];
 
 	[sourceView reloadData];
 	[sourceView expandItem:project];
@@ -307,7 +310,7 @@
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
 	if (!item)
-		return [items objectAtIndex:index];
+		return [self.items objectAtIndex:index];
 
 	return [[(PBSourceViewItem *)item sortedChildren] objectAtIndex:index];
 }
@@ -320,7 +323,7 @@
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
 	if (!item)
-		return [items count];
+		return [self.items count];
 
 	return [[(PBSourceViewItem *)item sortedChildren] count];
 }
@@ -343,8 +346,9 @@
 	if (!ref)
 		return;
 
-	for (NSMenuItem *menuItem in [historyViewController.refController menuItemsForRef:ref])
+	for (NSMenuItem *menuItem in [self.historyViewController.refController menuItemsForRef:ref]) {
 		[menu addItem:menuItem];
+	}
 }
 
 - (NSMenuItem *) actionIconItem
@@ -397,7 +401,7 @@ enum  {
 	BOOL hasRemote = NO;
 
 	PBGitRef *ref = [[self selectedItem] ref];
-	if ([ref isRemote] || ([ref isBranch] && [[repository remoteRefForBranch:ref error:NULL] remoteName]))
+	if ([ref isRemote] || ([ref isBranch] && [[self.repository remoteRefForBranch:ref error:NULL] remoteName]))
 		hasRemote = YES;
 
 	[remoteControls setEnabled:hasRemote forSegment:kFetchSegment];
@@ -410,7 +414,7 @@ enum  {
 	NSInteger selectedSegment = [sender selectedSegment];
 
 	if (selectedSegment == kAddRemoteSegment) {
-		[[[PBAddRemoteSheet alloc] initWithRepository:repository] show];
+		[[[PBAddRemoteSheet alloc] initWithRepository:self.repository] show];
 		return;
 	}
 
@@ -424,19 +428,20 @@ enum  {
 	if (![ref isRemote] && ![ref isBranch])
 		return;
 
-	PBGitRef *remoteRef = [repository remoteRefForBranch:ref error:NULL];
+	PBGitRef *remoteRef = [self.repository remoteRefForBranch:ref error:NULL];
 	if (!remoteRef)
 		return;
 
-	if (selectedSegment == kFetchSegment)
-		[repository beginFetchFromRemoteForRef:ref];
-	else if (selectedSegment == kPullSegment)
-		[repository beginPullFromRemote:remoteRef forRef:ref];
-	else if (selectedSegment == kPushSegment) {
-		if ([ref isRemote])
-			[historyViewController.refController showConfirmPushRefSheet:nil remote:remoteRef];
-		else if ([ref isBranch])
-			[historyViewController.refController showConfirmPushRefSheet:ref remote:remoteRef];
+	if (selectedSegment == kFetchSegment) {
+		[self.repository beginFetchFromRemoteForRef:ref];
+	} else if (selectedSegment == kPullSegment) {
+		[self.repository beginPullFromRemote:remoteRef forRef:ref];
+	} else if (selectedSegment == kPushSegment) {
+		if ([ref isRemote]) {
+			[self.historyViewController.refController showConfirmPushRefSheet:nil remote:remoteRef];
+		} else if ([ref isBranch]) {
+			[self.historyViewController.refController showConfirmPushRefSheet:ref remote:remoteRef];
+		}
 	}
 }
 

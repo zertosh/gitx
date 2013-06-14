@@ -9,10 +9,10 @@
 #import "PBGitSubmodule.h"
 
 @implementation PBGitSubmodule
-@synthesize submodule;
+
 - (NSString*) path
 {
-    if (submodule) {
+    if (self.submodule) {
         NSString * root = @"";
         if (self.workingDirectory) {
             root = self.workingDirectory;
@@ -22,16 +22,19 @@
         return nil;
     }
 }
+
 - (NSString*) name
 {
-    if (submodule) {
+    if (self.submodule) {
         return [NSString stringWithUTF8String:git_submodule_name(self.submodule)];
     } else {
         return nil;
     }
 }
+
 - (NSString *) description
 {
     return [NSString stringWithFormat:@"Submodule %@ is at %@", [self name], [self path]];
 }
+
 @end

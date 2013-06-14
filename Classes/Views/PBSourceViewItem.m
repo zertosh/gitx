@@ -13,20 +13,18 @@
 @interface PBSourceViewItem ()
 
 @property (nonatomic, strong) NSArray *sortedChildren;
+@property (nonatomic, strong) NSMutableOrderedSet *childrenSet;
 
 @end
 
 @implementation PBSourceViewItem
-
-@synthesize parent, isGroupItem, revSpecifier, isUncollapsible;
-@dynamic icon;
 
 - (id)init
 {
 	if (!(self = [super init]))
 		return nil;
 
-	childrenSet = [[NSMutableOrderedSet alloc] init];
+	self.childrenSet = [NSMutableOrderedSet new];
 	return self;
 }
 
@@ -61,7 +59,7 @@
 - (NSArray *)sortedChildren
 {
     if (!self->_sortedChildren) {
-        NSArray *newArray = [childrenSet sortedArrayUsingComparator:^NSComparisonResult(PBSourceViewItem *obj1, PBSourceViewItem *obj2) {
+        NSArray *newArray = [self.childrenSet sortedArrayUsingComparator:^NSComparisonResult(PBSourceViewItem *obj1, PBSourceViewItem *obj2) {
             return [obj1.title localizedStandardCompare:obj2.title];
         }];
 		self.sortedChildren = newArray;
@@ -74,7 +72,7 @@
 	if (!child)
 		return;
     
-	[childrenSet addObject:child];
+	[self.childrenSet addObject:child];
     self.sortedChildren = nil;
 	child.parent = self;
 }
@@ -84,9 +82,9 @@
 	if (!child)
 		return;
 
-	[childrenSet removeObject:child];
+	[self.childrenSet removeObject:child];
     self.sortedChildren = nil;
-	if (!self.isGroupItem && ([childrenSet count] == 0))
+	if (!self.isGroupItem && ([self.childrenSet count] == 0))
 		[self.parent removeChild:self];
 }
 
@@ -100,7 +98,7 @@
 
 	NSString *firstTitle = [path objectAtIndex:0];
 	PBSourceViewItem *node = nil;
-	for (PBSourceViewItem *child in childrenSet)
+	for (PBSourceViewItem *child in self.childrenSet)
 		if ([child.title isEqualToString:firstTitle])
 			node = child;
 
@@ -117,13 +115,16 @@
 
 - (PBSourceViewItem *)findRev:(PBGitRevSpecifier *)rev
 {
-	if ([rev isEqual:revSpecifier])
+	if ([rev isEqual:self.revSpecifier]) {
 		return self;
+	}
 
 	PBSourceViewItem *item = nil;
-	for (PBSourceViewItem *child in childrenSet)
-		if ( (item = [child findRev:rev]) != nil )
+	for (PBSourceViewItem *child in self.childrenSet) {
+		if ( (item = [child findRev:rev]) != nil ) {
 			return item;
+		}
+	}
 
 	return nil;
 }
@@ -135,15 +136,11 @@
 
 - (NSString *)title
 {
-	if (title)
-		return title;
+	if (self->_title) {
+		return self->_title;
+	}
 	
-	return [[revSpecifier description] lastPathComponent];
-}
-
-- (void) setTitle:(NSString *)_title
-{
-	title = _title;
+	return [[self.revSpecifier description] lastPathComponent];
 }
 
 - (NSString *) stringValue
@@ -153,8 +150,9 @@
 
 - (PBGitRef *) ref
 {
-	if (self.revSpecifier)
+	if (self.revSpecifier) {
 		return [self.revSpecifier ref];
+	}
 
 	return nil;
 }

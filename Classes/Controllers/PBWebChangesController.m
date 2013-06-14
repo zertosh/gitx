@@ -17,7 +17,7 @@
 	selectedFile = nil;
 	selectedFileIsCached = NO;
 
-	startFile = @"commit";
+	self.startFile = @"commit";
 	[super awakeFromNib];
 
 	[unstagedFilesController addObserver:self forKeyPath:@"selection" options:0 context:@"UnstagedFileSelected"];

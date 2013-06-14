@@ -11,12 +11,6 @@
 #import "RJModalRepoSheet.h"
 
 @interface PBGitXMessageSheet : RJModalRepoSheet
-{
-	NSImageView *iconView;
-	NSTextField *messageField;
-	NSTextView *infoView;
-	NSScrollView *scrollView;
-}
 
 + (void)beginMessageSheetForRepo:(PBGitRepository *)repo
 				 withMessageText:(NSString *)message
@@ -30,9 +24,9 @@
 - (IBAction)closeMessageSheet:(id)sender;
 
 
-@property  IBOutlet NSImageView *iconView;
-@property  IBOutlet NSTextField *messageField;
-@property  IBOutlet NSTextView *infoView;
-@property  IBOutlet NSScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet NSImageView *iconView;
+@property (nonatomic, strong) IBOutlet NSTextField *messageField;
+@property (nonatomic, strong) IBOutlet NSTextView *infoView;
+@property (nonatomic, strong) IBOutlet NSScrollView *scrollView;
 
 @end

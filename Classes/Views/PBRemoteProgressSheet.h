@@ -28,9 +28,6 @@ extern NSString * const kGitXProgressErrorInfo;
 	NSTask    *gitTask;
 	NSInteger  returnCode;
 
-	NSTextField         *progressDescription;
-	NSProgressIndicator *progressIndicator;
-
 	NSTimer *taskTimer;
 }
 
@@ -56,7 +53,7 @@ extern NSString * const kGitXProgressErrorInfo;
 								 inRepository:(PBGitRepository *)repo
 							hideSuccessScreen:(bool)hideSucc;
 
-@property  IBOutlet NSTextField         *progressDescription;
-@property  IBOutlet NSProgressIndicator *progressIndicator;
+@property (nonatomic, strong) IBOutlet NSTextField         *progressDescription;
+@property (nonatomic, strong) IBOutlet NSProgressIndicator *progressIndicator;
 
 @end

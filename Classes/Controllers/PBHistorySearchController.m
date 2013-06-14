@@ -46,15 +46,6 @@
 
 @implementation PBHistorySearchController
 
-@synthesize historyController;
-@synthesize commitController;
-
-@synthesize searchField;
-@synthesize stepper;
-@synthesize numberOfMatchesField;
-@synthesize progressIndicator;
-
-
 #pragma mark -
 #pragma mark Public methods
 
@@ -96,10 +87,10 @@
 
 - (void)clearSearch
 {
-	[searchField setStringValue:@""];
+	[self.searchField setStringValue:@""];
 	if (results) {
 		results = nil;
-		[historyController.commitList reloadData];
+		[self.historyController.commitList reloadData];
 	}
 	[self updateUI];
 }
@@ -116,9 +107,9 @@
 {
 	if (searchString && ![searchString isEqualToString:@""]) {
 		self.searchMode = mode;
-		[searchField setStringValue:searchString];
+		[self.searchField setStringValue:searchString];
 		// use performClick: so that the search field will save it as a recent search
-		[searchField performClick:self];
+		[self.searchField performClick:self];
 	}
 }
 
@@ -129,7 +120,7 @@
 
 	[self updateUI];
 
-	[commitController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:kGitXSearchArrangedObjectsContext];
+	[self.commitController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:kGitXSearchArrangedObjectsContext];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -150,9 +141,9 @@
 
 - (void)selectIndex:(NSUInteger)index
 {
-	if ([[commitController arrangedObjects] count] > index) {
-		PBGitCommit *commit = [[commitController arrangedObjects] objectAtIndex:index];
-		[historyController selectCommit:[commit sha]];
+	if ([[self.commitController arrangedObjects] count] > index) {
+		PBGitCommit *commit = [[self.commitController arrangedObjects] objectAtIndex:index];
+		[self.historyController selectCommit:[commit sha]];
 	}
 }
 
@@ -161,7 +152,7 @@
 	if (![results count])
 		return;
 
-	NSUInteger selectedRow = [historyController.commitList selectedRow];
+	NSUInteger selectedRow = [self.historyController.commitList selectedRow];
 	if (selectedRow == NSNotFound) {
 		[self selectIndex:[results firstIndex]];
 		return;
@@ -200,15 +191,15 @@
 
 - (void)updateUI
 {
-	if ([[searchField stringValue] isEqualToString:@""]) {
-		[numberOfMatchesField setHidden:YES];
-		[stepper setHidden:YES];
+	if ([[self.searchField stringValue] isEqualToString:@""]) {
+		[self.numberOfMatchesField setHidden:YES];
+		[self.stepper setHidden:YES];
 	}
 	else {
-		[numberOfMatchesField setStringValue:[self numberOfMatchesString]];
-		[numberOfMatchesField setHidden:NO];
-		[stepper setHidden:NO];
-		[historyController.commitList reloadData];
+		[self.numberOfMatchesField setStringValue:[self numberOfMatchesString]];
+		[self.numberOfMatchesField setHidden:NO];
+		[self.stepper setHidden:NO];
+		[self.historyController.commitList reloadData];
 	}
 	[self clearProgressIndicator];
 }
@@ -216,13 +207,13 @@
 // changes the selection to the next match after the current selected row unless the current row is already a match
 - (void)updateSelectedResult
 {
-	NSString *searchString = [searchField stringValue];
+	NSString *searchString = [self.searchField stringValue];
 	if ([searchString isEqualToString:@""]) {
 		[self clearSearch];
 		return;
 	}
 
-	if (![self isRowInSearchResults:[historyController.commitList selectedRow]])
+	if (![self isRowInSearchResults:[self.historyController.commitList selectedRow]])
 		[self selectNextResult];
 
 	[self updateUI];
@@ -276,12 +267,12 @@
     [item setTag:NSSearchFieldNoRecentsMenuItemTag];
     [searchMenu addItem:item];
 
-    [[searchField cell] setSearchMenuTemplate:searchMenu];
+    [[self.searchField cell] setSearchMenuTemplate:searchMenu];
 }
 
 - (void)updateSearchMenuState
 {
-	NSMenu *searchMenu = [[searchField cell] searchMenuTemplate];
+	NSMenu *searchMenu = [[self.searchField cell] searchMenuTemplate];
 	if (!searchMenu)
 		return;
 
@@ -299,7 +290,7 @@
 	item = [searchMenu itemWithTag:kGitXPathSearchMode];
 	[item setState:(searchMode == kGitXPathSearchMode) ? NSOnState : NSOffState];
 
-    [[searchField cell] setSearchMenuTemplate:searchMenu];
+    [[self.searchField cell] setSearchMenuTemplate:searchMenu];
 
 	[PBGitDefaults setHistorySearchMode:searchMode];
 }
@@ -308,16 +299,16 @@
 {
 	switch (self.searchMode) {
 		case kGitXPickaxeSearchMode:
-			[[searchField cell] setPlaceholderString:kGitXPickaxeSearchLabel];
+			[[self.searchField cell] setPlaceholderString:kGitXPickaxeSearchLabel];
 			break;
 		case kGitXRegexSearchMode:
-			[[searchField cell] setPlaceholderString:kGitXRegexSearchLabel];
+			[[self.searchField cell] setPlaceholderString:kGitXRegexSearchLabel];
 			break;
 		case kGitXPathSearchMode:
-			[[searchField cell] setPlaceholderString:kGitXPathSearchLabel];
+			[[self.searchField cell] setPlaceholderString:kGitXPathSearchLabel];
 			break;
 		default:
-			[[searchField cell] setPlaceholderString:kGitXBasicSearchLabel];
+			[[self.searchField cell] setPlaceholderString:kGitXBasicSearchLabel];
 			break;
 	}
 }
@@ -356,8 +347,8 @@
 - (void)startProgressIndicator
 {
 	[self clearProgressIndicator];
-	[numberOfMatchesField setHidden:YES];
-	[stepper setHidden:YES];
+	[self.numberOfMatchesField setHidden:YES];
+	[self.stepper setHidden:YES];
 	searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(searchTimerFired:) userInfo:nil repeats:NO];
 }
 
@@ -367,7 +358,7 @@
 
 - (void)startBasicSearch
 {
-	NSString *searchString = [searchField stringValue];
+	NSString *searchString = [self.searchField stringValue];
 	if ([searchString isEqualToString:@""]) {
 		[self clearSearch];
 		return;
@@ -377,7 +368,7 @@
 	NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"subject CONTAINS[cd] %@ OR author CONTAINS[cd] %@ OR realSha BEGINSWITH[c] %@", searchString, searchString, searchString];
 
 	NSUInteger index = 0;
-	for (PBGitCommit *commit in [commitController arrangedObjects]) {
+	for (PBGitCommit *commit in [self.commitController arrangedObjects]) {
 		if ([searchPredicate evaluateWithObject:commit])
 			[indexes addIndex:index];
 		index++;
@@ -400,7 +391,7 @@
 		[backgroundSearchTask terminate];
 	}
 
-	NSString *searchString = [[searchField stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	NSString *searchString = [[self.searchField stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	if ([searchString isEqualToString:@""]) {
 		[self clearSearch];
 		return;
@@ -423,7 +414,7 @@
 			return;
 	}
 
-	backgroundSearchTask = [PBEasyPipe taskForCommand:[PBGitBinary path] withArgs:searchArguments inDir:[[historyController.repository fileURL] path]];
+	backgroundSearchTask = [PBEasyPipe taskForCommand:[PBGitBinary path] withArgs:searchArguments inDir:[[self.historyController.repository fileURL] path]];
 	[backgroundSearchTask launch];
 
 	NSFileHandle *handle = [[backgroundSearchTask standardOutput] fileHandleForReading];
@@ -446,7 +437,7 @@
 
 	for (NSString *resultSHA in resultsArray) {
 		NSUInteger index = 0;
-		for (PBGitCommit *commit in [commitController arrangedObjects]) {
+		for (PBGitCommit *commit in [self.commitController arrangedObjects]) {
 			if ([resultSHA isEqualToString:commit.sha.string]) {
 				[indexes addIndex:index];
 				break;
@@ -469,15 +460,15 @@
 
 - (void)closeRewindPanel
 {
-	[[[historyController view] window] removeChildWindow:rewindPanel];
+	[[[self.historyController view] window] removeChildWindow:rewindPanel];
 	[rewindPanel close];
 	rewindPanel = nil;
 }
 
 - (NSPanel *)rewindPanelReverse:(BOOL)isReversed
 {
-	NSRect windowFrame = [[[historyController view] window] frame];
-	NSRect historyFrame = [[historyController view] convertRectToBase:[[historyController view] frame]];
+	NSRect windowFrame = [[[self.historyController view] window] frame];
+	NSRect historyFrame = [[self.historyController view] convertRectToBase:[[self.historyController view] frame]];
 	NSRect panelRect = NSMakeRect(0.0f, 0.0f, kRewindPanelSize, kRewindPanelSize);
 	panelRect.origin.x = windowFrame.origin.x + historyFrame.origin.x + ((historyFrame.size.width - kRewindPanelSize) / 2.0f);
 	panelRect.origin.y = windowFrame.origin.y + historyFrame.origin.y + ((historyFrame.size.height - kRewindPanelSize) / 2.0f);
@@ -538,7 +529,7 @@
 
 	rewindPanel = [self rewindPanelReverse:isReversed];
 
-	[[[historyController view] window] addChildWindow:rewindPanel ordered:NSWindowAbove];
+	[[[self.historyController view] window] addChildWindow:rewindPanel ordered:NSWindowAbove];
 
 	CAKeyframeAnimation *alphaAnimation = [self rewindPanelFadeOutAnimation];
     [rewindPanel setAnimations:[NSDictionary dictionaryWithObject:alphaAnimation forKey:@"alphaValue"]];

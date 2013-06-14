@@ -11,8 +11,11 @@
 
 
 @interface PBGitSubmodule : NSObject
+
 @property (nonatomic, assign) git_submodule* submodule;
-- (NSString*) path;
-- (NSString*) name;
 @property (nonatomic, strong) NSString* workingDirectory;
+
+@property (nonatomic, readonly) NSString *path;
+@property (nonatomic, readonly) NSString *name;
+
 @end

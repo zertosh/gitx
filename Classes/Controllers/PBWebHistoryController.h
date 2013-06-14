@@ -22,11 +22,11 @@
 	IBOutlet id<PBRefContextDelegate> contextMenuDelegate;
 
 	PBGitSHA* currentSha;
-	NSString* diff;
 }
 
 - (void) changeContentTo: (PBGitCommit *) content;
 - (void) sendKey: (NSString*) key;
 
-@property (readonly) NSString* diff;
+@property (nonatomic, strong, readonly) NSString* diff;
+
 @end

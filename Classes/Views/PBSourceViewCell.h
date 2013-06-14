@@ -10,10 +10,8 @@
 #import "PBIconAndTextCell.h"
 
 
-@interface PBSourceViewCell : PBIconAndTextCell {
-	BOOL isCheckedOut;
-}
+@interface PBSourceViewCell : PBIconAndTextCell
 
-@property (assign) BOOL isCheckedOut;
+@property (nonatomic, assign) BOOL isCheckedOut;
 
 @end

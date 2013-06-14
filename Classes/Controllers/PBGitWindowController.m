@@ -18,13 +18,12 @@
 @interface PBGitWindowController ()
 
 @property (nonatomic, strong) RJModalRepoSheet* currentModalSheet;
+@property (nonatomic, weak)  PBGitRepository *repository;
 
 @end
 
 @implementation PBGitWindowController
 
-@synthesize repository;
-@synthesize currentModalSheet;
 
 - (id)initWithRepository:(PBGitRepository*)theRepository displayDefault:(BOOL)displayDefault
 {
@@ -51,7 +50,7 @@
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-	NSLog(@"Window will close!");
+	//NSLog(@"Window will close!");
 
 	if (sidebarController)
 		[sidebarController closeView];
@@ -64,10 +63,10 @@
 {
 	if ([menuItem action] == @selector(showCommitView:)) {
 		[menuItem setState:(contentController == sidebarController.commitViewController) ? YES : NO];
-		return ![repository isBareRepository];
+		return ![self.repository isBareRepository];
 	} else if ([menuItem action] == @selector(showHistoryView:)) {
 		[menuItem setState:(contentController != sidebarController.commitViewController) ? YES : NO];
-		return ![repository isBareRepository];
+		return ![self.repository isBareRepository];
 	}
 	return YES;
 }
@@ -78,7 +77,7 @@
 	[[self window] setAutorecalculatesContentBorderThickness:NO forEdge:NSMinYEdge];
 	[[self window] setContentBorderThickness:31.0f forEdge:NSMinYEdge];
 
-	sidebarController = [[PBGitSidebarController alloc] initWithRepository:repository superController:self];
+	sidebarController = [[PBGitSidebarController alloc] initWithRepository:self.repository superController:self];
 	[[sidebarController view] setFrame:[sourceSplitView bounds]];
 	[sourceSplitView addSubview:[sidebarController view]];
 	[sourceListControlsView addSubview:sidebarController.sourceListControlsView];
@@ -176,13 +175,13 @@
 
 - (IBAction) revealInFinder:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openFile:[repository workingDirectory]];
+	[[NSWorkspace sharedWorkspace] openFile:[self.repository workingDirectory]];
 }
 
 - (IBAction) openInTerminal:(id)sender
 {
 	TerminalApplication *term = [SBApplication applicationWithBundleIdentifier: @"com.apple.Terminal"];
-	NSString *workingDirectory = [[repository workingDirectory] stringByAppendingString:@"/"];
+	NSString *workingDirectory = [[self.repository workingDirectory] stringByAppendingString:@"/"];
 	NSString *cmd = [NSString stringWithFormat: @"cd \"%@\"; clear; echo '# Opened by GitX:'; git status", workingDirectory];
 	[term doScript: cmd in: nil];
 	[NSThread sleepForTimeInterval: 0.1];

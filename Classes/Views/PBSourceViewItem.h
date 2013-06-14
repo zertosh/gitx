@@ -11,15 +11,7 @@
 @class PBGitRevSpecifier;
 @class PBGitRef;
 
-@interface PBSourceViewItem : NSObject {
-    NSMutableOrderedSet *childrenSet;
-
-	NSString *title;
-	PBGitRevSpecifier *revSpecifier;
-
-	BOOL isGroupItem;
-	BOOL isUncollapsible;
-}
+@interface PBSourceViewItem : NSObject
 
 + (id)groupItemWithTitle:(NSString *)title;
 + (id)itemWithRevSpec:(PBGitRevSpecifier *)revSpecifier;
@@ -36,11 +28,12 @@
 
 - (PBGitRef *) ref;
 
-@property NSString *title;
-@property(nonatomic, readonly) NSArray *sortedChildren;
-@property(assign) BOOL isGroupItem, isUncollapsible;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong, readonly) NSArray *sortedChildren;
+@property (nonatomic, assign) BOOL isGroupItem;
+@property (nonatomic, assign) BOOL isUncollapsible;
 @property PBGitRevSpecifier *revSpecifier;
-@property (assign)PBSourceViewItem *parent;
-@property(readonly) NSImage *icon;
+@property (nonatomic, weak)PBSourceViewItem *parent;
+@property (nonatomic, strong, readonly) NSImage *icon;
 
 @end
