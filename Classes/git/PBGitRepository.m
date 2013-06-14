@@ -33,13 +33,14 @@ NSString *PBGitRepositoryDocumentType = @"Git Repository";
 @interface PBGitRepository ()
 
 @property (nonatomic, strong) NSNumber *hasSVNRepoConfig;
+@property (nonatomic, strong) PBGitRepositoryWatcher *watcher;
+@property (nonatomic, strong) PBGitRevSpecifier *headRef; // Caching
+@property (nonatomic, strong) PBGitSHA* headSha;
+@property (nonatomic, strong) GTRepository* gtRepo;
 
 @end
 
 @implementation PBGitRepository
-
-@synthesize revisionList, branchesSet, currentBranch, refs, hasChanged, submodules;
-@synthesize currentBranchFilter;
 
 - (BOOL) isBareRepository
 {
@@ -105,12 +106,12 @@ NSString *PBGitRepositoryDocumentType = @"Git Repository";
 		return NO;
 	}
 
-	revisionList = [[PBGitHistoryList alloc] initWithRepository:self];
+	self.revisionList = [[PBGitHistoryList alloc] initWithRepository:self];
 
 	[self reloadRefs];
 
     // Setup the FSEvents watcher to fire notifications when things change
-    watcher = [[PBGitRepositoryWatcher alloc] initWithRepository:self];
+    self.watcher = [[PBGitRepositoryWatcher alloc] initWithRepository:self];
 
 	return YES;
 }
@@ -127,20 +128,20 @@ NSString *PBGitRepositoryDocumentType = @"Git Repository";
 
 	self.branchesSet = [NSMutableOrderedSet orderedSet];
     self.submodules = [NSMutableArray array];
-	currentBranchFilter = [PBGitDefaults branchFilter];
+	self.currentBranchFilter = [PBGitDefaults branchFilter];
     return self;
 }
 
 - (void)close
 {
-	[revisionList cleanup];
+	[self.revisionList cleanup];
 
 	[super close];
 }
 
 - (void) forceUpdateRevisions
 {
-	[revisionList forceUpdate];
+	[self.revisionList forceUpdate];
 }
 
 - (BOOL)isDocumentEdited
@@ -216,10 +217,10 @@ NSString *PBGitRepositoryDocumentType = @"Git Repository";
 	PBGitRef* ref = [[PBGitRef alloc] initWithString:gtRef.name];
 //	NSLog(@"addRef %@ %@ at %@", ref.type, gtRef.name, [sha string]);
 	NSMutableArray* curRefs;
-	if ( (curRefs = [refs objectForKey:sha]) != nil )
+	if ( (curRefs = [self.refs objectForKey:sha]) != nil )
 		[curRefs addObject:ref];
 	else
-		[refs setObject:[NSMutableArray arrayWithObject:ref] forKey:sha];
+		[self.refs setObject:[NSMutableArray arrayWithObject:ref] forKey:sha];
 }
 
 int addSubmoduleName(git_submodule *module, const char* name, void * context)
@@ -249,9 +250,9 @@ int addSubmoduleName(git_submodule *module, const char* name, void * context)
 - (void) reloadRefs
 {
 	// clear out ref caches
-	_headRef = nil;
-	_headSha = nil;
-	self->refs = [NSMutableDictionary dictionary];
+	self.headRef = nil;
+	self.headSha = nil;
+	self.refs = [NSMutableDictionary dictionary];
 	
 	NSError* error = nil;
 	NSArray* allRefs = [self.gtRepo referenceNamesWithError:&error];
@@ -296,11 +297,12 @@ int addSubmoduleName(git_submodule *module, const char* name, void * context)
 
 - (void) lazyReload
 {
-	if (!hasChanged)
+	if (!self.hasChanged) {
 		return;
+	}
 
 	[self.revisionList updateHistory];
-	hasChanged = NO;
+	self.hasChanged = NO;
 }
 
 - (PBGitRevSpecifier *)headRef
@@ -337,9 +339,9 @@ int addSubmoduleName(git_submodule *module, const char* name, void * context)
 	if (!ref)
 		return nil;
 	
-	for (PBGitSHA *sha in refs)
+	for (PBGitSHA *sha in self.refs)
 	{
-		for (PBGitRef *existingRef in [refs objectForKey:sha])
+		for (PBGitRef *existingRef in [self.refs objectForKey:sha])
 		{
 			if ([existingRef isEqualToRef:ref])
 			{
@@ -384,11 +386,11 @@ int addSubmoduleName(git_submodule *module, const char* name, void * context)
 {
 	if (!sha)
 		return nil;
-	NSArray *revList = revisionList.projectCommits;
+	NSArray *revList = self.revisionList.projectCommits;
 
     if (!revList) {
-        [revisionList forceUpdate];
-        revList = revisionList.projectCommits;
+        [self.revisionList forceUpdate];
+        revList = self.revisionList.projectCommits;
     }
 	for (PBGitCommit *commit in revList)
 		if ([[commit sha] isEqual:sha])
@@ -405,7 +407,7 @@ int addSubmoduleName(git_submodule *module, const char* name, void * context)
 	if ([testSHA isEqual:branchSHA])
 		return YES;
 
-	NSArray *revList = revisionList.projectCommits;
+	NSArray *revList = self.revisionList.projectCommits;
 
 	NSMutableSet *searchSHAs = [NSMutableSet setWithObject:branchSHA];
 
@@ -1186,6 +1188,6 @@ int addSubmoduleName(git_submodule *module, const char* name, void * context)
 - (void) dealloc
 {
 	NSLog(@"Dealloc of repository");
-	[watcher stop];
+	[self.watcher stop];
 }
 @end

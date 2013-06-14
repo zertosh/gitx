@@ -43,18 +43,11 @@ static NSString * PBStringFromBranchFilterType(PBGitXBranchFilterType type) {
 @class PBGitWindowController;
 @class PBGitCommit;
 @class PBGitSHA;
-@class PBGitRepositoryWatcher;
 
-@interface PBGitRepository : NSDocument {
-	__strong PBGitRepositoryWatcher *watcher;
-	__strong PBGitRevSpecifier *_headRef; // Caching
-	__strong PBGitSHA* _headSha;
-	__strong GTRepository* _gtRepo;
-}
+@interface PBGitRepository : NSDocument
 
-
-@property (assign) BOOL hasChanged;
-@property (assign) NSInteger currentBranchFilter;
+@property (nonatomic, assign) BOOL hasChanged;
+@property (nonatomic, assign) NSInteger currentBranchFilter;
 
 @property (readonly, strong) PBGitWindowController *windowController;
 @property (readonly, getter = getIndexURL) NSURL* indexURL;
