@@ -24,6 +24,8 @@ using namespace std;
 
 @interface PBGitRevList ()
 
+@property (nonatomic, weak) PBGitRepository *repository;
+
 @property (nonatomic, strong) NSMutableArray *commitsRW;
 @property (nonatomic, assign) BOOL isParsing;
 
@@ -39,7 +41,12 @@ using namespace std;
 
 - (id) initWithRepository:(PBGitRepository *)repo rev:(PBGitRevSpecifier *)rev shouldGraph:(BOOL)graph
 {
-	repository = repo;
+	self = [super init];
+	if (!self) {
+		return nil;
+	}
+	
+	self.repository = repo;
 	isGraphing = graph;
 	currentRev = [rev copy];
 
@@ -103,7 +110,7 @@ using namespace std;
 		//NSDate *start = [NSDate date];
 		NSDate *lastUpdate = [NSDate date];
 		NSMutableArray *revisions = [NSMutableArray array];
-		PBGitGrapher *g = [[PBGitGrapher alloc] initWithRepository:repository];
+		PBGitGrapher *g = [[PBGitGrapher alloc] initWithRepository:self.repository];
 		std::map<string, NSStringEncoding> encodingMap;
 		NSThread *currentThread = [NSThread currentThread];
 		
@@ -126,7 +133,7 @@ using namespace std;
 		else
 			[arguments addObjectsFromArray:[rev parameters]];
 		
-		NSString *directory = rev.workingDirectory ? rev.workingDirectory.path : repository.fileURL.path;
+		NSString *directory = rev.workingDirectory ? rev.workingDirectory.path : self.repository.fileURL.path;
 		NSTask *task = [PBEasyPipe taskForCommand:[PBGitBinary path] withArgs:arguments inDir:directory];
 		[task launch];
 		NSFileHandle *handle = [task.standardOutput fileHandleForReading];
@@ -164,7 +171,7 @@ using namespace std;
 			
 			git_oid oid;
 			git_oid_fromstr(&oid, sha.c_str());
-			PBGitCommit *newCommit = [PBGitCommit commitWithRepository:repository andSha:[PBGitSHA shaWithOID:oid]];
+			PBGitCommit *newCommit = [PBGitCommit commitWithRepository:self.repository andSha:[PBGitSHA shaWithOID:oid]];
 			
 			string author;
 			getline(stream, author, '\3');
@@ -208,7 +215,7 @@ using namespace std;
 			[newCommit setAuthor:[NSString stringWithCString:author.c_str() encoding:encoding]];
 			[newCommit setCommitter:[NSString stringWithCString:committer.c_str() encoding:encoding]];
             
-            if ([repository hasSVNRemote])
+            if ([self.repository hasSVNRemote])
             {
 				// get the git-svn-id from the subject
 				NSArray *matches = nil;

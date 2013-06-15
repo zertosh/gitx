@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign) BOOL isUpdating;
 @property (nonatomic, strong) NSMutableArray *commits;
+@property (nonatomic, weak) PBGitRepository *repository;
 
 - (void) resetGraphing;
 
@@ -46,14 +47,14 @@
         return nil;
     
 	self.commits = [NSMutableArray array];
-	repository = repo;
+	self.repository = repo;
 	lastBranchFilter = -1;
-	[repository addObserver:self forKeyPath:@"currentBranch" options:0 context:@"currentBranch"];
-	[repository addObserver:self forKeyPath:@"currentBranchFilter" options:0 context:@"currentBranch"];
-	[repository addObserver:self forKeyPath:@"hasChanged" options:0 context:@"repositoryHasChanged"];
+	[self.repository addObserver:self forKeyPath:@"currentBranch" options:0 context:@"currentBranch"];
+	[self.repository addObserver:self forKeyPath:@"currentBranchFilter" options:0 context:@"currentBranch"];
+	[self.repository addObserver:self forKeyPath:@"hasChanged" options:0 context:@"repositoryHasChanged"];
 
 	shouldReloadProjectHistory = YES;
-	self.projectRevList = [[PBGitRevList alloc] initWithRepository:repository rev:[PBGitRevSpecifier allBranchesRevSpec] shouldGraph:NO];
+	self.projectRevList = [[PBGitRevList alloc] initWithRepository:self.repository rev:[PBGitRevSpecifier allBranchesRevSpec] shouldGraph:NO];
 
 	return self;
 }
@@ -64,7 +65,7 @@
 
 - (void) forceUpdate
 {
-	if ([repository.currentBranch isSimpleRef])
+	if ([self.repository.currentBranch isSimpleRef])
 		shouldReloadProjectHistory = YES;
 
 	[self updateHistory];
@@ -73,7 +74,7 @@
 
 - (void) updateHistory
 {
-	PBGitRevSpecifier *rev = repository.currentBranch;
+	PBGitRevSpecifier *rev = self.repository.currentBranch;
 	if (!rev)
 		return;
 
@@ -92,9 +93,9 @@
 	}
 	[graphQueue cancelAllOperations];
 
-	[repository removeObserver:self forKeyPath:@"currentBranch"];
-	[repository removeObserver:self forKeyPath:@"currentBranchFilter"];
-	[repository removeObserver:self forKeyPath:@"hasChanged"];
+	[self.repository removeObserver:self forKeyPath:@"currentBranch"];
+	[self.repository removeObserver:self forKeyPath:@"currentBranchFilter"];
+	[self.repository removeObserver:self forKeyPath:@"hasChanged"];
 }
 
 
@@ -169,15 +170,15 @@
 - (NSSet *) baseCommitsForLocalRefs
 {
 	NSMutableSet *baseCommitSHAs = [NSMutableSet set];
-	NSDictionary *refs = repository.refs;
+	NSDictionary *refs = self.repository.refs;
 
 	for (PBGitSHA *sha in refs)
 		for (PBGitRef *ref in [refs objectForKey:sha])
 			if ([ref isBranch] || [ref isTag])
 				[baseCommitSHAs addObject:sha];
 
-	if (![[PBGitRef refFromString:[[repository headRef] simpleRef]] type])
-		[baseCommitSHAs addObject:[repository headSHA]];
+	if (![[PBGitRef refFromString:[[self.repository headRef] simpleRef]] type])
+		[baseCommitSHAs addObject:[self.repository headSHA]];
 
 	return baseCommitSHAs;
 }
@@ -186,9 +187,9 @@
 - (NSSet *) baseCommitsForRemoteRefs
 {
 	NSMutableSet *baseCommitSHAs = [NSMutableSet set];
-	NSDictionary *refs = repository.refs;
+	NSDictionary *refs = self.repository.refs;
 
-	PBGitRef *remoteRef = [[repository.currentBranch ref] remoteRef];
+	PBGitRef *remoteRef = [[self.repository.currentBranch ref] remoteRef];
 
 	for (PBGitSHA *sha in refs)
 		for (PBGitRef *ref in [refs objectForKey:sha])
@@ -201,18 +202,18 @@
 
 - (NSSet *) baseCommits
 {
-	if ((repository.currentBranchFilter == kGitXSelectedBranchFilter) || (repository.currentBranchFilter == kGitXAllBranchesFilter)) {
+	if ((self.repository.currentBranchFilter == kGitXSelectedBranchFilter) || (self.repository.currentBranchFilter == kGitXAllBranchesFilter)) {
 		if (lastSHA)
 			return [NSMutableSet setWithObject:lastSHA];
-		else if ([repository.currentBranch isSimpleRef]) {
-			PBGitRef *currentRef = [repository.currentBranch ref];
-			PBGitSHA *sha = [repository shaForRef:currentRef];
+		else if ([self.repository.currentBranch isSimpleRef]) {
+			PBGitRef *currentRef = [self.repository.currentBranch ref];
+			PBGitSHA *sha = [self.repository shaForRef:currentRef];
 			if (sha)
 				return [NSMutableSet setWithObject:sha];
 		}
 	}
-	else if (repository.currentBranchFilter == kGitXLocalRemoteBranchesFilter) {
-		if ([[repository.currentBranch ref] isRemote])
+	else if (self.repository.currentBranchFilter == kGitXLocalRemoteBranchesFilter) {
+		if ([[self.repository.currentBranch ref] isRemote])
 			return [self baseCommitsForRemoteRefs];
 		else
 			return [self baseCommitsForLocalRefs];
@@ -224,7 +225,7 @@
 
 - (PBGitHistoryGrapher *) grapher
 {
-	BOOL viewAllBranches = (repository.currentBranchFilter == kGitXAllBranchesFilter);
+	BOOL viewAllBranches = (self.repository.currentBranchFilter == kGitXAllBranchesFilter);
 
 	return [[PBGitHistoryGrapher alloc] initWithBaseCommits:[self baseCommits] viewAllBranches:viewAllBranches queue:graphQueue delegate:self];
 }
@@ -246,13 +247,13 @@
 
 - (BOOL) isAllBranchesOnlyUpdate
 {
-	return (lastBranchFilter == kGitXAllBranchesFilter) && (repository.currentBranchFilter == kGitXAllBranchesFilter);
+	return (lastBranchFilter == kGitXAllBranchesFilter) && (self.repository.currentBranchFilter == kGitXAllBranchesFilter);
 }
 
 
 - (BOOL) isLocalRemoteOnlyUpdate:(PBGitRevSpecifier *)rev
 {
-	if ((lastBranchFilter == kGitXLocalRemoteBranchesFilter) && (repository.currentBranchFilter == kGitXLocalRemoteBranchesFilter)) {
+	if ((lastBranchFilter == kGitXLocalRemoteBranchesFilter) && (self.repository.currentBranchFilter == kGitXLocalRemoteBranchesFilter)) {
 		if (!lastRemoteRef && ![[rev ref] isRemote])
 			return YES;
 
@@ -276,11 +277,11 @@
 		return NO;
 	}
 
-	PBGitSHA *revSHA = [repository shaForRef:[rev ref]];
-	if ([revSHA isEqual:lastSHA] && (lastBranchFilter == repository.currentBranchFilter))
+	PBGitSHA *revSHA = [self.repository shaForRef:[rev ref]];
+	if ([revSHA isEqual:lastSHA] && (lastBranchFilter == self.repository.currentBranchFilter))
 		return NO;
 
-	lastBranchFilter = repository.currentBranchFilter;
+	lastBranchFilter = self.repository.currentBranchFilter;
 	lastRemoteRef = [[rev ref] remoteRef];
 	lastSHA = revSHA;
 
@@ -290,11 +291,11 @@
 
 - (BOOL) haveRefsBeenModified
 {
-	[repository reloadRefs];
+	[self.repository reloadRefs];
 
-	NSMutableSet *currentRefSHAs = [NSMutableSet setWithArray:[repository.refs allKeys]];
+	NSMutableSet *currentRefSHAs = [NSMutableSet setWithArray:[self.repository.refs allKeys]];
 	[currentRefSHAs minusSet:lastRefSHAs];
-	lastRefSHAs = [NSSet setWithArray:[repository.refs allKeys]];
+	lastRefSHAs = [NSSet setWithArray:[self.repository.refs allKeys]];
 
 	return [currentRefSHAs count] != 0;
 }
@@ -330,7 +331,7 @@
 
 - (void) updateHistoryForRev:(PBGitRevSpecifier *)rev
 {
-	PBGitRevList *otherRevListParser = [[PBGitRevList alloc] initWithRepository:repository rev:rev shouldGraph:YES];
+	PBGitRevList *otherRevListParser = [[PBGitRevList alloc] initWithRepository:self.repository rev:rev shouldGraph:YES];
 
 	[self setCurrentRevList:otherRevListParser];
 	[self resetGraphing];
@@ -363,7 +364,7 @@
 		NSInteger changeKind = [(NSNumber *)[change objectForKey:NSKeyValueChangeKindKey] intValue];
 		if (changeKind == NSKeyValueChangeInsertion) {
 			NSArray *newCommits = [change objectForKey:NSKeyValueChangeNewKey];
-			if ([repository.currentBranch isSimpleRef])
+			if ([self.repository.currentBranch isSimpleRef])
 				[graphQueue addOperation:[self operationForCommits:newCommits]];
 			else
 				[self addCommitsFromArray:newCommits];

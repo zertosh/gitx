@@ -27,6 +27,10 @@ NSString *PBGitIndexFinishedCommit = @"PBGitIndexFinishedCommit";
 NSString *PBGitIndexAmendMessageAvailable = @"PBGitIndexAmendMessageAvailable";
 NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 
+@interface PBGitIndex ()
+@property (nonatomic, weak) PBGitRepository *repository;
+@end
+
 @interface PBGitIndex (IndexRefreshMethods)
 
 - (NSArray *)linesFromNotification:(NSNotification *)notification;
@@ -63,7 +67,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 
 	NSAssert(theRepository, @"PBGitIndex requires a repository");
 
-	repository = theRepository;
+	self.repository = theRepository;
 	NSString* workingPath = theRepository.workingDirectory;
 	if (workingPath)
 	{
@@ -95,7 +99,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 	// If we amend, we want to keep the author information for the previous commit
 	// We do this by reading in the previous commit, and storing the information
 	// in a dictionary. This dictionary will then later be read by [self commit:]
-	NSString *message = [repository outputForCommand:@"cat-file commit HEAD"];
+	NSString *message = [self.repository outputForCommand:@"cat-file commit HEAD"];
 	NSArray *match = [message substringsMatchingRegularExpression:@"\nauthor ([^\n]*) <([^\n>]*)> ([0-9]+[^\n]*)\n" count:3 options:0 ranges:nil error:nil];
 	if (match)
 		amendEnvironment = [NSDictionary dictionaryWithObjectsAndKeys:[match objectAtIndex:1], @"GIT_AUTHOR_NAME",
@@ -145,7 +149,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 {
 	NSString *parent = amend ? @"HEAD^" : @"HEAD";
 	
-	if (![repository parseReference:parent])
+	if (![self.repository parseReference:parent])
 		// We don't have a head ref. Return the empty tree.
 		return @"4b825dc642cb6eb9a060e54bf8d69288fbee4904";
 
@@ -163,20 +167,20 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 		[commitSubject appendString:[commitMessage substringToIndex:newLine.location]];
 	
 	NSString *commitMessageFile;
-	commitMessageFile = [repository.gitURL.path stringByAppendingPathComponent:@"COMMIT_EDITMSG"];
+	commitMessageFile = [self.repository.gitURL.path stringByAppendingPathComponent:@"COMMIT_EDITMSG"];
 	
 	[commitMessage writeToFile:commitMessageFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
 	
 	[self postCommitUpdate:@"Creating tree"];
-	NSString *tree = [repository outputForCommand:@"write-tree"];
+	NSString *tree = [self.repository outputForCommand:@"write-tree"];
 	if ([tree length] != 40)
 		return [self postCommitFailure:@"Creating tree failed"];
 	
 	
 	NSMutableArray *arguments = [NSMutableArray arrayWithObjects:@"commit-tree", tree, nil];
 	NSString *parent = amend ? @"HEAD^" : @"HEAD";
-	if ([repository parseReference:parent]) {
+	if ([self.repository parseReference:parent]) {
 		[arguments addObject:@"-p"];
 		[arguments addObject:parent];
 	}
@@ -188,13 +192,13 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
         [self postCommitUpdate:@"Running hooks"];
         NSString *hookFailureMessage = nil;
         NSString *hookOutput = nil;
-        if (![repository executeHook:@"pre-commit" output:&hookOutput]) {
+        if (![self.repository executeHook:@"pre-commit" output:&hookOutput]) {
             hookFailureMessage = [NSString stringWithFormat:@"Pre-commit hook failed%@%@",
                                   [hookOutput length] > 0 ? @":\n" : @"",
                                   hookOutput];
         }
 
-        if (![repository executeHook:@"commit-msg" withArgs:[NSArray arrayWithObject:commitMessageFile] output:nil]) {
+        if (![self.repository executeHook:@"commit-msg" withArgs:[NSArray arrayWithObject:commitMessageFile] output:nil]) {
             hookFailureMessage = [NSString stringWithFormat:@"Commit-msg hook failed%@%@",
                                   [hookOutput length] > 0 ? @":\n" : @"",
                                   hookOutput];
@@ -207,7 +211,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 	
 	commitMessage = [NSString stringWithContentsOfFile:commitMessageFile encoding:NSUTF8StringEncoding error:nil];
 	
-	NSString *commit = [repository outputForArguments:arguments
+	NSString *commit = [self.repository outputForArguments:arguments
 										  inputString:commitMessage
 							   byExtendingEnvironment:amendEnvironment
 											 retValue: &ret];
@@ -216,14 +220,14 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 		return [self postCommitFailure:@"Could not create a commit object"];
 	
 	[self postCommitUpdate:@"Updating HEAD"];
-	[repository outputForArguments:[NSArray arrayWithObjects:@"update-ref", @"-m", commitSubject, @"HEAD", commit, nil]
+	[self.repository outputForArguments:[NSArray arrayWithObjects:@"update-ref", @"-m", commitSubject, @"HEAD", commit, nil]
 						  retValue: &ret];
 	if (ret)
 		return [self postCommitFailure:@"Could not update HEAD"];
 	
 	[self postCommitUpdate:@"Running post-commit hook"];
 	
-	BOOL success = [repository executeHook:@"post-commit" output:nil];
+	BOOL success = [self.repository executeHook:@"post-commit" output:nil];
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithBool:success] forKey:@"success"];
 	NSString *description;  
 	if (success)
@@ -240,7 +244,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 	if (!success)
 		return;
 
-	repository.hasChanged = YES;
+	self.repository.hasChanged = YES;
 
 	amendEnvironment = nil;
 	if (amend)
@@ -310,7 +314,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 		
 			
 		int ret = 1;
-		[repository outputForArguments:[NSArray arrayWithObjects:@"update-index", @"--add", @"--remove", @"-z", @"--stdin", nil]
+		[self.repository outputForArguments:[NSArray arrayWithObjects:@"update-index", @"--add", @"--remove", @"-z", @"--stdin", nil]
 						   inputString:input
 							  retValue:&ret];
 
@@ -365,7 +369,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 		}
 		
 		int ret = 1;
-		[repository outputForArguments:[NSArray arrayWithObjects:@"update-index", @"-z", @"--index-info", nil]
+		[self.repository outputForArguments:[NSArray arrayWithObjects:@"update-index", @"-z", @"--index-info", nil]
 						   inputString:input
 							  retValue:&ret];
 		
@@ -424,7 +428,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 		[array addObject:@"--reverse"];
 
 	int ret = 1;
-	NSString *error = [repository outputForArguments:array
+	NSString *error = [self.repository outputForArguments:array
 										 inputString:hunk
 											retValue:&ret];
 
@@ -446,16 +450,16 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 		NSString *indexPath = [@":0:" stringByAppendingString:file.path];
 
 		if (file.status == NEW)
-			return [repository outputForArguments:[NSArray arrayWithObjects:@"show", indexPath, nil]];
+			return [self.repository outputForArguments:[NSArray arrayWithObjects:@"show", indexPath, nil]];
 
-		return [repository outputInWorkdirForArguments:[NSArray arrayWithObjects:@"diff-index", parameter, @"--cached", [self parentTree], @"--", file.path, nil]];
+		return [self.repository outputInWorkdirForArguments:[NSArray arrayWithObjects:@"diff-index", parameter, @"--cached", [self parentTree], @"--", file.path, nil]];
 	}
 
 	// unstaged
 	if (file.status == NEW) {
 		NSStringEncoding encoding;
 		NSError *error = nil;
-		NSString *path = [[repository workingDirectory] stringByAppendingPathComponent:file.path];
+		NSString *path = [[self.repository workingDirectory] stringByAppendingPathComponent:file.path];
 		NSString *contents = [NSString stringWithContentsOfFile:path
 												   usedEncoding:&encoding
 														  error:&error];
@@ -465,7 +469,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 		return contents;
 	}
 
-	return [repository outputInWorkdirForArguments:[NSArray arrayWithObjects:@"diff-files", parameter, @"--", file.path, nil]];
+	return [self.repository outputInWorkdirForArguments:[NSArray arrayWithObjects:@"diff-files", parameter, @"--", file.path, nil]];
 }
 
 - (void)postIndexChange
@@ -502,7 +506,7 @@ NSString *PBGitIndexOperationFailed = @"PBGitIndexOperationFailed";
 	// Now that the index is refreshed, we need to read the information from the index
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter]; 
 
-	if ([repository isBareRepository])
+	if ([self.repository isBareRepository])
 	{
 		return;
 	}

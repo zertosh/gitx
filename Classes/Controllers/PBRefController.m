@@ -19,13 +19,21 @@
 #define kDialogConfirmPush @"Confirm Push"
 #define kDialogDeleteRef @"Delete Ref"
 
+@interface PBRefController ()
 
+@property (nonatomic, weak) IBOutlet PBGitHistoryController *historyController;
+
+@property (nonatomic, strong) IBOutlet  NSArrayController *commitController;
+@property (nonatomic, strong) IBOutlet  PBCommitList *commitList;
+@property (nonatomic, strong) IBOutlet  NSPopUpButton *branchPopUp;
+
+@end
 
 @implementation PBRefController
 
 - (void)awakeFromNib
 {
-	[commitList registerForDraggedTypes:[NSArray arrayWithObject:@"PBGitRef"]];
+	[self.commitList registerForDraggedTypes:[NSArray arrayWithObject:@"PBGitRef"]];
 }
 
 
@@ -37,7 +45,7 @@
 	if ([refish refishType] == kGitXCommitType)
 		return;
 
-	[historyController.repository beginFetchFromRemoteForRef:refish];
+	[self.historyController.repository beginFetchFromRemoteForRef:refish];
 }
 
 
@@ -46,7 +54,7 @@
 - (void) pullRemote:(PBRefMenuItem *)sender
 {
 	id <PBGitRefish> refish = [sender refish];
-	[historyController.repository beginPullFromRemote:nil forRef:refish];
+	[self.historyController.repository beginPullFromRemote:nil forRef:refish];
 }
 
 
@@ -60,7 +68,7 @@
 		return;
 
 	if ([PBGitDefaults isDialogWarningSuppressedForDialog:kDialogConfirmPush]) {
-		[historyController.repository beginPushRef:ref toRemote:remoteRef];
+		[self.historyController.repository beginPushRef:ref toRemote:remoteRef];
 		return;
 	}
 
@@ -86,7 +94,7 @@
 	if (remoteRef)
 		[info setObject:remoteRef forKey:kGitXRemoteType];
 
-	[alert beginSheetModalForWindow:[historyController.repository.windowController window]
+	[alert beginSheetModalForWindow:[self.historyController.repository.windowController window]
 					  modalDelegate:self
 					 didEndSelector:@selector(confirmPushRefSheetDidEnd:returnCode:contextInfo:)
 						contextInfo:(__bridge_retained void*)info];
@@ -103,7 +111,7 @@
 		PBGitRef *ref = [(__bridge NSDictionary *)contextInfo objectForKey:kGitXBranchType];
 		PBGitRef *remoteRef = [(__bridge NSDictionary *)contextInfo objectForKey:kGitXRemoteType];
 
-		[historyController.repository beginPushRef:ref toRemote:remoteRef];
+		[self.historyController.repository beginPushRef:ref toRemote:remoteRef];
 	}
 }
 
@@ -136,7 +144,7 @@
 - (void) merge:(PBRefMenuItem *)sender
 {
 	id <PBGitRefish> refish = [sender refish];
-	[historyController.repository mergeWithRefish:refish];
+	[self.historyController.repository mergeWithRefish:refish];
 }
 
 
@@ -145,7 +153,7 @@
 - (void) checkout:(PBRefMenuItem *)sender
 {
 	id <PBGitRefish> refish = [sender refish];
-	[historyController.repository checkoutRefish:refish];
+	[self.historyController.repository checkoutRefish:refish];
 }
 
 
@@ -154,7 +162,7 @@
 - (void) cherryPick:(PBRefMenuItem *)sender
 {
 	id <PBGitRefish> refish = [sender refish];
-	[historyController.repository cherryPickRefish:refish];
+	[self.historyController.repository cherryPickRefish:refish];
 }
 
 
@@ -164,7 +172,7 @@
 {
 	id <PBGitRefish> refish = [sender refish];
 
-	[historyController.repository rebaseBranch:nil onRefish:refish];
+	[self.historyController.repository rebaseBranch:nil onRefish:refish];
 }
 
 
@@ -173,7 +181,7 @@
 - (void) createBranch:(PBRefMenuItem *)sender
 {
 	id <PBGitRefish> refish = [sender refish];
-	[PBCreateBranchSheet beginCreateBranchSheetAtRefish:refish inRepository:historyController.repository];
+	[PBCreateBranchSheet beginCreateBranchSheetAtRefish:refish inRepository:self.historyController.repository];
 }
 
 
@@ -185,7 +193,7 @@
 	if ([[sender refish] refishType] == kGitXCommitType)
 		commit = (PBGitCommit *)[sender refish];
 	else
-		commit = [historyController.repository commitForRef:[sender refish]];
+		commit = [self.historyController.repository commitForRef:[sender refish]];
 
 	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
 	[pasteboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
@@ -199,7 +207,7 @@
 	if ([[sender refish] refishType] == kGitXCommitType)
 		commit = (PBGitCommit *)[sender refish];
 	else
-		commit = [historyController.repository commitForRef:[sender refish]];
+		commit = [self.historyController.repository commitForRef:[sender refish]];
     
 	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
 	[pasteboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
@@ -213,7 +221,7 @@
 	if ([[sender refish] refishType] == kGitXCommitType)
 		commit = (PBGitCommit *)[sender refish];
 	else
-		commit = [historyController.repository commitForRef:[sender refish]];
+		commit = [self.historyController.repository commitForRef:[sender refish]];
 
 	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
 	[pasteboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
@@ -229,7 +237,7 @@
 	if ([[sender refish] refishType] == kGitXCommitType)
 		commit = (PBGitCommit *)[sender refish];
 	else
-		commit = [historyController.repository commitForRef:[sender refish]];
+		commit = [self.historyController.repository commitForRef:[sender refish]];
 
 	[PBDiffWindowController showDiffWindowWithFiles:nil fromCommit:commit diffCommit:nil];
 }
@@ -239,7 +247,7 @@
 - (void) createTag:(PBRefMenuItem *)sender
 {
 	id <PBGitRefish> refish = [sender refish];
-	[PBCreateTagSheet beginCreateTagSheetAtRefish:refish inRepository:historyController.repository];
+	[PBCreateTagSheet beginCreateTagSheetAtRefish:refish inRepository:self.historyController.repository];
 }
 
 - (void) showTagInfoSheet:(PBRefMenuItem *)sender
@@ -251,10 +259,10 @@
 
 	int retValue = 1;
 	NSArray *args = [NSArray arrayWithObjects:@"tag", @"-n50", @"-l", tagName, nil];
-	NSString *info = [historyController.repository outputInWorkdirForArguments:args retValue:&retValue];
+	NSString *info = [self.historyController.repository outputInWorkdirForArguments:args retValue:&retValue];
 	if (!retValue) {
 		NSString *message = [NSString stringWithFormat:@"Info for tag: %@", tagName];
-		[historyController.repository.windowController showMessageSheet:message infoText:info];
+		[self.historyController.repository.windowController showMessageSheet:message infoText:info];
 	}
 }
 
@@ -269,7 +277,7 @@
 	PBGitRef *ref = (PBGitRef *)[sender refish];
 
 	if ([PBGitDefaults isDialogWarningSuppressedForDialog:kDialogDeleteRef]) {
-		[historyController.repository deleteRef:ref];
+		[self.historyController.repository deleteRef:ref];
 		return;
 	}
 
@@ -282,7 +290,7 @@
 						 informativeTextWithFormat:@"Are you sure you want to remove the %@?", ref_desc];
     [alert setShowsSuppressionButton:YES];
 	
-	[alert beginSheetModalForWindow:[historyController.repository.windowController window]
+	[alert beginSheetModalForWindow:[self.historyController.repository.windowController window]
 					  modalDelegate:self
 					 didEndSelector:@selector(deleteRefSheetDidEnd:returnCode:contextInfo:)
 						contextInfo:(__bridge_retained void*)ref];
@@ -297,7 +305,7 @@
 
 	if (returnCode == NSAlertDefaultReturn) {
 		PBGitRef *ref = (__bridge PBGitRef *)contextInfo;
-		[historyController.repository deleteRef:ref];
+		[self.historyController.repository deleteRef:ref];
 	}
 }
 
@@ -307,7 +315,7 @@
 
 - (NSArray *) menuItemsForRef:(PBGitRef *)ref
 {
-	return [PBRefMenuItem defaultMenuItemsForRef:ref inRepository:historyController.repository target:self];
+	return [PBRefMenuItem defaultMenuItemsForRef:ref inRepository:self.historyController.repository target:self];
 }
 
 - (NSArray *) menuItemsForCommit:(PBGitCommit *)commit
@@ -317,7 +325,7 @@
 
 - (NSArray *)menuItemsForRow:(NSInteger)rowIndex
 {
-	NSArray *commits = [commitController arrangedObjects];
+	NSArray *commits = [self.commitController arrangedObjects];
 	if ([commits count] <= rowIndex)
 		return nil;
 
@@ -349,7 +357,7 @@
 	if ([ref isTag] || [ref isRemoteBranch])
 		return NO;
 
-	if ([[[historyController.repository headRef] ref] isEqualToRef:ref])
+	if ([[[self.historyController.repository headRef] ref] isEqualToRef:ref])
 		return NO;
 	
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:[NSArray arrayWithObjects:[NSNumber numberWithInt:row], [NSNumber numberWithInt:index], NULL]];
@@ -383,13 +391,13 @@
 		return;
 
 	int retValue = 1;
-	[historyController.repository outputForArguments:[NSArray arrayWithObjects:@"update-ref", @"-mUpdate from GitX", [ref ref], [dropCommit realSha], NULL] retValue:&retValue];
+	[self.historyController.repository outputForArguments:[NSArray arrayWithObjects:@"update-ref", @"-mUpdate from GitX", [ref ref], [dropCommit realSha], NULL] retValue:&retValue];
 	if (retValue)
 		return;
 
 	[dropCommit addRef:ref];
 	[oldCommit removeRef:ref];
-	[historyController.commitList reloadData];
+	[self.historyController.commitList reloadData];
 }
 
 - (BOOL)tableView:(NSTableView *)aTableView
@@ -411,10 +419,10 @@
 		return NO;
 
 	int oldRefIndex = [[numbers objectAtIndex:1] intValue];
-	PBGitCommit *oldCommit = [[commitController arrangedObjects] objectAtIndex:oldRow];
+	PBGitCommit *oldCommit = [[self.commitController arrangedObjects] objectAtIndex:oldRow];
 	PBGitRef *ref = [[oldCommit refs] objectAtIndex:oldRefIndex];
 
-	PBGitCommit *dropCommit = [[commitController arrangedObjects] objectAtIndex:row];
+	PBGitCommit *dropCommit = [[self.commitController arrangedObjects] objectAtIndex:row];
 
 	NSDictionary *dropInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  ref, @"dragRef",
@@ -439,7 +447,7 @@
 						 informativeTextWithFormat:infoText];
     [alert setShowsSuppressionButton:YES];
 
-	[alert beginSheetModalForWindow:[historyController.repository.windowController window]
+	[alert beginSheetModalForWindow:[self.historyController.repository.windowController window]
 					  modalDelegate:self
 					 didEndSelector:@selector(acceptDropInfoAlertDidEnd:returnCode:contextInfo:)
 						contextInfo:(__bridge_retained void*)dropInfo];

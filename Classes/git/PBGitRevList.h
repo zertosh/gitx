@@ -12,8 +12,7 @@
 @class PBGitRevSpecifier;
 
 @interface PBGitRevList : NSObject {
-	__weak PBGitRepository *repository;
-	PBGitRevSpecifier *currentRev;
+PBGitRevSpecifier *currentRev;
 	BOOL isGraphing;
 
 	NSThread *parseThread;

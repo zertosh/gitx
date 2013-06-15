@@ -23,6 +23,8 @@ NSString *kPBGitRepositoryEventPathsUserInfoKey = @"kPBGitRepositoryEventPathsUs
 @interface PBGitRepositoryWatcher ()
 
 @property (nonatomic, weak) PBGitRepository *repository;
+@property (nonatomic, strong) PBGitRepositoryWatcher* ownRef;
+
 
 - (void) _handleEventCallback:(NSArray *)eventPaths;
 @end
@@ -212,7 +214,7 @@ void PBGitRepositoryWatcherCallback(ConstFSEventStreamRef streamRef,
 	// set initial state
 	[self _gitDirectoryChanged];
 	[self _indexChanged];
-	ownRef = self; // The callback has no reference to us, so we need to stay alive as long as it may be called
+	self.ownRef = self; // The callback has no reference to us, so we need to stay alive as long as it may be called
 	FSEventStreamScheduleWithRunLoop(eventStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
 	FSEventStreamStart(eventStream);
 	_running = YES;
@@ -224,7 +226,7 @@ void PBGitRepositoryWatcherCallback(ConstFSEventStreamRef streamRef,
 
 	FSEventStreamStop(eventStream);
 	FSEventStreamUnscheduleFromRunLoop(eventStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-	ownRef = nil; // Now that we can't be called anymore, we can allow ourself to be -dealloc'd
+	self.ownRef = nil; // Now that we can't be called anymore, we can allow ourself to be -dealloc'd
 	_running = NO;
 }
 
