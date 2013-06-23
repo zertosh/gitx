@@ -343,6 +343,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		4A0B5BD215FE2DA600ACCB61 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
 		4A0B5BD415FE2DC900ACCB61 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
+		4A36D8141776C76C008DCB7B /* Scripting+iTerm2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Scripting+iTerm2.h"; sourceTree = "<group>"; };
 		4A40159614067B6300DB9C07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		4A40159814067B7A00DB9C07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		4A4EF09F142CBAD5001B8CDF /* ObjectiveGitFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectiveGitFramework.xcodeproj; path = "objective-git/ObjectiveGitFramework.xcodeproj"; sourceTree = "<group>"; };
@@ -533,7 +534,7 @@
 		4A5D76A014A9A9CC00DF6C68 /* RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundedRectangle.h; sourceTree = "<group>"; };
 		4A5D76A114A9A9CC00DF6C68 /* RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedRectangle.m; sourceTree = "<group>"; };
 		4A5D76A214A9A9CC00DF6C68 /* speedtest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speedtest.h; sourceTree = "<group>"; };
-		4A5D76A314A9A9CC00DF6C68 /* Terminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Terminal.h; sourceTree = "<group>"; };
+		4A5D76A314A9A9CC00DF6C68 /* Scripting+Terminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Scripting+Terminal.h"; sourceTree = "<group>"; };
 		4A5D76A514A9A9CC00DF6C68 /* NSApplication+GitXScripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSApplication+GitXScripting.h"; sourceTree = "<group>"; };
 		4A5D76A614A9A9CC00DF6C68 /* NSApplication+GitXScripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+GitXScripting.m"; sourceTree = "<group>"; };
 		4A5D76A714A9A9CC00DF6C68 /* NSFileHandleExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFileHandleExt.h; sourceTree = "<group>"; };
@@ -739,8 +740,8 @@
 			isa = PBXGroup;
 			children = (
 				4A4EF0AF142CBAD5001B8CDF /* ObjectiveGit.framework */,
-				4A4EF0B3142CBAD5001B8CDF /* libObjectiveGit-iOS.a */,
 				4ADAA9C21602ADB8007A0E6F /* ObjectiveGitTests.octest */,
+				4A4EF0B3142CBAD5001B8CDF /* libObjectiveGit-iOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -908,8 +909,9 @@
 				4A5D769F14A9A9CC00DF6C68 /* PBUnsortableTableHeader.m */,
 				4A5D76A014A9A9CC00DF6C68 /* RoundedRectangle.h */,
 				4A5D76A114A9A9CC00DF6C68 /* RoundedRectangle.m */,
+				4A36D8141776C76C008DCB7B /* Scripting+iTerm2.h */,
+				4A5D76A314A9A9CC00DF6C68 /* Scripting+Terminal.h */,
 				4A5D76A214A9A9CC00DF6C68 /* speedtest.h */,
-				4A5D76A314A9A9CC00DF6C68 /* Terminal.h */,
 				4A5D76A414A9A9CC00DF6C68 /* Util */,
 				4A5D76B314A9A9CC00DF6C68 /* Views */,
 			);

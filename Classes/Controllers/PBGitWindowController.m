@@ -9,11 +9,14 @@
 #import "PBGitWindowController.h"
 #import "PBGitHistoryController.h"
 #import "PBGitCommitController.h"
-#import "Terminal.h"
+
 #import "PBCommitHookFailedSheet.h"
 #import "PBGitXMessageSheet.h"
 #import "PBGitSidebarController.h"
 #import "RJModalRepoSheet.h"
+
+#import "Scripting+iTerm2.h"
+#import "Scripting+Terminal.h"
 
 @interface PBGitWindowController ()
 
@@ -181,12 +184,21 @@
 
 - (IBAction) openInTerminal:(id)sender
 {
-	TerminalApplication *term = [SBApplication applicationWithBundleIdentifier: @"com.apple.Terminal"];
 	NSString *workingDirectory = [[repository workingDirectory] stringByAppendingString:@"/"];
-	NSString *cmd = [NSString stringWithFormat: @"cd \"%@\"; clear; echo '# Opened by GitX:'; git status", workingDirectory];
-	[term doScript: cmd in: nil];
-	[NSThread sleepForTimeInterval: 0.1];
-	[term activate];
+
+	iTermITermApplication *iTerm = [SBApplication applicationWithBundleIdentifier:@"com.googlecode.iterm2"];
+	// POC: #74 assume that anybody with iTerm2 installed prefers it over Terminal.app
+	if (iTerm) {
+		NSURL *workingURL = [NSURL fileURLWithPath:workingDirectory isDirectory:YES];
+		// TODO: check if the URL is already open and foreground that instead
+		iTermDocument *iTermDoc = [iTerm open:workingURL];
+	} else {
+		TerminalApplication *term = [SBApplication applicationWithBundleIdentifier: @"com.apple.Terminal"];
+		NSString *cmd = [NSString stringWithFormat: @"cd \"%@\"; clear; echo '# Opened by GitX:'; git status", workingDirectory];
+		[term doScript: cmd in: nil];
+		[NSThread sleepForTimeInterval: 0.1];
+		[term activate];
+	}
 }
 
 - (IBAction) refresh:(id)sender
