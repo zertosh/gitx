@@ -66,6 +66,16 @@
 		[self selectStage];
 	else
 		[self selectCurrentBranch];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(expandCollapseItem:) name:NSOutlineViewItemWillExpandNotification object:sourceView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(expandCollapseItem:) name:NSOutlineViewItemWillCollapseNotification object:sourceView];
+
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSOutlineViewItemWillExpandNotification object:sourceView];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSOutlineViewItemWillCollapseNotification object:sourceView];
 }
 
 - (void)closeView
@@ -252,7 +262,8 @@
 {
 	cell.isCheckedOut = [item.revSpecifier isEqual:[self.repository headRef]];
 
-	[cell setImage:[item icon]];
+    NSImage* iconImage = ([cell isHighlighted]) ? [item highlightedIcon] : [item icon];
+	[cell setImage:iconImage];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
@@ -303,6 +314,14 @@
     [sourceView expandItem:submodules];
 
 	[sourceView reloadItem:nil reloadChildren:YES];
+}
+
+- (void)expandCollapseItem:(NSNotification*)aNotification
+{
+    NSObject* child = [[aNotification userInfo] valueForKey:@"NSObject"];
+    if ([child isKindOfClass:[PBSourceViewItem class]]) {
+        ((PBSourceViewItem*)child).isExpanded = [aNotification.name isEqualToString:NSOutlineViewItemWillExpandNotification];
+    }
 }
 
 #pragma mark NSOutlineView Datasource methods

@@ -105,8 +105,10 @@
 	if (!node) {
 		if ([firstTitle isEqualToString:[[theRevSpecifier ref] remoteName]])
 			node = [PBGitSVRemoteItem remoteItemWithTitle:firstTitle];
-		else
+		else {
 			node = [PBGitSVFolderItem folderItemWithTitle:firstTitle];
+            node.isExpanded = [[self title] isEqualToString:@"BRANCHES"];
+        }
 		[self addChild:node];
 	}
 
@@ -131,7 +133,20 @@
 
 - (NSImage *) icon
 {
-	return nil;
+    return [self iconNamed:[self iconName]];
+}
+
+- (NSImage *) highlightedIcon
+{
+    return [self iconNamed:[[self iconName] stringByAppendingString:@"Highlighted"]];
+}
+
+- (NSImage *)iconNamed:(NSString*)name
+{
+    NSImage* iconImage = [NSImage imageNamed:name];
+    [iconImage setSize:NSMakeSize(16,16)];
+    [iconImage setCacheMode:NSImageCacheAlways];
+    return iconImage;
 }
 
 - (NSString *)title
