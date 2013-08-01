@@ -234,6 +234,29 @@
 	[PBDiffWindowController showDiffWindowWithFiles:nil fromCommit:commit diffCommit:nil];
 }
 
+#pragma mark Stash
+
+-(void) stashPop:(id)sender
+{
+    NSLog(@"stashPop: %@", [sender refish]);
+}
+
+-(void) stashApply:(id)sender
+{
+    NSLog(@"stashApply: %@", [sender refish]);
+}
+
+-(void) stashDrop:(id)sender
+{
+    NSLog(@"stashDrop: %@", [sender refish]);
+}
+
+-(void) stashViewDiff:(id)sender
+{
+    PBGitStash * stash = [historyController.repository stashForRef:[sender refish]];
+    [PBDiffWindowController showDiffWindowWithFiles:nil fromCommit:stash.ancesterCommit diffCommit:stash.commit];
+}
+
 #pragma mark Tags
 
 - (void) createTag:(PBRefMenuItem *)sender
