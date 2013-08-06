@@ -294,7 +294,9 @@ int addSubmoduleName(git_submodule *module, const char* name, void * context)
     [self loadSubmodules];
     
 	[self willChangeValueForKey:@"refs"];
+	[self willChangeValueForKey:@"stashes"];
 	[self didChangeValueForKey:@"refs"];
+	[self didChangeValueForKey:@"stashes"];
 
 	[[[self windowController] window] setTitle:[self displayName]];
 }
