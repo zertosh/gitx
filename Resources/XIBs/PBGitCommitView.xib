@@ -872,6 +872,15 @@
 				<bool key="NSFilterRestrictsInsertion">YES</bool>
 				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
+			<object class="NSArrayController" id="803565714">
+				<bool key="NSEditable">YES</bool>
+				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
+				<bool key="NSAvoidsEmptySelection">YES</bool>
+				<bool key="NSPreservesSelection">YES</bool>
+				<bool key="NSSelectsInsertedObjects">YES</bool>
+				<bool key="NSFilterRestrictsInsertion">YES</bool>
+				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
+			</object>
 			<object class="NSCustomObject" id="1007648253">
 				<string key="NSClassName">PBWebChangesController</string>
 			</object>
@@ -976,6 +985,22 @@
 						<reference key="destination" ref="897820076"/>
 					</object>
 					<int key="connectionID">325</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">trackedFilesController</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="803565714"/>
+					</object>
+					<int key="connectionID">341</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">stashButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="897820076"/>
+					</object>
+					<int key="connectionID">342</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1216,6 +1241,22 @@
 						</object>
 					</object>
 					<int key="connectionID">333</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: index.indexChanges</string>
+						<reference key="source" ref="803565714"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="803565714"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">contentArray: index.indexChanges</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">index.indexChanges</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">340</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1545,6 +1586,12 @@
 						<reference key="object" ref="1070556424"/>
 						<reference key="parent" ref="666720171"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">335</int>
+						<reference key="object" ref="803565714"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Tracked Files</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1594,6 +1641,7 @@
 				<string key="321.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="322.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="323.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="335.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="45.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="46.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="47.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1613,7 +1661,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">333</int>
+			<int key="maxID">342</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1672,6 +1720,8 @@
 						<string key="commitSplitView">PBNiceSplitView</string>
 						<string key="controlsTabView">NSTabView</string>
 						<string key="indexController">PBGitIndexController</string>
+						<string key="stashButton">NSButton</string>
+						<string key="trackedFilesController">NSArrayController</string>
 						<string key="unstagedFilesController">NSArrayController</string>
 						<string key="webController">PBWebChangesController</string>
 					</dictionary>
@@ -1699,6 +1749,14 @@
 						<object class="IBToOneOutletInfo" key="indexController">
 							<string key="name">indexController</string>
 							<string key="candidateClassName">PBGitIndexController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="stashButton">
+							<string key="name">stashButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="trackedFilesController">
+							<string key="name">trackedFilesController</string>
+							<string key="candidateClassName">NSArrayController</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="unstagedFilesController">
 							<string key="name">unstagedFilesController</string>
