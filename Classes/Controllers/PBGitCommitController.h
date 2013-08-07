@@ -33,4 +33,8 @@
 - (IBAction) commit:(id) sender;
 - (IBAction) forceCommit:(id) sender;
 - (IBAction)signOff:(id)sender;
+
+- (NSView *) nextKeyViewFor:(NSView *)view;
+- (NSView *) previousKeyViewFor:(NSView *)view;
+
 @end

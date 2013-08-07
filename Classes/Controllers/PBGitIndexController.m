@@ -19,6 +19,8 @@
 
 @implementation PBGitIndexController
 
+@synthesize stagedTable, unstagedTable;
+
 - (void)awakeFromNib
 {
 	[unstagedTable setDoubleAction:@selector(tableClicked:)];
@@ -384,6 +386,18 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
 		[commitController.index stageFiles:files];
 
 	return YES;
+}
+
+# pragma mark Key View Chain
+
+-(NSView *)nextKeyViewFor:(NSView *)view
+{
+    return [commitController nextKeyViewFor:view];
+}
+
+-(NSView *)previousKeyViewFor:(NSView *)view
+{
+    return [commitController previousKeyViewFor:view];
 }
 
 @end
