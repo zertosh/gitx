@@ -39,7 +39,7 @@
     _indexCommit = [PBGitCommit commitWithRepository:repo andSha:indexSha];
     _ancesterCommit = [PBGitCommit commitWithRepository:repo andSha:ancestorSha];
     
-    NSLog(@" stash: %zd, %@, %@, %@",_index,[_commit shortName], [_ancesterCommit  shortName], [_indexCommit shortName]);
+    //NSLog(@" stash: %zd, %@, %@, %@",_index,[_commit shortName], [_ancesterCommit  shortName], [_indexCommit shortName]);
     return self;
 }
 
