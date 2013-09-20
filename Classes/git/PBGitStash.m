@@ -21,6 +21,11 @@
 
 -(id)initWithRepository:(PBGitRepository *)repo stashOID:(git_oid)stash_id index:(size_t)index message:(NSString *)message
 {
+	self = [super init];
+	if (!self) {
+		return nil;
+	}
+	
     _index = index;
     _message = message;
     
