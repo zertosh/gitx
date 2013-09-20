@@ -14,14 +14,15 @@
 
 + (id)itemWithStash:(PBGitStash *)stash
 {
-    NSString * title = [NSString stringWithFormat:@"@{%zd}: %@", stash.index, stash.message];
-    PBGitSVStashItem * item = [self itemWithTitle:title];
+    NSString *title = [NSString stringWithFormat:@"@{%zd}: %@", stash.index, stash.message];
+    PBGitSVStashItem *item = [self itemWithTitle:title];
     item.stash = stash;
     item.revSpecifier = [[PBGitRevSpecifier alloc] initWithRef:stash.ref];
     return item;
 }
 
--(PBGitRef *)ref {
+-(PBGitRef *)ref
+{
     return self.stash.ref;
 }
 

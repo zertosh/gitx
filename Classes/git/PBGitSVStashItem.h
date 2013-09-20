@@ -12,8 +12,8 @@
 
 @interface PBGitSVStashItem : PBSourceViewItem
 
-+ (id) itemWithStash:(PBGitStash*)stash;
++ (id)itemWithStash:(PBGitStash *)stash;
 
-@property (nonatomic, strong) PBGitStash* stash;
+@property (nonatomic, strong) PBGitStash *stash;
 
 @end

@@ -15,12 +15,12 @@
 
 @interface PBGitStash : NSObject
 @property (nonatomic, readonly) size_t index;
-@property (nonatomic, readonly) PBGitCommit * commit;
-@property (nonatomic, readonly) NSString* message;
-@property (nonatomic, readonly) PBGitRef* ref;
+@property (nonatomic, readonly) PBGitCommit *commit;
+@property (nonatomic, readonly) NSString *message;
+@property (nonatomic, readonly) PBGitRef *ref;
 
-@property (nonatomic, readonly) PBGitCommit * indexCommit;
-@property (nonatomic, readonly) PBGitCommit * ancesterCommit;
+@property (nonatomic, readonly) PBGitCommit *indexCommit;
+@property (nonatomic, readonly) PBGitCommit *ancesterCommit;
 
 - (id) initWithRepository:(PBGitRepository *)repo stashOID:(git_oid)stash_id index:(size_t)index message:(NSString *)message;
 

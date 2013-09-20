@@ -29,13 +29,13 @@
     _index = index;
     _message = message;
     
-    GTRepository * gtRepo = repo.gtRepo;
-    NSError * error = nil;
+    GTRepository *gtRepo = repo.gtRepo;
+    NSError *error = nil;
 	GTOID *stashOid = [GTOID oidWithGitOid:&stash_id];
-    GTCommit * gtCommit = (GTCommit *)[gtRepo lookupObjectByOID:stashOid objectType:GTObjectTypeCommit error:&error];
-    NSArray * parents = [gtCommit parents];
-    GTCommit * gtIndexCommit = [parents objectAtIndex:1];
-    GTCommit * gtAncestorCommit = [parents objectAtIndex:0];
+    GTCommit *gtCommit = (GTCommit *)[gtRepo lookupObjectByOID:stashOid objectType:GTObjectTypeCommit error:&error];
+    NSArray *parents = [gtCommit parents];
+    GTCommit *gtIndexCommit = [parents objectAtIndex:1];
+    GTCommit *gtAncestorCommit = [parents objectAtIndex:0];
     
 	_commit = [[PBGitCommit alloc] initWithRepository:repo andCommit:gtCommit];
     _indexCommit = [[PBGitCommit alloc] initWithRepository:repo andCommit:gtIndexCommit];
@@ -52,7 +52,7 @@
 
 -(PBGitRef *)ref
 {
-    NSString * refStr = [NSString stringWithFormat:@"refs/stash@{%zd}", _index];
+    NSString *refStr = [NSString stringWithFormat:@"refs/stash@{%zd}", _index];
     return [[PBGitRef alloc] initWithString:refStr];
 }
 
