@@ -584,7 +584,7 @@ static int stashEnumerationCallback(size_t index,
 
 - (NSArray *) stashes
 {
-    NSMutableArray * stashes = [NSMutableArray array];
+    NSMutableArray *stashes = [NSMutableArray array];
     [self enumerateStashesUsingBlock:^(PBGitStash *stash, BOOL *stop) {
         [stashes addObject:stash];
     }];
@@ -592,7 +592,7 @@ static int stashEnumerationCallback(size_t index,
 }
 
 - (PBGitStash *)stashForRef:(PBGitRef *)ref {
-    __block PBGitStash * found = nil;
+    __block PBGitStash *found = nil;
     [self enumerateStashesUsingBlock:^(PBGitStash *stash, BOOL *stop) {
         if ([stash.ref isEqualToRef:ref]) {
             found = stash;
@@ -640,8 +640,8 @@ static int stashEnumerationCallback(size_t index,
 -(BOOL)stashSaveWithKeepIndex:(BOOL)keepIndex
 {
     int retValue;
-    NSArray * arguments = @[@"stash", @"save", keepIndex?@"--keep-index":@"--no-keep-index"];
-    NSString * output = [self outputInWorkdirForArguments:arguments retValue:&retValue];
+    NSArray *arguments = @[@"stash", @"save", keepIndex?@"--keep-index":@"--no-keep-index"];
+    NSString *output = [self outputInWorkdirForArguments:arguments retValue:&retValue];
     [self willChangeValueForKey:@"stashes"];
 	[self didChangeValueForKey:@"stashes"];
     if (retValue) {
