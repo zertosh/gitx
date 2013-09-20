@@ -26,7 +26,8 @@
     
     GTRepository * gtRepo = repo.gtRepo;
     NSError * error = nil;
-    GTCommit * gtCommit = (GTCommit *)[gtRepo lookupObjectByOid:&stash_id objectType:GTObjectTypeCommit error:&error];
+	GTOID *stashOid = [GTOID oidWithGitOid:&stash_id];
+    GTCommit * gtCommit = (GTCommit *)[gtRepo lookupObjectByOID:stashOid objectType:GTObjectTypeCommit error:&error];
     NSArray * parents = [gtCommit parents];
     GTCommit * gtIndexCommit = [parents objectAtIndex:1];
     GTCommit * gtAncestorCommit = [parents objectAtIndex:0];
