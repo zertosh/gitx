@@ -20,6 +20,11 @@ NSString * const kGitXBranchRefPrefix = @"refs/heads/";
 NSString * const kGitXRemoteRefPrefix = @"refs/remotes/";
 NSString * const kGitXStashRefPrefix  = @"refs/stash@";
 
+@interface PBGitRef ()
+
+@property(nonatomic, strong) NSString* ref;
+
+@end
 
 @implementation PBGitRef
 
@@ -118,6 +123,10 @@ NSString * const kGitXStashRefPrefix  = @"refs/stash@";
 
 - (PBGitRef*) initWithString: (NSString*) s
 {
+	self = [super init];
+	if (!self) {
+		return nil;
+	}
 	ref = s;
 	return self;
 }

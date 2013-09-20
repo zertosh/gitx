@@ -63,7 +63,7 @@ NSString * const kGitXCommitType = @"commit";
 		NSArray *gtParents = self.gtCommit.parents;
 		NSMutableArray *parents = [NSMutableArray arrayWithCapacity:gtParents.count];
 		for (GTCommit *parent in gtParents) {
-			[parents addObject:[PBGitSHA shaWithString:parent.sha]];
+			[parents addObject:[PBGitSHA shaWithString:parent.SHA]];
 		}
 		self.parents = parents;
 	}
@@ -84,11 +84,7 @@ NSString * const kGitXCommitType = @"commit";
 - (NSString *)committer
 {
 	GTSignature *sig = self.gtCommit.committer;
-	if (![sig isEqual:self.gtCommit.author]) {
-		return sig.name
-		;
-	}
-	return nil;
+	return sig.name;
 }
 
 - (NSString *)SVNRevision
@@ -119,9 +115,9 @@ NSString * const kGitXCommitType = @"commit";
 - (PBGitSHA *)sha
 {
 	if (!self->_sha) {
-		const git_oid *oid = git_commit_id(self.gtCommit.git_commit);
+		const git_oid *oid = self.gtCommit.OID.git_oid;
 		if (oid) {
-			PBGitSHA *newSha = [PBGitSHA shaWithOID:*oid];
+			PBGitSHA *newSha = [PBGitSHA shaWithOID:oid];
 			self.sha = newSha;
 		}
 	}
@@ -130,7 +126,7 @@ NSString * const kGitXCommitType = @"commit";
 
 - (NSString *)realSha
 {
-	return self.gtCommit.sha;
+	return self.gtCommit.SHA;
 }
 
 - (BOOL) isOnSameBranchAs:(PBGitCommit *)otherCommit
@@ -214,12 +210,12 @@ NSString * const kGitXCommitType = @"commit";
 
 - (NSMutableArray *)refs
 {
-	return [[self.repository refs] objectForKey:self.sha];
+	return self.repository.refs[self.sha];
 }
 
 - (void) setRefs:(NSMutableArray *)refs
 {
-	[[self.repository refs] setObject:refs forKey:self.sha];
+	self.repository.refs[self.sha] = [NSMutableArray arrayWithArray:refs];
 }
 
 
@@ -242,7 +238,7 @@ NSString * const kGitXCommitType = @"commit";
 
 - (NSString *) shortName
 {
-	return self.gtCommit.shortSha;
+	return self.gtCommit.shortSHA;
 }
 
 - (NSString *) refishType

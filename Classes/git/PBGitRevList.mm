@@ -131,7 +131,7 @@ using namespace std;
 	if (rev.isSimpleRef) {
 		GTObject *object = [repo lookupObjectByRefspec:rev.simpleRef error:&error];
 		if ([object isKindOfClass:[GTCommit class]]) {
-			[enumerator pushSHA:object.sha error:&error];
+			[enumerator pushSHA:object.SHA error:&error];
 		}
 	} else {
 		NSArray *allRefs = [repo referenceNamesWithError:&error];
@@ -139,25 +139,33 @@ using namespace std;
 			if ([param isEqualToString:@"--branches"]) {
 				NSArray *branches = [repo localBranchesWithError:&error];
 				for (GTBranch *branch in branches) {
-					[enumerator pushSHA:branch.sha error:&error];
+					[enumerator pushSHA:branch.SHA error:&error];
 				}
 			} else if ([param isEqualToString:@"--remotes"]) {
 				NSArray *branches = [repo remoteBranchesWithError:&error];
 				for (GTBranch *branch in branches) {
-					[enumerator pushSHA:branch.sha error:&error];
+					[enumerator pushSHA:branch.SHA error:&error];
 				}
 			} else if ([param isEqualToString:@"--tags"]) {
 				for (NSString *ref in allRefs) {
 					if ([ref hasPrefix:@"refs/tags/"]) {
 						GTObject *tag = [repo lookupObjectByRefspec:ref error:&error];
-						if ([tag isKindOfClass:[GTCommit class]])
+						GTCommit *commit = nil;
+						if ([tag isKindOfClass:[GTCommit class]]) {
+							commit = (GTCommit *)tag;
+						} else if ([tag isKindOfClass:[GTTag class]]) {
+							NSError *tagError = nil;
+							commit = [(GTTag *)tag objectByPeelingTagError:&tagError];
+						}
+
+						if ([commit isKindOfClass:[GTCommit class]])
 						{
-							[enumerator pushSHA:tag.sha error:&error];
+							[enumerator pushSHA:commit.SHA error:&error];
 						}
 					}
 				}
 			} else if ([param hasPrefix:@"--glob="]) {
-				[enumerator pushGlob:[param substringFromIndex:@"--glob".length] error:&error];
+				[enumerator pushGlob:[param substringFromIndex:@"--glob=".length] error:&error];
 			} else {
 				[enumerator pushGlob:param error:&error];
 			}
@@ -187,12 +195,12 @@ using namespace std;
 		
 		dispatch_group_async(loadGroup, loadQueue, ^{
 			PBGitCommit *newCommit = nil;
-			PBGitCommit *cachedCommit = [self.commitCache objectForKey:commit.sha];
+			PBGitCommit *cachedCommit = [self.commitCache objectForKey:commit.SHA];
 			if (cachedCommit) {
 				newCommit = cachedCommit;
 			} else {
 				newCommit = [[PBGitCommit alloc] initWithRepository:pbRepo andCommit:commit];
-				[self.commitCache setObject:newCommit forKey:commit.sha];
+				[self.commitCache setObject:newCommit forKey:commit.SHA];
 			}
 			
 			[revisions addObject:newCommit];

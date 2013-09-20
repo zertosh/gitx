@@ -22,9 +22,7 @@ extern NSString * const kGitXRemoteRefPrefix;
 extern NSString * const kGitXStashRefPrefix;
 
 
-@interface PBGitRef : NSObject <PBGitRefish> {
-	NSString* ref;
-}
+@interface PBGitRef : NSObject <PBGitRefish>
 
 // <PBGitRefish>
 - (NSString *) refishName;
@@ -49,6 +47,7 @@ extern NSString * const kGitXStashRefPrefix;
 
 + (PBGitRef*) refFromString: (NSString*) s;
 - (PBGitRef*) initWithString: (NSString*) s;
-@property(readonly) NSString* ref;
+
+@property(nonatomic, strong, readonly) NSString* ref;
 
 @end
