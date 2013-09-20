@@ -31,13 +31,9 @@
     GTCommit * gtIndexCommit = [parents objectAtIndex:1];
     GTCommit * gtAncestorCommit = [parents objectAtIndex:0];
     
-    PBGitSHA * sha = [PBGitSHA shaWithOID:stash_id];
-    PBGitSHA * indexSha = [PBGitSHA shaWithOID:*git_object_id(gtIndexCommit.git_object)];
-    PBGitSHA * ancestorSha = [PBGitSHA shaWithOID:*git_object_id(gtAncestorCommit.git_object)];
-    
-    _commit = [PBGitCommit commitWithRepository:repo andSha:sha];
-    _indexCommit = [PBGitCommit commitWithRepository:repo andSha:indexSha];
-    _ancesterCommit = [PBGitCommit commitWithRepository:repo andSha:ancestorSha];
+	_commit = [[PBGitCommit alloc] initWithRepository:repo andCommit:gtCommit];
+    _indexCommit = [[PBGitCommit alloc] initWithRepository:repo andCommit:gtIndexCommit];
+    _ancesterCommit = [[PBGitCommit alloc] initWithRepository:repo andCommit:gtAncestorCommit];
     
     //NSLog(@" stash: %zd, %@, %@, %@",_index,[_commit shortName], [_ancesterCommit  shortName], [_indexCommit shortName]);
     return self;
