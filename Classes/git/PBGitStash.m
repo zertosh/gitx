@@ -13,12 +13,6 @@
 
 @implementation PBGitStash
 
-@synthesize index = _index;
-@synthesize commit = _commit;
-@synthesize message = _message;
-@synthesize indexCommit = _indexCommit;
-@synthesize ancesterCommit = _ancesterCommit;
-
 -(id)initWithRepository:(PBGitRepository *)repo stashOID:(git_oid)stash_id index:(size_t)index message:(NSString *)message
 {
 	self = [super init];
