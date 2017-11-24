@@ -22,8 +22,6 @@
 	[self addView:generalPrefsView label:@"General" image:[NSImage imageNamed:NSImageNameApplicationIcon]];
 	// INTERGRATION
 	[self addView:integrationPrefsView label:@"Integration" image:[NSImage imageNamed:NSImageNameNetwork]];
-	// UPDATES
-	[self addView:updatesPrefsView label:@"Updates"];
 }
 
 - (void)displayViewForIdentifier:(NSString *)identifier animate:(BOOL)animate

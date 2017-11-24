@@ -36,12 +36,6 @@
                                     <action selector="openPreferencesWindow:" target="-1" id="wRi-Ra-7Ua"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Check for Updates…" id="919">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="checkForUpdates:" target="918" id="920"/>
-                                </connections>
-                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -642,7 +636,6 @@ DQ
             </connections>
         </customObject>
         <userDefaultsController representsSharedInstance="YES" id="912"/>
-        <customObject id="918" customClass="SUUpdater"/>
         <customObject id="oqX-ct-wMx" userLabel="Document Controller" customClass="NSDocumentController"/>
     </objects>
 </document>
