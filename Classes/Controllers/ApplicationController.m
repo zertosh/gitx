@@ -19,12 +19,9 @@
 #import "OpenRecentController.h"
 #import "PBGitBinary.h"
 
-#import <Sparkle/SUUpdater.h>
-#import <Sparkle/SUUpdaterDelegate.h>
-
 static OpenRecentController* recentsDialog = nil;
 
-@interface ApplicationController () <SUUpdaterDelegate>
+@interface ApplicationController ()
 @end
 
 @implementation ApplicationController
@@ -114,9 +111,6 @@ static OpenRecentController* recentsDialog = nil;
 
 - (void)applicationDidFinishLaunching:(NSNotification*)notification
 {
-	[[SUUpdater sharedUpdater] setSendsSystemProfile:YES];
-    [[SUUpdater sharedUpdater] setDelegate:self];
-
 	// Make sure Git's SSH password requests get forwarded to our little UI tool:
 	setenv( "SSH_ASKPASS", [[[NSBundle mainBundle] pathForResource: @"gitx_askpasswd" ofType: @""] UTF8String], 1 );
 	setenv( "DISPLAY", "localhost:0", 1 );
@@ -216,30 +210,6 @@ static OpenRecentController* recentsDialog = nil;
 	}
 	[alert runModal];
 }
-
-#pragma mark Sparkle delegate methods
-
-- (NSArray *)feedParametersForUpdater:(SUUpdater *)updater sendingSystemProfile:(BOOL)sendingProfile
-{
-	NSArray *keys = [NSArray arrayWithObjects:@"key", @"displayKey", @"value", @"displayValue", nil];
-	NSMutableArray *feedParameters = [NSMutableArray array];
-
-    // only add parameters if the profile is being sent this time
-    if (sendingProfile) {
-        NSString *CFBundleGitVersion = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleGitVersion"];
-		if (CFBundleGitVersion)
-			[feedParameters addObject:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"CFBundleGitVersion", @"Full Version", CFBundleGitVersion, CFBundleGitVersion, nil] 
-																  forKeys:keys]];
-
-        NSString *gitVersion = [PBGitBinary version];
-		if (gitVersion)
-			[feedParameters addObject:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"gitVersion", @"git Version", gitVersion, gitVersion, nil] 
-																  forKeys:keys]];
-	}
-
-    return feedParameters;
-}
-
 
 #pragma mark Help menu
 
