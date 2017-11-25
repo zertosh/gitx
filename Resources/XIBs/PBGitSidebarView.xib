@@ -96,9 +96,6 @@
                     <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="momentary" id="48">
                         <font key="font" metaFont="system"/>
                         <segments>
-                            <segment toolTip="Add remote" image="AddRemoteTemplate" width="38">
-                                <nil key="label"/>
-                            </segment>
                             <segment toolTip="Fetch from default remote" image="FetchTemplate" width="38" tag="1">
                                 <nil key="label"/>
                             </segment>

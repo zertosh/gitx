@@ -57,7 +57,6 @@ typedef enum branchFilterTypes {
 // Designated initializer
 - (id)initWithURL:(NSURL *)repositoryURL error:(NSError **)error;
 
-- (void) beginAddRemote:(NSString *)remoteName forURL:(NSString *)remoteURL;
 - (void) beginFetchFromRemoteForRef:(PBGitRef *)ref;
 - (void) beginPullFromRemote:(PBGitRef *)remoteRef forRef:(PBGitRef *)ref rebase:(BOOL)rebase;
 - (void) beginPushRef:(PBGitRef *)ref toRemote:(PBGitRef *)remoteRef;

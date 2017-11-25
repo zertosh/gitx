@@ -48,8 +48,6 @@
 - (IBAction) openInTerminal:(id)sender;
 - (IBAction) refresh:(id)sender;
 
-- (IBAction) showAddRemoteSheet:(id)sender;
-
 - (IBAction) fetchRemote:(id)sender;
 - (IBAction) fetchAllRemotes:(id)sender;
 

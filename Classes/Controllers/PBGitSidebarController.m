@@ -13,7 +13,6 @@
 #import "PBRefController.h"
 #import "PBSourceViewCell.h"
 #import "NSOutlineViewExt.h"
-#import "PBAddRemoteSheet.h"
 #import "PBGitDefaults.h"
 #import "PBHistorySearchController.h"
 #import "PBGitStash.h"
@@ -453,7 +452,6 @@
 #pragma mark Remote controls
 
 enum  {
-	kAddRemoteSegment = 0,
 	kFetchSegment = 1,
 	kPullSegment = 2,
 	kPushSegment = 3
@@ -475,11 +473,6 @@ enum  {
 - (IBAction) fetchPullPushAction:(id)sender
 {
 	NSInteger selectedSegment = [sender selectedSegment];
-
-	if (selectedSegment == kAddRemoteSegment) {
-		[[[PBAddRemoteSheet alloc] initWithWindowController:self.windowController] show];
-		return;
-	}
 
 	NSInteger index = [sourceView selectedRow];
 	PBSourceViewItem *item = [sourceView itemAtRow:index];

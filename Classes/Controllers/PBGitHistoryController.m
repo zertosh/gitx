@@ -18,7 +18,6 @@
 #import "PBCommitList.h"
 #import "PBCreateBranchSheet.h"
 #import "PBCreateTagSheet.h"
-#import "PBAddRemoteSheet.h"
 #import "PBGitSidebarController.h"
 #import "PBGitGradientBarView.h"
 #import "PBDiffWindowController.h"

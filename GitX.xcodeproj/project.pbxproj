@@ -44,7 +44,6 @@
 		4A5D760114A9A90500DF6C68 /* PBGitXMessageSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D75C014A9A90500DF6C68 /* PBGitXMessageSheet.xib */; };
 		4A5D761714A9A99E00DF6C68 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760314A9A99E00DF6C68 /* InfoPlist.strings */; };
 		4A5D761814A9A99E00DF6C68 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760514A9A99E00DF6C68 /* MainMenu.xib */; };
-		4A5D761914A9A99E00DF6C68 /* PBAddRemoteSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760714A9A99E00DF6C68 /* PBAddRemoteSheet.xib */; };
 		4A5D761A14A9A99E00DF6C68 /* PBCloneRepositoryPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760914A9A99E00DF6C68 /* PBCloneRepositoryPanel.xib */; };
 		4A5D761C14A9A99E00DF6C68 /* PBCreateBranchSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760D14A9A99E00DF6C68 /* PBCreateBranchSheet.xib */; };
 		4A5D761D14A9A99E00DF6C68 /* PBCreateTagSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760F14A9A99E00DF6C68 /* PBCreateTagSheet.xib */; };
@@ -109,7 +108,6 @@
 		4A5D772314A9A9CC00DF6C68 /* PBEasyPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76B214A9A9CC00DF6C68 /* PBEasyPipe.m */; };
 		4A5D772414A9A9CC00DF6C68 /* GitXTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76B514A9A9CC00DF6C68 /* GitXTextFieldCell.m */; };
 		4A5D772514A9A9CC00DF6C68 /* GLFileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76B714A9A9CC00DF6C68 /* GLFileView.m */; };
-		4A5D772614A9A9CC00DF6C68 /* PBAddRemoteSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76B914A9A9CC00DF6C68 /* PBAddRemoteSheet.m */; };
 		4A5D772714A9A9CC00DF6C68 /* PBCloneRepositoryPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76BB14A9A9CC00DF6C68 /* PBCloneRepositoryPanel.m */; };
 		4A5D772A14A9A9CC00DF6C68 /* PBCommitHookFailedSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76C114A9A9CC00DF6C68 /* PBCommitHookFailedSheet.m */; };
 		4A5D772B14A9A9CC00DF6C68 /* PBCommitMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76C314A9A9CC00DF6C68 /* PBCommitMessageView.m */; };
@@ -160,7 +158,6 @@
 		978357B1189C074500ADC689 /* TagTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357AC189C074500ADC689 /* TagTemplate.pdf */; };
 		978357B8189C19A000ADC689 /* AddBranchTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B2189C19A000ADC689 /* AddBranchTemplate.pdf */; };
 		978357B9189C19A000ADC689 /* AddLabelTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B3189C19A000ADC689 /* AddLabelTemplate.pdf */; };
-		978357BA189C19A000ADC689 /* AddRemoteTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B4189C19A000ADC689 /* AddRemoteTemplate.pdf */; };
 		978357BB189C19A000ADC689 /* FetchTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B5189C19A000ADC689 /* FetchTemplate.pdf */; };
 		978357BC189C19A000ADC689 /* PullTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B6189C19A000ADC689 /* PullTemplate.pdf */; };
 		978357BD189C19A000ADC689 /* PushTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B7189C19A000ADC689 /* PushTemplate.pdf */; };
@@ -320,7 +317,6 @@
 		4A5D75C014A9A90500DF6C68 /* PBGitXMessageSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PBGitXMessageSheet.xib; sourceTree = "<group>"; };
 		4A5D760414A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
 		4A5D760614A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MainMenu.xib; sourceTree = "<group>"; };
-		4A5D760814A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = PBAddRemoteSheet.xib; sourceTree = "<group>"; };
 		4A5D760A14A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = PBCloneRepositoryPanel.xib; sourceTree = "<group>"; };
 		4A5D760E14A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = PBCreateBranchSheet.xib; sourceTree = "<group>"; };
 		4A5D761014A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = PBCreateTagSheet.xib; sourceTree = "<group>"; };
@@ -448,8 +444,6 @@
 		4A5D76B514A9A9CC00DF6C68 /* GitXTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GitXTextFieldCell.m; sourceTree = "<group>"; };
 		4A5D76B614A9A9CC00DF6C68 /* GLFileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFileView.h; sourceTree = "<group>"; };
 		4A5D76B714A9A9CC00DF6C68 /* GLFileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GLFileView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		4A5D76B814A9A9CC00DF6C68 /* PBAddRemoteSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBAddRemoteSheet.h; sourceTree = "<group>"; };
-		4A5D76B914A9A9CC00DF6C68 /* PBAddRemoteSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBAddRemoteSheet.m; sourceTree = "<group>"; };
 		4A5D76BA14A9A9CC00DF6C68 /* PBCloneRepositoryPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBCloneRepositoryPanel.h; sourceTree = "<group>"; };
 		4A5D76BB14A9A9CC00DF6C68 /* PBCloneRepositoryPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBCloneRepositoryPanel.m; sourceTree = "<group>"; };
 		4A5D76C014A9A9CC00DF6C68 /* PBCommitHookFailedSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBCommitHookFailedSheet.h; sourceTree = "<group>"; };
@@ -531,7 +525,6 @@
 		978357AC189C074500ADC689 /* TagTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TagTemplate.pdf; sourceTree = "<group>"; };
 		978357B2189C19A000ADC689 /* AddBranchTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AddBranchTemplate.pdf; sourceTree = "<group>"; };
 		978357B3189C19A000ADC689 /* AddLabelTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AddLabelTemplate.pdf; sourceTree = "<group>"; };
-		978357B4189C19A000ADC689 /* AddRemoteTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AddRemoteTemplate.pdf; sourceTree = "<group>"; };
 		978357B5189C19A000ADC689 /* FetchTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = FetchTemplate.pdf; sourceTree = "<group>"; };
 		978357B6189C19A000ADC689 /* PullTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PullTemplate.pdf; sourceTree = "<group>"; };
 		978357B7189C19A000ADC689 /* PushTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PushTemplate.pdf; sourceTree = "<group>"; };
@@ -702,7 +695,6 @@
 				978357C6189C23AF00ADC689 /* TreeViewTemplate.pdf */,
 				978357B2189C19A000ADC689 /* AddBranchTemplate.pdf */,
 				978357B3189C19A000ADC689 /* AddLabelTemplate.pdf */,
-				978357B4189C19A000ADC689 /* AddRemoteTemplate.pdf */,
 				978357A8189C074500ADC689 /* BranchTemplate.pdf */,
 				978357BE189C1F5700ADC689 /* CherryPickTemplate.pdf */,
 				978357C4189C238300ADC689 /* DetailViewTemplate.pdf */,
@@ -743,7 +735,6 @@
 			children = (
 				4A5D760314A9A99E00DF6C68 /* InfoPlist.strings */,
 				4A5D760514A9A99E00DF6C68 /* MainMenu.xib */,
-				4A5D760714A9A99E00DF6C68 /* PBAddRemoteSheet.xib */,
 				4A5D760914A9A99E00DF6C68 /* PBCloneRepositoryPanel.xib */,
 				4A5D760D14A9A99E00DF6C68 /* PBCreateBranchSheet.xib */,
 				4A5D760F14A9A99E00DF6C68 /* PBCreateTagSheet.xib */,
@@ -940,8 +931,6 @@
 				BF42F1321E025403004769FF /* GitXTextView.m */,
 				4A5D76B614A9A9CC00DF6C68 /* GLFileView.h */,
 				4A5D76B714A9A9CC00DF6C68 /* GLFileView.m */,
-				4A5D76B814A9A9CC00DF6C68 /* PBAddRemoteSheet.h */,
-				4A5D76B914A9A9CC00DF6C68 /* PBAddRemoteSheet.m */,
 				4A5D76BA14A9A9CC00DF6C68 /* PBCloneRepositoryPanel.h */,
 				4A5D76BB14A9A9CC00DF6C68 /* PBCloneRepositoryPanel.m */,
 				4A5D76C014A9A9CC00DF6C68 /* PBCommitHookFailedSheet.h */,
@@ -1180,7 +1169,6 @@
 				978357B0189C074500ADC689 /* StageTemplate.pdf in Resources */,
 				4A5D75DE14A9A90500DF6C68 /* mainSplitterBar.tiff in Resources */,
 				4A5D75DF14A9A90500DF6C68 /* mainSplitterDimple.tiff in Resources */,
-				978357BA189C19A000ADC689 /* AddRemoteTemplate.pdf in Resources */,
 				978357C3189C1F5700ADC689 /* RebaseTemplate.pdf in Resources */,
 				4A5D75F114A9A90500DF6C68 /* rewindImage.pdf in Resources */,
 				978357B8189C19A000ADC689 /* AddBranchTemplate.pdf in Resources */,
@@ -1199,7 +1187,6 @@
 				4A5D761714A9A99E00DF6C68 /* InfoPlist.strings in Resources */,
 				97CF01FA18A6C5BB00E30F2B /* empty_file.pdf in Resources */,
 				4A5D761814A9A99E00DF6C68 /* MainMenu.xib in Resources */,
-				4A5D761914A9A99E00DF6C68 /* PBAddRemoteSheet.xib in Resources */,
 				978357BD189C19A000ADC689 /* PushTemplate.pdf in Resources */,
 				4A5D761A14A9A99E00DF6C68 /* PBCloneRepositoryPanel.xib in Resources */,
 				4A5D761C14A9A99E00DF6C68 /* PBCreateBranchSheet.xib in Resources */,
@@ -1329,7 +1316,6 @@
 				4A5D772314A9A9CC00DF6C68 /* PBEasyPipe.m in Sources */,
 				4A5D772414A9A9CC00DF6C68 /* GitXTextFieldCell.m in Sources */,
 				4A5D772514A9A9CC00DF6C68 /* GLFileView.m in Sources */,
-				4A5D772614A9A9CC00DF6C68 /* PBAddRemoteSheet.m in Sources */,
 				4A5D772714A9A9CC00DF6C68 /* PBCloneRepositoryPanel.m in Sources */,
 				4A5D772A14A9A9CC00DF6C68 /* PBCommitHookFailedSheet.m in Sources */,
 				4A5D772B14A9A9CC00DF6C68 /* PBCommitMessageView.m in Sources */,
@@ -1425,14 +1411,6 @@
 				4A5D760614A9A99E00DF6C68 /* English */,
 			);
 			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		4A5D760714A9A99E00DF6C68 /* PBAddRemoteSheet.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4A5D760814A9A99E00DF6C68 /* English */,
-			);
-			name = PBAddRemoteSheet.xib;
 			sourceTree = "<group>";
 		};
 		4A5D760914A9A99E00DF6C68 /* PBCloneRepositoryPanel.xib */ = {
