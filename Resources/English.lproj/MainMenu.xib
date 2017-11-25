@@ -356,12 +356,6 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Repository" id="937">
                         <items>
-                            <menuItem title="Create Branch…" keyEquivalent="b" id="938">
-                                <connections>
-                                    <action selector="createBranch:" target="-1" id="941"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="943"/>
                             <menuItem title="Fetch" id="hAa-UP-Llb">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>

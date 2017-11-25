@@ -97,12 +97,6 @@
 		[items addObject:[PBRefMenuItem itemWithTitle:checkoutTitle action:@selector(checkout:) enabled:!isHead]];
 		[items addObject:[PBRefMenuItem separatorItem]];
 
-		// create branch
-		NSString *createBranchTitle = ref.isRemoteBranch
-			? [NSString stringWithFormat:NSLocalizedString(@"Create Branch tracking “%@”…", @"Contextual Menu Item to create a branch tracking the selected remote branch"), refName]
-			: NSLocalizedString(@"Create Branch…", @"Contextual Menu Item to create a new branch at the selected ref");
-		[items addObject:[PBRefMenuItem itemWithTitle:createBranchTitle action:@selector(createBranch:) enabled:YES]];
-
 		// view tag info
 		if (ref.isTag) {
 			[items addObject:[PBRefMenuItem itemWithTitle:NSLocalizedString(@"View Tag Info…", @"Contextual Menu Item to view Information about the selected tag") action:@selector(showTagInfoSheet:) enabled:YES]];
@@ -211,9 +205,6 @@
 
 	if (isSingleCommitSelection) {
 		[items addObject:[PBRefMenuItem itemWithTitle:NSLocalizedString(@"Checkout Commit", @"Contextual Menu Item to check out the selected commit") action:@selector(checkout:) enabled:YES]];
-		[items addObject:[PBRefMenuItem separatorItem]];
-
-		[items addObject:[PBRefMenuItem itemWithTitle:NSLocalizedString(@"Create Branch…", @"Contextual Menu Item to create a branch at the selected commit") action:@selector(createBranch:) enabled:YES]];
 		[items addObject:[PBRefMenuItem separatorItem]];
 	}
 	

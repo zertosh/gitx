@@ -44,7 +44,6 @@
 		4A5D760114A9A90500DF6C68 /* PBGitXMessageSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D75C014A9A90500DF6C68 /* PBGitXMessageSheet.xib */; };
 		4A5D761714A9A99E00DF6C68 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760314A9A99E00DF6C68 /* InfoPlist.strings */; };
 		4A5D761814A9A99E00DF6C68 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760514A9A99E00DF6C68 /* MainMenu.xib */; };
-		4A5D761C14A9A99E00DF6C68 /* PBCreateBranchSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D760D14A9A99E00DF6C68 /* PBCreateBranchSheet.xib */; };
 		4A5D761E14A9A99E00DF6C68 /* PBRemoteProgressSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D761114A9A99E00DF6C68 /* PBRemoteProgressSheet.xib */; };
 		4A5D761F14A9A99E00DF6C68 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D761314A9A99E00DF6C68 /* Preferences.xib */; };
 		4A5D762014A9A99E00DF6C68 /* RepositoryWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D761514A9A99E00DF6C68 /* RepositoryWindow.xib */; };
@@ -109,7 +108,6 @@
 		4A5D772914A9A9CC00DF6C68 /* PBCollapsibleSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76BF14A9A9CC00DF6C68 /* PBCollapsibleSplitView.m */; };
 		4A5D772A14A9A9CC00DF6C68 /* PBCommitHookFailedSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76C114A9A9CC00DF6C68 /* PBCommitHookFailedSheet.m */; };
 		4A5D772B14A9A9CC00DF6C68 /* PBCommitMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76C314A9A9CC00DF6C68 /* PBCommitMessageView.m */; };
-		4A5D772C14A9A9CC00DF6C68 /* PBCreateBranchSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76C514A9A9CC00DF6C68 /* PBCreateBranchSheet.m */; };
 		4A5D772E14A9A9CC00DF6C68 /* PBFileChangesTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76C914A9A9CC00DF6C68 /* PBFileChangesTableView.m */; };
 		4A5D772F14A9A9CC00DF6C68 /* PBGitGradientBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76CB14A9A9CC00DF6C68 /* PBGitGradientBarView.m */; };
 		4A5D773014A9A9CC00DF6C68 /* PBGitRevisionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5D76CD14A9A9CC00DF6C68 /* PBGitRevisionCell.m */; };
@@ -154,7 +152,6 @@
 		978357AF189C074500ADC689 /* RemoteTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357AA189C074500ADC689 /* RemoteTemplate.pdf */; };
 		978357B0189C074500ADC689 /* StageTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357AB189C074500ADC689 /* StageTemplate.pdf */; };
 		978357B1189C074500ADC689 /* TagTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357AC189C074500ADC689 /* TagTemplate.pdf */; };
-		978357B8189C19A000ADC689 /* AddBranchTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B2189C19A000ADC689 /* AddBranchTemplate.pdf */; };
 		978357BB189C19A000ADC689 /* FetchTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B5189C19A000ADC689 /* FetchTemplate.pdf */; };
 		978357BC189C19A000ADC689 /* PullTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B6189C19A000ADC689 /* PullTemplate.pdf */; };
 		978357BD189C19A000ADC689 /* PushTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B7189C19A000ADC689 /* PushTemplate.pdf */; };
@@ -310,7 +307,6 @@
 		4A5D75C014A9A90500DF6C68 /* PBGitXMessageSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PBGitXMessageSheet.xib; sourceTree = "<group>"; };
 		4A5D760414A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
 		4A5D760614A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MainMenu.xib; sourceTree = "<group>"; };
-		4A5D760E14A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = PBCreateBranchSheet.xib; sourceTree = "<group>"; };
 		4A5D761214A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = PBRemoteProgressSheet.xib; sourceTree = "<group>"; };
 		4A5D761414A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Preferences.xib; sourceTree = "<group>"; };
 		4A5D761614A9A99E00DF6C68 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = RepositoryWindow.xib; sourceTree = "<group>"; };
@@ -441,8 +437,6 @@
 		4A5D76C114A9A9CC00DF6C68 /* PBCommitHookFailedSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBCommitHookFailedSheet.m; sourceTree = "<group>"; };
 		4A5D76C214A9A9CC00DF6C68 /* PBCommitMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBCommitMessageView.h; sourceTree = "<group>"; };
 		4A5D76C314A9A9CC00DF6C68 /* PBCommitMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBCommitMessageView.m; sourceTree = "<group>"; };
-		4A5D76C414A9A9CC00DF6C68 /* PBCreateBranchSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBCreateBranchSheet.h; sourceTree = "<group>"; };
-		4A5D76C514A9A9CC00DF6C68 /* PBCreateBranchSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBCreateBranchSheet.m; sourceTree = "<group>"; };
 		4A5D76C814A9A9CC00DF6C68 /* PBFileChangesTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBFileChangesTableView.h; sourceTree = "<group>"; };
 		4A5D76C914A9A9CC00DF6C68 /* PBFileChangesTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBFileChangesTableView.m; sourceTree = "<group>"; };
 		4A5D76CA14A9A9CC00DF6C68 /* PBGitGradientBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBGitGradientBarView.h; sourceTree = "<group>"; };
@@ -514,7 +508,6 @@
 		978357AA189C074500ADC689 /* RemoteTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = RemoteTemplate.pdf; sourceTree = "<group>"; };
 		978357AB189C074500ADC689 /* StageTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = StageTemplate.pdf; sourceTree = "<group>"; };
 		978357AC189C074500ADC689 /* TagTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TagTemplate.pdf; sourceTree = "<group>"; };
-		978357B2189C19A000ADC689 /* AddBranchTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AddBranchTemplate.pdf; sourceTree = "<group>"; };
 		978357B5189C19A000ADC689 /* FetchTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = FetchTemplate.pdf; sourceTree = "<group>"; };
 		978357B6189C19A000ADC689 /* PullTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PullTemplate.pdf; sourceTree = "<group>"; };
 		978357B7189C19A000ADC689 /* PushTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PushTemplate.pdf; sourceTree = "<group>"; };
@@ -680,7 +673,6 @@
 				97CF01F718A6C5BB00E30F2B /* empty_file.pdf */,
 				97CF01F818A6C5BB00E30F2B /* new_file.pdf */,
 				978357C6189C23AF00ADC689 /* TreeViewTemplate.pdf */,
-				978357B2189C19A000ADC689 /* AddBranchTemplate.pdf */,
 				978357A8189C074500ADC689 /* BranchTemplate.pdf */,
 				978357BE189C1F5700ADC689 /* CherryPickTemplate.pdf */,
 				978357C4189C238300ADC689 /* DetailViewTemplate.pdf */,
@@ -721,7 +713,6 @@
 			children = (
 				4A5D760314A9A99E00DF6C68 /* InfoPlist.strings */,
 				4A5D760514A9A99E00DF6C68 /* MainMenu.xib */,
-				4A5D760D14A9A99E00DF6C68 /* PBCreateBranchSheet.xib */,
 				4A5D761114A9A99E00DF6C68 /* PBRemoteProgressSheet.xib */,
 				4A5D761314A9A99E00DF6C68 /* Preferences.xib */,
 				4A5D761514A9A99E00DF6C68 /* RepositoryWindow.xib */,
@@ -919,8 +910,6 @@
 				4A5D76C114A9A9CC00DF6C68 /* PBCommitHookFailedSheet.m */,
 				4A5D76C214A9A9CC00DF6C68 /* PBCommitMessageView.h */,
 				4A5D76C314A9A9CC00DF6C68 /* PBCommitMessageView.m */,
-				4A5D76C414A9A9CC00DF6C68 /* PBCreateBranchSheet.h */,
-				4A5D76C514A9A9CC00DF6C68 /* PBCreateBranchSheet.m */,
 				4A5D76C814A9A9CC00DF6C68 /* PBFileChangesTableView.h */,
 				4A5D76C914A9A9CC00DF6C68 /* PBFileChangesTableView.m */,
 				4A5D76CA14A9A9CC00DF6C68 /* PBGitGradientBarView.h */,
@@ -1153,7 +1142,6 @@
 				4A5D75DF14A9A90500DF6C68 /* mainSplitterDimple.tiff in Resources */,
 				978357C3189C1F5700ADC689 /* RebaseTemplate.pdf in Resources */,
 				4A5D75F114A9A90500DF6C68 /* rewindImage.pdf in Resources */,
-				978357B8189C19A000ADC689 /* AddBranchTemplate.pdf in Resources */,
 				978357C1189C1F5700ADC689 /* CherryPickTemplate.pdf in Resources */,
 				978357C7189C23AF00ADC689 /* TreeViewTemplate.pdf in Resources */,
 				4A5D75FB14A9A90500DF6C68 /* OpenRecentPopup.xib in Resources */,
@@ -1170,7 +1158,6 @@
 				97CF01FA18A6C5BB00E30F2B /* empty_file.pdf in Resources */,
 				4A5D761814A9A99E00DF6C68 /* MainMenu.xib in Resources */,
 				978357BD189C19A000ADC689 /* PushTemplate.pdf in Resources */,
-				4A5D761C14A9A99E00DF6C68 /* PBCreateBranchSheet.xib in Resources */,
 				4A5D761E14A9A99E00DF6C68 /* PBRemoteProgressSheet.xib in Resources */,
 				4A5D761F14A9A99E00DF6C68 /* Preferences.xib in Resources */,
 				4A5D762014A9A99E00DF6C68 /* RepositoryWindow.xib in Resources */,
@@ -1298,7 +1285,6 @@
 				4A5D772914A9A9CC00DF6C68 /* PBCollapsibleSplitView.m in Sources */,
 				4A5D772A14A9A9CC00DF6C68 /* PBCommitHookFailedSheet.m in Sources */,
 				4A5D772B14A9A9CC00DF6C68 /* PBCommitMessageView.m in Sources */,
-				4A5D772C14A9A9CC00DF6C68 /* PBCreateBranchSheet.m in Sources */,
 				4A5D772E14A9A9CC00DF6C68 /* PBFileChangesTableView.m in Sources */,
 				6C5244131E00C66E0051DE20 /* PBHistorySearchMode.m in Sources */,
 				4A5D772F14A9A9CC00DF6C68 /* PBGitGradientBarView.m in Sources */,
@@ -1389,14 +1375,6 @@
 				4A5D760614A9A99E00DF6C68 /* English */,
 			);
 			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		4A5D760D14A9A99E00DF6C68 /* PBCreateBranchSheet.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4A5D760E14A9A99E00DF6C68 /* English */,
-			);
-			name = PBCreateBranchSheet.xib;
 			sourceTree = "<group>";
 		};
 		4A5D761114A9A99E00DF6C68 /* PBRemoteProgressSheet.xib */ = {
