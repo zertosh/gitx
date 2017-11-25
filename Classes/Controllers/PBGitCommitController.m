@@ -513,7 +513,7 @@ BOOL shouldTrashInsteadOfDiscardAnyFileIn(NSArray <PBChangedFile *> *files)
 	if (menuItem.action == @selector(stageFiles:)) {
 		if (isInContextualMenu) {
 			menuItem.title = PBLocalizedStringForArray(filesForStaging,
-													   NSLocalizedString(@"Stage “%@”", @"Stage file menu item (single file with name)"),
+													   NSLocalizedString(@"Stage", @"Stage file menu item (single file with name)"),
 													   NSLocalizedString(@"Stage %i Files", @"Stage file menu item (multiple files with number)"),
 													   NSLocalizedString(@"Stage", @"Stage file menu item (empty selection)"));
 
@@ -524,9 +524,9 @@ BOOL shouldTrashInsteadOfDiscardAnyFileIn(NSArray <PBChangedFile *> *files)
 	else if (menuItem.action == @selector(unstageFiles:)) {
 		if (isInContextualMenu) {
 			menuItem.title = PBLocalizedStringForArray(filesForUnstaging,
-													   NSLocalizedString(@"Unstage “%@”", @"Unstage file menu item (single file with name)"),
-													   NSLocalizedString(@"Unstage %i Files", @"Unstage file menu item (multiple files with number)"),
-													   NSLocalizedString(@"Unstage", @"Unstage file menu item (empty selection)"));
+													   NSLocalizedString(@"Unstage…", @"Unstage file menu item (single file with name)"),
+													   NSLocalizedString(@"Unstage %i Files…", @"Unstage file menu item (multiple files with number)"),
+													   NSLocalizedString(@"Unstage…", @"Unstage file menu item (empty selection)"));
 
 			menuItem.hidden = (filesForUnstaging.count == 0);
 		}
@@ -535,8 +535,8 @@ BOOL shouldTrashInsteadOfDiscardAnyFileIn(NSArray <PBChangedFile *> *files)
 	else if (menuItem.action == @selector(discardFiles:)) {
 		if (isInContextualMenu) {
 			menuItem.title = PBLocalizedStringForArray(filesForStaging,
-													   NSLocalizedString(@"Discard changes to “%@”…", @"Discard changes menu item (single file with name)"),
-													   NSLocalizedString(@"Discard changes to %i Files…", @"Discard changes menu item (multiple files with number)"),
+													   NSLocalizedString(@"Discard…", @"Discard changes menu item (single file with name)"),
+													   NSLocalizedString(@"Discard %i Files…", @"Discard changes menu item (multiple files with number)"),
 													   NSLocalizedString(@"Discard…", @"Discard changes menu item (empty selection)"));
 
 			menuItem.hidden = shouldTrashInsteadOfDiscardAnyFileIn(filesForStaging);
@@ -546,8 +546,8 @@ BOOL shouldTrashInsteadOfDiscardAnyFileIn(NSArray <PBChangedFile *> *files)
 	else if (menuItem.action == @selector(discardFilesForcibly:)) {
 		if (isInContextualMenu) {
 			menuItem.title = PBLocalizedStringForArray(filesForStaging,
-													   NSLocalizedString(@"Discard changes to “%@”", @"Force Discard changes menu item (single file with name)"),
-													   NSLocalizedString(@"Discard changes to  %i Files", @"Force Discard changes menu item (multiple files with number)"),
+													   NSLocalizedString(@"Discard", @"Force Discard changes menu item (single file with name)"),
+													   NSLocalizedString(@"Discard %i Files", @"Force Discard changes menu item (multiple files with number)"),
 													   NSLocalizedString(@"Discard", @"Force Discard changes menu item (empty selection)"));
 			BOOL shouldHide = shouldTrashInsteadOfDiscardAnyFileIn(filesForStaging);
 			menuItem.hidden = shouldHide;
@@ -559,9 +559,9 @@ BOOL shouldTrashInsteadOfDiscardAnyFileIn(NSArray <PBChangedFile *> *files)
 	else if (menuItem.action == @selector(trashFiles:)) {
 		if (isInContextualMenu) {
 			menuItem.title = PBLocalizedStringForArray(filesForStaging,
-													   NSLocalizedString(@"Move “%@” to Trash", @"Move to Trash menu item (single file with name)"),
-													   NSLocalizedString(@"Move %i Files to Trash", @"Move to Trash menu item (multiple files with number)"),
-													   NSLocalizedString(@"Move to Trash", @"Move to Trash menu item (empty selection)"));
+													   NSLocalizedString(@"Move to Trash…", @"Move to Trash menu item (single file with name)"),
+													   NSLocalizedString(@"Move %i Files to Trash…", @"Move to Trash menu item (multiple files with number)"),
+													   NSLocalizedString(@"Move to Trash…", @"Move to Trash menu item (empty selection)"));
 			BOOL isVisible = shouldTrashInsteadOfDiscardAnyFileIn(filesForStaging) && table.tag != 1;
 			menuItem.hidden = !isVisible;
 		}
@@ -577,7 +577,7 @@ BOOL shouldTrashInsteadOfDiscardAnyFileIn(NSArray <PBChangedFile *> *files)
 								  filePath.stringByStandardizingPath];
 			} else {
 				menuItem.title = PBLocalizedStringForArray(selectedFiles,
-														   NSLocalizedString(@"Open “%@”", @"Open File menu item (single file with name)"),
+														   NSLocalizedString(@"Open", @"Open File menu item (single file with name)"),
 														   NSLocalizedString(@"Open %i Files", @"Open File menu item (multiple files with number)"),
 														   NSLocalizedString(@"Open", @"Open File menu item (empty selection)"));
 			}
@@ -588,7 +588,7 @@ BOOL shouldTrashInsteadOfDiscardAnyFileIn(NSArray <PBChangedFile *> *files)
 		BOOL active = selectedFiles.count == 1;
 		if (isInContextualMenu) {
 			if (active) {
-				menuItem.title = [NSString stringWithFormat:NSLocalizedString(@"Reveal “%@” in Finder", @"Reveal File in Finder contextual menu item (single file with name)"),
+				menuItem.title = [NSString stringWithFormat:NSLocalizedString(@"Reveal in Finder", @"Reveal File in Finder contextual menu item (single file with name)"),
 								  selectedFiles.firstObject.path.lastPathComponent];
 			} else {
 				menuItem.title = NSLocalizedString(@"Reveal in Finder", @"Reveal File in Finder contextual menu item (empty selection)");
