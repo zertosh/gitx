@@ -76,8 +76,6 @@ typedef enum branchFilterTypes {
 - (BOOL) stashSave;
 - (BOOL) stashSaveWithKeepIndex:(BOOL)keepIndex;
 
-- (BOOL)ignoreFilePaths:(NSArray *)filePaths error:(NSError **)error;
-
 - (BOOL)updateReference:(PBGitRef *)ref toPointAtCommit:(PBGitCommit *)newCommit;
 - (NSString *)performDiff:(PBGitCommit *)startCommit against:(PBGitCommit *)diffCommit forFiles:(NSArray *)filePaths;
 
