@@ -9,7 +9,6 @@
 #import "PBRefController.h"
 #import "PBGitRevisionCell.h"
 #import "PBRefMenuItem.h"
-#import "PBCreateBranchSheet.h"
 #import "PBGitDefaults.h"
 #import "PBDiffWindowController.h"
 #import "PBGitRevSpecifier.h"
@@ -163,15 +162,6 @@
 {
 	id <PBGitRefish> refish = sender.refishs.firstObject;
 	[historyController.repository rebaseBranch:nil onRefish:refish];
-}
-
-
-#pragma mark Create Branch
-
-- (void) createBranch:(PBRefMenuItem *)sender
-{
-	id <PBGitRefish> refish = sender.refishs.firstObject;
-	[PBCreateBranchSheet beginSheetWithRefish:refish windowController:historyController.windowController];
 }
 
 

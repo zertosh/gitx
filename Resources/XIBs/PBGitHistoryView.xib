@@ -565,18 +565,6 @@ IA
                             <rect key="frame" x="0.0" y="-2" width="955" height="5"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         </box>
-                        <button toolTip="Create Branch" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="330">
-                            <rect key="frame" x="10" y="3" width="37" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Create Branch" bezelStyle="texturedRounded" image="AddBranchTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="331">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="createBranch:" target="-2" id="335"/>
-                                <binding destination="-2" name="enabled" keyPath="singleCommitSelected" id="Ens-Tw-TDc"/>
-                            </connections>
-                        </button>
                         <button toolTip="Merge" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="337">
                             <rect key="frame" x="116" y="3" width="37" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -664,7 +652,6 @@ IA
         </customObject>
     </objects>
     <resources>
-        <image name="AddBranchTemplate" width="25" height="18"/>
         <image name="CherryPickTemplate" width="25" height="18"/>
         <image name="DetailViewTemplate" width="25" height="18"/>
         <image name="MergeTemplate" width="25" height="18"/>
