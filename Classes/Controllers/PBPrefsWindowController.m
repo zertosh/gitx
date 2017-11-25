@@ -20,8 +20,6 @@
 {
 	// GENERAL
 	[self addView:generalPrefsView label:@"General" image:[NSImage imageNamed:NSImageNameApplicationIcon]];
-	// INTERGRATION
-	[self addView:integrationPrefsView label:@"Integration" image:[NSImage imageNamed:NSImageNameNetwork]];
 }
 
 - (void)displayViewForIdentifier:(NSString *)identifier animate:(BOOL)animate

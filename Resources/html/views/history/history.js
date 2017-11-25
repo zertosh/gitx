@@ -33,68 +33,6 @@ var extractPrototypes = function() {
 	fileElementPrototype.parentNode.removeChild(fileElementPrototype);
 }
 
-var confirm_gist = function(confirmation_message) {
-	if (!Controller.isFeatureEnabled_("confirmGist")) {
-		gistie();
-		return;
-	}
-
-	// Set optional confirmation_message
-	confirmation_message = confirmation_message || "Yes. Paste this commit.";
-	var deleteMessage = Controller.getConfig_("github.token") ? " " : "You might not be able to delete it after posting.<br>";
-	var publicMessage = Controller.isFeatureEnabled_("publicGist") ? "<b>public</b>" : "private";
-	// Insert the verification links into div#notification_message
-	var notification_text = 'This will create a ' + publicMessage + ' paste of your commit to <a href="https://gist.github.com/">https://gist.github.com/</a><br>' +
-	deleteMessage +
-	'Are you sure you want to continue?<br/><br/>' +
-	'<a href="#" onClick="hideNotification();return false;" style="color: red;">No. Cancel.</a> | ' +
-	'<a href="#" onClick="gistie();return false;" style="color: green;">' + confirmation_message + '</a>';
-
-	notify(notification_text, 0);
-	// Hide img#spinner, since it?s visible by default
-	$("spinner").style.display = "none";
-}
-
-var gistie = function() {
-	notify("Uploading code to Gistie..", 0);
-
-	var parameters = {public:false, files:{}};
-	var filename = commit.object.subject.replace(/[^a-zA-Z0-9]/g, "-") + ".patch";
-	parameters.files[filename] = {content: commit.object.patch()};
-
-	var accessToken = Controller.getConfig_("github.token"); // obtain a personal access token from https://github.com/settings/applications
-	// TODO: Replace true with private preference
-	if (Controller.isFeatureEnabled_("publicGist"))
-		parameters.public = true;
-
-	var t = new XMLHttpRequest();
-	t.onreadystatechange = function() {
-		if (t.readyState == 4) {
-			var success = t.status >= 200 && t.status < 300;
-			var response = JSON.parse(t.responseText);
-			if (success && response.html_url) {
-				notify("Code uploaded to <a target='_new' href='"+response.html_url+"'>"+response.html_url+"</a>", 1);
-			} else {
-				notify("Pasting to Gistie failed :(.", -1);
-				Controller.log_(t.responseText);
-			}
-		}
-	}
-
-	t.open('POST', "https://api.github.com/gists");
-	if (accessToken)
-		t.setRequestHeader('Authorization', 'token '+accessToken);
-	t.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-	t.setRequestHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
-	t.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-
-	try {
-		t.send(JSON.stringify(parameters));
-	} catch(e) {
-		notify("Pasting to Gistie failed: " + e, -1);
-	}
-}
-
 var selectCommit = function(a) {
 	Controller.selectCommit_(a);
 };
@@ -258,20 +196,6 @@ var showImage = function(element, filename)
 	return false;
 }
 
-var enableFeature = function(feature, element)
-{
-	if(!Controller || Controller.isFeatureEnabled_(feature)) {
-		element.style.display = "";
-	} else {
-		element.style.display = "none";
-	}
-}
-
-var enableFeatures = function()
-{
-	enableFeature("gist", $("gist"))
-}
-
 var loadCommitDiff = function(jsonData)
 {
 	var diffData = JSON.parse(jsonData)
@@ -384,5 +308,4 @@ var loadCommitDiff = function(jsonData)
 		$("diff").innerHTML = "<a class='showdiff' href='' onclick='showDiff(); return false;'>This is a large commit.<br>Click here or press 'v' to view.</a>";
 
 	hideNotification();
-	enableFeatures();
 }
