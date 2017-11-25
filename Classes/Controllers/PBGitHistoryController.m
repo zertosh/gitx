@@ -18,7 +18,6 @@
 #import "PBGitRevisionCell.h"
 #import "PBCommitList.h"
 #import "PBCreateBranchSheet.h"
-#import "PBCreateTagSheet.h"
 #import "PBGitSidebarController.h"
 #import "PBGitGradientBarView.h"
 #import "PBDiffWindowController.h"
@@ -338,7 +337,7 @@
 	}
 	
 	if ([self respondsToSelector:action]) {
-		if (action == @selector(createBranch:) || action == @selector(createTag:)) {
+		if (action == @selector(createBranch:)) {
 			return self.singleCommitSelected;
 		}
 		
@@ -696,15 +695,6 @@
 		[PBCreateBranchSheet beginSheetWithRefish:currentRef windowController:self.windowController];
 	else
 		[PBCreateBranchSheet beginSheetWithRefish:selectedCommit windowController:self.windowController];
-}
-
-- (IBAction) createTag:(id)sender
-{
-	PBGitCommit *selectedCommit = self.selectedCommits.firstObject;
-	if (!selectedCommit)
-		[PBCreateTagSheet beginSheetWithRefish:[repository.currentBranch ref] windowController:self.windowController];
-	else
-		[PBCreateTagSheet beginSheetWithRefish:selectedCommit windowController:self.windowController];
 }
 
 - (IBAction) merge:(id)sender

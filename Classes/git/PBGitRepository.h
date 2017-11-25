@@ -66,7 +66,6 @@ typedef enum branchFilterTypes {
 - (BOOL) cherryPickRefish:(id <PBGitRefish>)ref;
 - (BOOL) rebaseBranch:(id <PBGitRefish>)branch onRefish:(id <PBGitRefish>)upstream;
 - (BOOL) createBranch:(NSString *)branchName atRefish:(id <PBGitRefish>)ref;
-- (BOOL) createTag:(NSString *)tagName message:(NSString *)message atRefish:(id <PBGitRefish>)commitSHA;
 - (BOOL) deleteRemote:(PBGitRef *)ref;
 - (BOOL) deleteRef:(PBGitRef *)ref;
 - (BOOL) stashPop:(PBGitStash *)stash;
