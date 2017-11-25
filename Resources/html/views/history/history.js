@@ -95,23 +95,6 @@ var gistie = function() {
 	}
 }
 
-var setGravatar = function(email, image) {
-	image.src=(createGravatarUrl(email, image));
-};
-
-var createGravatarUrl = function(email, image) {
-	if(Controller && !Controller.isFeatureEnabled_("gravatar")) {
-		return "";
-	}
-	
-	var gravatarBaseUrl = "https://www.gravatar.com/avatar/";
-	var gravatarParameter = "?d=wavatar&s=60";
-	
-	var gravatarID = (email && hex_md5(email.toLowerCase().replace(/ /g, ""))) ||  "";
-	
-	return gravatarBaseUrl + gravatarID + gravatarParameter;
-};
-
 var selectCommit = function(a) {
 	Controller.selectCommit_(a);
 };
@@ -161,7 +144,6 @@ var loadCommit = function(commitObject, currentRef) {
 
 	$("authorID").innerHTML = formatEmail(commit.author_name, commit.author_email);
 	$("date").innerHTML = commit.author_date;
-	setGravatar(commit.author_email, $("author_gravatar"));
 
 	if (commit.committer_name != commit.author_name) {
 		$("committerID").parentNode.style.display = "";
@@ -169,7 +151,6 @@ var loadCommit = function(commitObject, currentRef) {
 
 		$("committerDate").parentNode.style.display = "";
 		$("committerDate").innerHTML = commit.committer_date;
-		setGravatar(commit.committer_email, $("committer_gravatar"));
 	} else {
 		$("committerID").parentNode.style.display = "none";
 		$("committerDate").parentNode.style.display = "none";
@@ -289,8 +270,6 @@ var enableFeature = function(feature, element)
 var enableFeatures = function()
 {
 	enableFeature("gist", $("gist"))
-	enableFeature("gravatar", $("author_gravatar").parentNode)
-	enableFeature("gravatar", $("committer_gravatar").parentNode)
 }
 
 var loadCommitDiff = function(jsonData)
