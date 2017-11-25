@@ -636,10 +636,6 @@ DQ
             </connections>
         </customObject>
         <userDefaultsController representsSharedInstance="YES" id="912"/>
-        <customObject id="oqX-ct-wMx" userLabel="Document Controller" customClass="NSDocumentController">
-            <connections>
-                <outlet property="firstResponder" destination="-2" id="uGz-RU-RIl"/>
-            </connections>
-        </customObject>
+        <customObject id="oqX-ct-wMx" userLabel="Document Controller" customClass="NSDocumentController"/>
     </objects>
 </document>
