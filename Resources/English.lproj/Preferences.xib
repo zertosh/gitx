@@ -201,12 +201,12 @@
             </subviews>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="28"/>
-        <customView id="87" userLabel="Integration">
-            <rect key="frame" x="0.0" y="0.0" width="400" height="116"/>
+        <customView misplaced="YES" id="87" userLabel="Integration">
+            <rect key="frame" x="0.0" y="0.0" width="400" height="96"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button id="108">
-                    <rect key="frame" x="38" y="38" width="179" height="18"/>
+                    <rect key="frame" x="38" y="18" width="179" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Make Gists public" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="109">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -218,7 +218,7 @@
                     </connections>
                 </button>
                 <button id="97">
-                    <rect key="frame" x="38" y="60" width="181" height="18"/>
+                    <rect key="frame" x="38" y="40" width="181" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Confirm creation of Gists" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="98">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -229,19 +229,8 @@
                         <binding destination="28" name="enabled" keyPath="values.PBEnableGist" id="107"/>
                     </connections>
                 </button>
-                <button id="88">
-                    <rect key="frame" x="18" y="18" width="121" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Enable Gravatar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="91">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <binding destination="28" name="value" keyPath="values.PBEnableGravatar" id="96"/>
-                    </connections>
-                </button>
                 <button id="89">
-                    <rect key="frame" x="18" y="80" width="111" height="18"/>
+                    <rect key="frame" x="18" y="60" width="111" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Enable ‘Gist it’" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="90">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>

@@ -157,9 +157,7 @@ dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo
 
 - (BOOL) isFeatureEnabled:(NSString *)feature
 {
-	if([feature isEqualToString:@"gravatar"])
-		return [PBGitDefaults isGravatarEnabled];
-	else if([feature isEqualToString:@"gist"])
+	if([feature isEqualToString:@"gist"])
 		return [PBGitDefaults isGistEnabled];
 	else if([feature isEqualToString:@"confirmGist"])
 		return [PBGitDefaults confirmPublicGists];
