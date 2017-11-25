@@ -79,7 +79,6 @@
 
 // Repository Methods
 - (IBAction) createBranch:(id)sender;
-- (IBAction) createTag:(id)sender;
 - (IBAction) merge:(id)sender;
 - (IBAction) cherryPick:(id)sender;
 - (IBAction) rebase:(id)sender;

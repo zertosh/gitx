@@ -103,9 +103,6 @@
 			: NSLocalizedString(@"Create Branch…", @"Contextual Menu Item to create a new branch at the selected ref");
 		[items addObject:[PBRefMenuItem itemWithTitle:createBranchTitle action:@selector(createBranch:) enabled:YES]];
 
-		// create tag
-		[items addObject:[PBRefMenuItem itemWithTitle:NSLocalizedString(@"Create Tag…", @"Contextual Menu Item to create a tag at the selected ref") action:@selector(createTag:) enabled:YES]];
-
 		// view tag info
 		if (ref.isTag) {
 			[items addObject:[PBRefMenuItem itemWithTitle:NSLocalizedString(@"View Tag Info…", @"Contextual Menu Item to view Information about the selected tag") action:@selector(showTagInfoSheet:) enabled:YES]];
@@ -217,7 +214,6 @@
 		[items addObject:[PBRefMenuItem separatorItem]];
 
 		[items addObject:[PBRefMenuItem itemWithTitle:NSLocalizedString(@"Create Branch…", @"Contextual Menu Item to create a branch at the selected commit") action:@selector(createBranch:) enabled:YES]];
-		[items addObject:[PBRefMenuItem itemWithTitle:NSLocalizedString(@"Create Tag…", @"Contextual Menu Item to create a tag at the selected commit") action:@selector(createTag:) enabled:YES]];
 		[items addObject:[PBRefMenuItem separatorItem]];
 	}
 	

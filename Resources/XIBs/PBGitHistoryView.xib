@@ -439,7 +439,7 @@
                                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                             <tableColumns>
-                                                                                <tableColumn editable="NO" width="212" minWidth="16" maxWidth="1000" id="18">
+                                                                                <tableColumn identifier="" editable="NO" width="212" minWidth="16" maxWidth="1000" id="18">
                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                                         <font key="font" metaFont="smallSystem"/>
                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -577,18 +577,6 @@ IA
                                 <binding destination="-2" name="enabled" keyPath="singleCommitSelected" id="Ens-Tw-TDc"/>
                             </connections>
                         </button>
-                        <button toolTip="Create Tag" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="332">
-                            <rect key="frame" x="55" y="3" width="37" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Create Tag" bezelStyle="texturedRounded" image="AddLabelTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="333">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="createTag:" target="-2" id="334"/>
-                                <binding destination="-2" name="enabled" keyPath="singleCommitSelected" id="aQb-dV-d2k"/>
-                            </connections>
-                        </button>
                         <button toolTip="Merge" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="337">
                             <rect key="frame" x="116" y="3" width="37" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -677,7 +665,6 @@ IA
     </objects>
     <resources>
         <image name="AddBranchTemplate" width="25" height="18"/>
-        <image name="AddLabelTemplate" width="25" height="18"/>
         <image name="CherryPickTemplate" width="25" height="18"/>
         <image name="DetailViewTemplate" width="25" height="18"/>
         <image name="MergeTemplate" width="25" height="18"/>

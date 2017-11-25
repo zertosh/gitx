@@ -888,28 +888,6 @@
 	return YES;
 }
 
-- (BOOL) createTag:(NSString *)tagName message:(NSString *)message atRefish:(id <PBGitRefish>)target
-{
-	if (!tagName)
-		return NO;
-
-	NSError *error = nil;
-
-	GTObject *object = [self.gtRepo lookUpObjectByRevParse:[target refishName] error:&error];
-	GTTag *newTag = nil;
-	if (object && !error) {
-		newTag = [self.gtRepo createTagNamed:tagName target:object tagger:self.gtRepo.userSignatureForNow message:message error:&error];
-	}
-
-	if (!newTag || error) {
-		[self.windowController showErrorSheet:error];
-		return NO;
-	}
-
-	[self reloadRefs];
-	return YES;
-}
-
 - (BOOL) deleteRemote:(PBGitRef *)ref
 {
 	if (!ref || ([ref refishType] != kGitXRemoteType))

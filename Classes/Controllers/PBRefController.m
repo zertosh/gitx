@@ -10,7 +10,6 @@
 #import "PBGitRevisionCell.h"
 #import "PBRefMenuItem.h"
 #import "PBCreateBranchSheet.h"
-#import "PBCreateTagSheet.h"
 #import "PBGitDefaults.h"
 #import "PBDiffWindowController.h"
 #import "PBGitRevSpecifier.h"
@@ -255,12 +254,6 @@
 }
 
 #pragma mark Tags
-
-- (void) createTag:(PBRefMenuItem *)sender
-{
-	id <PBGitRefish> refish = [sender refishs].firstObject;
-	[PBCreateTagSheet beginSheetWithRefish:refish windowController:historyController.windowController];
-}
 
 - (void) showTagInfoSheet:(PBRefMenuItem *)sender
 {
