@@ -124,18 +124,6 @@
 			<direct-parameter type="specifier" description="The object(s) to delete."/>
 		</command>
 
-		<command name="duplicate" code="coreclon" description="Copy an object.">
-			<cocoa class="NSCloneCommand"/>
-			<access-group identifier="*"/>
-			<direct-parameter type="specifier" requires-access="r" description="The object(s) to copy."/>
-			<parameter name="to" code="insh" type="location specifier" description="The location for the new copy or copies." optional="yes">
-				<cocoa key="ToLocation"/>
-			</parameter>
-			<parameter name="with properties" code="prdt" type="record" description="Properties to set in the new copy or copies right away." optional="yes">
-				<cocoa key="WithProperties"/>
-			</parameter>
-		</command>
-
 		<command name="exists" code="coredoex" description="Verify that an object exists.">
 			<cocoa class="NSExistsCommand"/>
 			<access-group identifier="*"/>
@@ -299,16 +287,6 @@
 			<direct-parameter type="file" description="The path where the repository should be created."/>
 		</command>
 
-		<command name="clone repository" code="GitXClon" description="Clone a repository.">
-			<direct-parameter type="text" description="The URL of the repository to clone."/>
-			<parameter name="to" code="URL " type="file" description="The location for the new repository.">
-				<cocoa key="destinationURL"/>
-			</parameter>
-			<parameter name="is bare" code="Bare" type="boolean" optional="yes" description="Indicates whether the created repository should be a bare repository.">
-				<cocoa key="isBare"/>
-			</parameter>
-		</command>
-
 		<command name="search" code="GitXSrch" description="Highlight commits that match the given search string.">
 			<direct-parameter type="specifier" description="The repository document to search."/>
 			<parameter name="string" code="SRCH" type="text" optional="yes" description="The string to search for.">
@@ -328,9 +306,6 @@
 			</responds-to>
 			<responds-to name="init repository">
 				<cocoa method="initRepositoryScriptCommand:"/>
-			</responds-to>
-			<responds-to name="clone repository">
-				<cocoa method="cloneRepositoryScriptCommand:"/>
 			</responds-to>
 		</class-extension>
 

@@ -85,12 +85,6 @@
                                     <action selector="openDocument:" target="-1" id="907"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Clone…" id="956">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="showCloneRepository:" target="-1" id="958"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Open Recent" id="124">
                                 <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="125">
                                     <items>
@@ -108,12 +102,6 @@
                             <menuItem title="Close" keyEquivalent="w" id="73">
                                 <connections>
                                     <action selector="performClose:" target="-1" id="193"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Clone To…" id="954">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="cloneTo:" target="-1" id="955"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" hidden="YES" id="74">
