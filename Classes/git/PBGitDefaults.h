@@ -14,9 +14,6 @@
 + (NSInteger) commitMessageViewVerticalLineLength;
 + (NSInteger) commitMessageViewVerticalBodyLineLength;
 + (BOOL) commitMessageViewHasVerticalLine;
-+ (BOOL) isGistEnabled;
-+ (BOOL) confirmPublicGists;
-+ (BOOL) isGistPublic;
 + (BOOL)showWhitespaceDifferences;
 + (BOOL) shouldCheckoutBranch;
 + (void) setShouldCheckoutBranch:(BOOL)shouldCheckout;

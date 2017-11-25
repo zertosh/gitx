@@ -155,18 +155,6 @@ dragDestinationActionMaskForDraggingInfo:(id<NSDraggingInfo>)draggingInfo
 	return flags > 0;
 }
 
-- (BOOL) isFeatureEnabled:(NSString *)feature
-{
-	if([feature isEqualToString:@"gist"])
-		return [PBGitDefaults isGistEnabled];
-	else if([feature isEqualToString:@"confirmGist"])
-		return [PBGitDefaults confirmPublicGists];
-	else if([feature isEqualToString:@"publicGist"])
-		return [PBGitDefaults isGistPublic];
-	else
-		return YES;
-}
-
 #pragma mark Using async function from JS
 
 - (void) runCommand:(WebScriptObject *)arguments inRepository:(PBGitRepository *)repo callBack:(WebScriptObject *)callBack
