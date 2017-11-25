@@ -14,7 +14,6 @@
 #import "PBGitXMessageSheet.h"
 #import "PBGitSidebarController.h"
 #import "RJModalRepoSheet.h"
-#import "PBAddRemoteSheet.h"
 #import "PBSourceViewItem.h"
 #import "PBGitRevSpecifier.h"
 #import "PBGitRef.h"
@@ -290,12 +289,6 @@
 }
 
 #pragma mark IBActions
-
-- (IBAction) showAddRemoteSheet:(id)sender
-{
-	[[[PBAddRemoteSheet alloc] initWithWindowController:self] show];
-}
-
 
 - (IBAction) fetchRemote:(id)sender {
 	PBGitRef *ref = [self selectedItem].ref;
