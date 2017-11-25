@@ -26,7 +26,6 @@ typedef enum GitXPrintingErrorHandling GitXPrintingErrorHandling;
 - (void) closeSaving:(GitXSaveOptions)saving savingIn:(NSURL *)savingIn;  // Close a document.
 - (void) printWithProperties:(NSDictionary *)withProperties printDialog:(BOOL)printDialog;  // Print a document.
 - (void) delete;  // Delete an object.
-- (void) duplicateTo:(SBObject *)to withProperties:(NSDictionary *)withProperties;  // Copy an object.
 - (void) moveTo:(SBObject *)to;  // Move an object to a new location.
 - (void) searchString:(NSString *)string inMode:(NSInteger)inMode;  // Highlight commits that match the given search string.
 
@@ -56,7 +55,6 @@ typedef enum GitXPrintingErrorHandling GitXPrintingErrorHandling;
 - (void) showDiff:(NSString *)x;  // Show the supplied diff output in a GitX window.
 - (void) performDiffIn:(NSURL *)x withOptions:(NSArray<NSString *> *)withOptions;  // Perform a diff operation in a repository.
 - (void) createRepository:(NSURL *)x;  // Create a git repository at the given filesystem URL.
-- (void) cloneRepository:(NSString *)x to:(NSURL *)to isBare:(BOOL)isBare;  // Clone a repository.
 
 @end
 

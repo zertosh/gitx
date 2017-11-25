@@ -23,7 +23,6 @@ void usage(char const *programName)
 	printf("   or: %s <revlist options>\n", programName);
 	printf("   or: %s (--diff)\n", programName);
 	printf("   or: %s (--init)\n", programName);
-	printf("   or: %s (--clone <repository> [destination])\n", programName);
 	printf("\n");
 	printf("    -h, --help             print this help\n");
 	printf("    -v, --version          prints version info for both GitX and git\n");
@@ -76,9 +75,6 @@ void usage(char const *programName)
 	printf("    These commands will create a git repository and then open it up in GitX\n");
 	printf("\n");
 	printf("    --init                  creates (or reinitializes) a git repository\n");
-	printf("    --clone <repository URL> [destination path]\n");
-	printf("                            clones the repository (at the specified URL) into the current\n");
-	printf("                            directory or into the specified path\n");
 	printf("\n");
 	exit(1);
 }
@@ -127,29 +123,6 @@ void handleInit(NSURL *repositoryURL)
 {
 	GitXApplication *gitXApp = [SBApplication applicationWithBundleIdentifier:kGitXBundleIdentifier];
 	[gitXApp createRepository:repositoryURL];
-
-	exit(0);
-}
-
-void handleClone(NSURL *repositoryURL, NSMutableArray *arguments)
-{
-	if ([arguments count]) {
-		NSString *repository = [arguments objectAtIndex:0];
-
-		if ([arguments count] > 1) {
-			NSURL *url = [NSURL fileURLWithPath:[arguments objectAtIndex:1]];
-			if (url)
-				repositoryURL = url;
-		}
-
-		GitXApplication *gitXApp = [SBApplication applicationWithBundleIdentifier:kGitXBundleIdentifier];
-		[gitXApp cloneRepository:repository to:repositoryURL isBare:NO];
-	}
-	else {
-		printf("Error: --clone needs the URL of the repository to clone.\n");
-		exit(2);
-	}
-
 
 	exit(0);
 }
@@ -354,11 +327,6 @@ int main(int argc, const char** argv)
 			if ([firstArgument isEqualToString:@"--init"]) {
 				[arguments removeObjectAtIndex:0];
 				handleInit(wdURL);
-			}
-			
-			if ([firstArgument isEqualToString:@"--clone"]) {
-				[arguments removeObjectAtIndex:0];
-				handleClone(wdURL, arguments);
 			}
 			
 			if (searchModeForCommandLineArgument(firstArgument)) {

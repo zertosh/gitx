@@ -17,8 +17,6 @@
 + (BOOL)showWhitespaceDifferences;
 + (BOOL) shouldCheckoutBranch;
 + (void) setShouldCheckoutBranch:(BOOL)shouldCheckout;
-+ (NSString *) recentCloneDestination;
-+ (void) setRecentCloneDestination:(NSString *)path;
 + (BOOL) showStageView;
 + (void) setShowStageView:(BOOL)suppress;
 + (NSInteger) branchFilter;

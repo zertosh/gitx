@@ -10,7 +10,6 @@
 #import "GitXScriptingConstants.h"
 #import "PBDiffWindowController.h"
 #import "PBGitRepository.h"
-#import "PBCloneRepositoryPanel.h"
 #import "PBGitBinary.h"
 #import "PBEasyPipe.h"
 
@@ -70,20 +69,6 @@
                                                                          NSLog(@"Failed to open repository at %@: %@", repositoryURL, error);
                                                                      }
                                                                  }];
-}
-
-- (void)cloneRepositoryScriptCommand:(NSScriptCommand *)command
-{
-	NSString *repository = [command directParameter];
-	if (repository) {
-		NSDictionary *arguments = [command arguments];
-		NSURL *destinationURL = [arguments objectForKey:kGitXCloneDestinationURLKey];
-		if (destinationURL) {
-			BOOL isBare = [[arguments objectForKey:kGitXCloneIsBareKey] boolValue];
-
-			[PBCloneRepositoryPanel beginCloneRepository:repository toURL:destinationURL isBare:isBare];
-		}
-	}
 }
 
 @end
