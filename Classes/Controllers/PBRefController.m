@@ -129,39 +129,12 @@
 }
 
 
-#pragma mark Merge
-
-- (void) merge:(PBRefMenuItem *)sender
-{
-	id <PBGitRefish> refish = sender.refishs.firstObject;
-	[historyController.repository mergeWithRefish:refish];
-}
-
-
 #pragma mark Checkout
 
 - (void) checkout:(PBRefMenuItem *)sender
 {
 	id <PBGitRefish> refish = sender.refishs.firstObject;
 	[historyController.repository checkoutRefish:refish];
-}
-
-
-#pragma mark Cherry Pick
-
-- (void) cherryPick:(PBRefMenuItem *)sender
-{
-	id <PBGitRefish> refish = sender.refishs.firstObject;
-	[historyController.repository cherryPickRefish:refish];
-}
-
-
-#pragma mark Rebase
-
-- (void) rebaseHeadBranch:(PBRefMenuItem *)sender
-{
-	id <PBGitRefish> refish = sender.refishs.firstObject;
-	[historyController.repository rebaseBranch:nil onRefish:refish];
 }
 
 

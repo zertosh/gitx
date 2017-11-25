@@ -155,9 +155,6 @@
 		978357BB189C19A000ADC689 /* FetchTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B5189C19A000ADC689 /* FetchTemplate.pdf */; };
 		978357BC189C19A000ADC689 /* PullTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B6189C19A000ADC689 /* PullTemplate.pdf */; };
 		978357BD189C19A000ADC689 /* PushTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357B7189C19A000ADC689 /* PushTemplate.pdf */; };
-		978357C1189C1F5700ADC689 /* CherryPickTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357BE189C1F5700ADC689 /* CherryPickTemplate.pdf */; };
-		978357C2189C1F5700ADC689 /* MergeTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357BF189C1F5700ADC689 /* MergeTemplate.pdf */; };
-		978357C3189C1F5700ADC689 /* RebaseTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357C0189C1F5700ADC689 /* RebaseTemplate.pdf */; };
 		978357C5189C238300ADC689 /* DetailViewTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357C4189C238300ADC689 /* DetailViewTemplate.pdf */; };
 		978357C7189C23AF00ADC689 /* TreeViewTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 978357C6189C23AF00ADC689 /* TreeViewTemplate.pdf */; };
 		97CF01F918A6C5BB00E30F2B /* deleted_file.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 97CF01F618A6C5BB00E30F2B /* deleted_file.pdf */; };
@@ -511,9 +508,6 @@
 		978357B5189C19A000ADC689 /* FetchTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = FetchTemplate.pdf; sourceTree = "<group>"; };
 		978357B6189C19A000ADC689 /* PullTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PullTemplate.pdf; sourceTree = "<group>"; };
 		978357B7189C19A000ADC689 /* PushTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PushTemplate.pdf; sourceTree = "<group>"; };
-		978357BE189C1F5700ADC689 /* CherryPickTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CherryPickTemplate.pdf; sourceTree = "<group>"; };
-		978357BF189C1F5700ADC689 /* MergeTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = MergeTemplate.pdf; sourceTree = "<group>"; };
-		978357C0189C1F5700ADC689 /* RebaseTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = RebaseTemplate.pdf; sourceTree = "<group>"; };
 		978357C4189C238300ADC689 /* DetailViewTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = DetailViewTemplate.pdf; sourceTree = "<group>"; };
 		978357C6189C23AF00ADC689 /* TreeViewTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TreeViewTemplate.pdf; sourceTree = "<group>"; };
 		97CF01F618A6C5BB00E30F2B /* deleted_file.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = deleted_file.pdf; sourceTree = "<group>"; };
@@ -674,17 +668,14 @@
 				97CF01F818A6C5BB00E30F2B /* new_file.pdf */,
 				978357C6189C23AF00ADC689 /* TreeViewTemplate.pdf */,
 				978357A8189C074500ADC689 /* BranchTemplate.pdf */,
-				978357BE189C1F5700ADC689 /* CherryPickTemplate.pdf */,
 				978357C4189C238300ADC689 /* DetailViewTemplate.pdf */,
 				978357B5189C19A000ADC689 /* FetchTemplate.pdf */,
 				978357A4189C05B100ADC689 /* FolderClosedTemplate.pdf */,
 				978357A5189C05B100ADC689 /* FolderTemplate.pdf */,
 				4A5D759B14A9A90500DF6C68 /* mainSplitterBar.tiff */,
 				4A5D759C14A9A90500DF6C68 /* mainSplitterDimple.tiff */,
-				978357BF189C1F5700ADC689 /* MergeTemplate.pdf */,
 				978357B6189C19A000ADC689 /* PullTemplate.pdf */,
 				978357B7189C19A000ADC689 /* PushTemplate.pdf */,
-				978357C0189C1F5700ADC689 /* RebaseTemplate.pdf */,
 				978357A9189C074500ADC689 /* RemoteBranchTemplate.pdf */,
 				978357AA189C074500ADC689 /* RemoteTemplate.pdf */,
 				4A5D75AF14A9A90500DF6C68 /* rewindImage.pdf */,
@@ -1131,7 +1122,6 @@
 				551BF176112F3F4B00265053 /* gitx_askpasswd in Resources */,
 				978357C5189C238300ADC689 /* DetailViewTemplate.pdf in Resources */,
 				4A5D75C114A9A90500DF6C68 /* Credits.html in Resources */,
-				978357C2189C1F5700ADC689 /* MergeTemplate.pdf in Resources */,
 				978357A7189C05B100ADC689 /* FolderTemplate.pdf in Resources */,
 				978357A6189C05B100ADC689 /* FolderClosedTemplate.pdf in Resources */,
 				978357BB189C19A000ADC689 /* FetchTemplate.pdf in Resources */,
@@ -1140,9 +1130,7 @@
 				978357B0189C074500ADC689 /* StageTemplate.pdf in Resources */,
 				4A5D75DE14A9A90500DF6C68 /* mainSplitterBar.tiff in Resources */,
 				4A5D75DF14A9A90500DF6C68 /* mainSplitterDimple.tiff in Resources */,
-				978357C3189C1F5700ADC689 /* RebaseTemplate.pdf in Resources */,
 				4A5D75F114A9A90500DF6C68 /* rewindImage.pdf in Resources */,
-				978357C1189C1F5700ADC689 /* CherryPickTemplate.pdf in Resources */,
 				978357C7189C23AF00ADC689 /* TreeViewTemplate.pdf in Resources */,
 				4A5D75FB14A9A90500DF6C68 /* OpenRecentPopup.xib in Resources */,
 				4A5D75FC14A9A90500DF6C68 /* PBCommitHookFailedSheet.xib in Resources */,

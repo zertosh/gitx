@@ -30,9 +30,6 @@
 - (IBAction)showDeleteRefSheet:(PBRefMenuItem *)sender;
 
 - (IBAction) checkout:(PBRefMenuItem *)sender;
-- (IBAction) merge:(PBRefMenuItem *)sender;
-- (IBAction) cherryPick:(PBRefMenuItem *)sender;
-- (IBAction) rebaseHeadBranch:(PBRefMenuItem *)sender;
 - (IBAction) copySHA:(PBRefMenuItem *)sender;
 - (IBAction) copyShortSHA:(PBRefMenuItem *)sender;
 - (IBAction) copyPatch:(PBRefMenuItem *)sender;

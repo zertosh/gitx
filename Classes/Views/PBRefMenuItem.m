@@ -215,25 +215,6 @@
 	if (isSingleCommitSelection) {
 		NSString *diffTitle = [NSString stringWithFormat:NSLocalizedString(@"Diff with “%@”", @"Contextual Menu Item to view a diff between the selected commit and HEAD"), headBranchName];
 		[items addObject:[PBRefMenuItem itemWithTitle:diffTitle action:@selector(diffWithHEAD:) enabled:!isHead]];
-		[items addObject:[PBRefMenuItem separatorItem]];
-
-		// merge commit
-		NSString *mergeTitle = isOnHeadBranch
-			? NSLocalizedString(@"Merge Commit", @"Inactive Contextual Menu Item for merging commits")
-			: [NSString stringWithFormat:NSLocalizedString(@"Merge Commit into “%@”", @"Contextual Menu Item to merge the selected commit into HEAD"), headBranchName];
-		[items addObject:[PBRefMenuItem itemWithTitle:mergeTitle action:@selector(merge:) enabled:!isOnHeadBranch]];
-
-		// cherry pick
-		NSString *cherryPickTitle = isOnHeadBranch
-			? NSLocalizedString(@"Cherry Pick Commit", @"Inactive Contextual Menu Item for cherry-picking commits")
-			: [NSString stringWithFormat:NSLocalizedString(@"Cherry Pick Commit to “%@”", @"Contextual Menu Item to cherry-pick the selected commit on top of HEAD"), headBranchName];
-		[items addObject:[PBRefMenuItem itemWithTitle:cherryPickTitle action:@selector(cherryPick:) enabled:!isOnHeadBranch]];
-
-		// rebase
-		NSString *rebaseTitle = isOnHeadBranch
-			? NSLocalizedString(@"Rebase Commit", @"Inactive Contextual Menu Item for rebasing onto commits")
-			: [NSString stringWithFormat:NSLocalizedString(@"Rebase “%@” onto Commit", @"Contextual Menu Item to rebase the HEAD branch onto the selected commit"), headBranchName];
-		[items addObject:[PBRefMenuItem itemWithTitle:rebaseTitle action:@selector(rebaseHeadBranch:) enabled:!isOnHeadBranch]];
 	}
 	
 	for (PBRefMenuItem *item in items) {

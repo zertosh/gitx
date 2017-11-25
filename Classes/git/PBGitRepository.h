@@ -62,9 +62,6 @@ typedef enum branchFilterTypes {
 - (void) beginPushRef:(PBGitRef *)ref toRemote:(PBGitRef *)remoteRef;
 - (BOOL) checkoutRefish:(id <PBGitRefish>)ref;
 - (BOOL) checkoutFiles:(NSArray *)files fromRefish:(id <PBGitRefish>)ref;
-- (BOOL) mergeWithRefish:(id <PBGitRefish>)ref;
-- (BOOL) cherryPickRefish:(id <PBGitRefish>)ref;
-- (BOOL) rebaseBranch:(id <PBGitRefish>)branch onRefish:(id <PBGitRefish>)upstream;
 - (BOOL) deleteRemote:(PBGitRef *)ref;
 - (BOOL) deleteRef:(PBGitRef *)ref;
 - (BOOL) stashPop:(PBGitStash *)stash;

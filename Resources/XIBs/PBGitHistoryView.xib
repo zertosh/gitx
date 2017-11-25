@@ -22,7 +22,6 @@
                 <outlet property="searchField" destination="297" id="315"/>
                 <outlet property="selectedBranchFilterItem" destination="359" id="383"/>
                 <outlet property="treeController" destination="38" id="41"/>
-                <outlet property="upperToolbarView" destination="316" id="326"/>
                 <outlet property="view" destination="46" id="53"/>
                 <outlet property="webHistoryController" destination="40" id="402"/>
                 <outlet property="webView" destination="21" id="112"/>
@@ -91,16 +90,16 @@
             <rect key="frame" x="0.0" y="0.0" width="955" height="434"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <splitView focusRingType="none" dividerStyle="thin" id="2" userLabel="History Content View" customClass="PBCollapsibleSplitView">
-                    <rect key="frame" x="0.0" y="0.0" width="955" height="405"/>
+                <splitView focusRingType="none" misplaced="YES" dividerStyle="thin" id="2" userLabel="History Content View" customClass="PBCollapsibleSplitView">
+                    <rect key="frame" x="0.0" y="0.0" width="955" height="434"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <customView id="309" userLabel="Commits Split View">
-                            <rect key="frame" x="0.0" y="0.0" width="955" height="171"/>
+                            <rect key="frame" x="0.0" y="0.0" width="955" height="183"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <customView id="311" userLabel="Commits Scope Bar" customClass="PBGitGradientBarView">
-                                    <rect key="frame" x="0.0" y="147" width="955" height="24"/>
+                                <customView misplaced="YES" id="311" userLabel="Commits Scope Bar" customClass="PBGitGradientBarView">
+                                    <rect key="frame" x="-1" y="159" width="955" height="24"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                     <subviews>
                                         <button toolTip="View commits from all branches" verticalHuggingPriority="750" id="355">
@@ -136,8 +135,8 @@
                                                 <action selector="setBranchFilter:" target="-2" id="391"/>
                                             </connections>
                                         </button>
-                                        <textField verticalHuggingPriority="750" id="430">
-                                            <rect key="frame" x="630" y="5" width="80" height="14"/>
+                                        <textField verticalHuggingPriority="750" misplaced="YES" id="430">
+                                            <rect key="frame" x="545" y="5" width="80" height="14"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="# of matches" id="431">
                                                 <font key="font" metaFont="smallSystem"/>
@@ -145,8 +144,8 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <segmentedControl verticalHuggingPriority="750" id="427">
-                                            <rect key="frame" x="714" y="3" width="43" height="18"/>
+                                        <segmentedControl verticalHuggingPriority="750" misplaced="YES" id="427">
+                                            <rect key="frame" x="629" y="3" width="43" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                             <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="roundRect" trackingMode="momentary" id="428">
                                                 <font key="font" metaFont="miniSystem"/>
@@ -159,8 +158,8 @@
                                                 <action selector="stepperPressed:" target="423" id="435"/>
                                             </connections>
                                         </segmentedControl>
-                                        <searchField wantsLayer="YES" verticalHuggingPriority="750" id="297">
-                                            <rect key="frame" x="765" y="2" width="180" height="19"/>
+                                        <searchField wantsLayer="YES" verticalHuggingPriority="750" misplaced="YES" id="297">
+                                            <rect key="frame" x="680" y="2" width="180" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                             <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" bezelStyle="round" recentsAutosaveName="Recent History Searches" id="298">
                                                 <font key="font" metaFont="smallSystem"/>
@@ -174,21 +173,35 @@
                                                 <outlet property="delegate" destination="423" id="433"/>
                                             </connections>
                                         </searchField>
-                                        <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="447">
-                                            <rect key="frame" x="740" y="3" width="16" height="16"/>
+                                        <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="447">
+                                            <rect key="frame" x="655" y="3" width="16" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                         </progressIndicator>
+                                        <segmentedControl verticalHuggingPriority="750" misplaced="YES" id="48">
+                                            <rect key="frame" x="870" y="2" width="70" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                            <segmentedCell key="cell" controlSize="small" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="51">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <segments>
+                                                    <segment toolTip="Detailed View" image="DetailViewTemplate" imageScaling="none" width="32" selected="YES"/>
+                                                    <segment toolTip="Tree View" image="TreeViewTemplate" imageScaling="none" width="32" tag="9"/>
+                                                </segments>
+                                            </segmentedCell>
+                                            <connections>
+                                                <binding destination="-2" name="selectedIndex" keyPath="selectedCommitDetailsIndex" id="83"/>
+                                            </connections>
+                                        </segmentedControl>
                                     </subviews>
                                 </customView>
                                 <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="3" userLabel="Commits Scroll View">
-                                    <rect key="frame" x="1" y="0.0" width="955" height="147"/>
+                                    <rect key="frame" x="1" y="0.0" width="955" height="159"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="S8C-PP-4nT">
-                                        <rect key="frame" x="0.0" y="0.0" width="955" height="132"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="955" height="144"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" autosaveName="CommitView" headerView="30" id="27" userLabel="Commit List" customClass="PBCommitList">
-                                                <rect key="frame" x="0.0" y="0.0" width="1056.5" height="109"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="1056" height="121"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -369,7 +382,7 @@
                                         </subviews>
                                     </clipView>
                                     <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="29">
-                                        <rect key="frame" x="0.0" y="132" width="955" height="15"/>
+                                        <rect key="frame" x="0.0" y="144" width="955" height="15"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
                                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="28">
@@ -377,7 +390,7 @@
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
                                     <tableHeaderView key="headerView" id="30" customClass="PBUnsortableTableHeader">
-                                        <rect key="frame" x="0.0" y="0.0" width="1056.5" height="23"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1056" height="23"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <connections>
                                             <outlet property="controller" destination="39" id="217"/>
@@ -385,29 +398,29 @@
                                     </tableHeaderView>
                                 </scrollView>
                                 <box verticalHuggingPriority="750" boxType="separator" id="327">
-                                    <rect key="frame" x="0.0" y="144" width="955" height="5"/>
+                                    <rect key="frame" x="0.0" y="156" width="955" height="5"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 </box>
                             </subviews>
                         </customView>
                         <customView id="310" userLabel="Details Split View">
-                            <rect key="frame" x="0.0" y="172" width="955" height="233"/>
+                            <rect key="frame" x="0.0" y="184" width="955" height="250"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tabView type="noTabsNoBorder" id="4" userLabel="Detail / Tree Tab View">
-                                    <rect key="frame" x="0.0" y="0.0" width="955" height="233"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="955" height="250"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <font key="font" metaFont="system"/>
                                     <tabViewItems>
                                         <tabViewItem label="Details" identifier="1" id="6" userLabel="Details Tab">
                                             <view key="view" focusRingType="none" id="20">
-                                                <rect key="frame" x="0.0" y="0.0" width="955" height="233"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="955" height="250"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <webView focusRingType="none" id="21">
-                                                        <rect key="frame" x="1" y="0.0" width="954" height="234"/>
+                                                        <rect key="frame" x="1" y="0.0" width="954" height="251"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO">
+                                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12">
                                                             <nil key="identifier"/>
                                                         </webPreferences>
                                                         <connections>
@@ -485,7 +498,7 @@
                                                                     <webView id="450" userLabel="FileViewer">
                                                                         <rect key="frame" x="0.0" y="0.0" width="723" height="210"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO">
+                                                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12">
                                                                             <nil key="identifier"/>
                                                                         </webPreferences>
                                                                     </webView>
@@ -549,66 +562,6 @@ IA
                         <outlet property="delegate" destination="-2" id="107"/>
                     </connections>
                 </splitView>
-                <customView id="316" userLabel="History Upper Toolbar" customClass="PBGitGradientBarView">
-                    <rect key="frame" x="0.0" y="404" width="955" height="30"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <subviews>
-                        <box verticalHuggingPriority="750" boxType="separator" id="317">
-                            <rect key="frame" x="0.0" y="-2" width="955" height="5"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        </box>
-                        <button toolTip="Merge" verticalHuggingPriority="750" id="337">
-                            <rect key="frame" x="116" y="3" width="37" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Merge" bezelStyle="texturedRounded" image="MergeTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="338">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="merge:" target="-2" id="349"/>
-                                <binding destination="-2" name="enabled" keyPath="singleNonHeadCommitSelected" id="yyB-D4-ei2"/>
-                            </connections>
-                        </button>
-                        <button toolTip="Cherry Pick" verticalHuggingPriority="750" id="340">
-                            <rect key="frame" x="161" y="3" width="37" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Cherry Pick" bezelStyle="texturedRounded" image="CherryPickTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="341">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="cherryPick:" target="-2" id="350"/>
-                                <binding destination="-2" name="enabled" keyPath="singleNonHeadCommitSelected" id="lJ1-dd-gMR"/>
-                            </connections>
-                        </button>
-                        <button toolTip="Rebase" verticalHuggingPriority="750" id="343">
-                            <rect key="frame" x="206" y="3" width="37" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Rebase" bezelStyle="texturedRounded" image="RebaseTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="344">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="rebase:" target="-2" id="351"/>
-                                <binding destination="-2" name="enabled" keyPath="singleNonHeadCommitSelected" id="Q5e-kX-JL3"/>
-                            </connections>
-                        </button>
-                        <segmentedControl verticalHuggingPriority="750" id="48">
-                            <rect key="frame" x="268" y="3" width="67" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="51">
-                                <font key="font" metaFont="system"/>
-                                <segments>
-                                    <segment toolTip="Detailed View" image="DetailViewTemplate" imageScaling="none" width="32" selected="YES"/>
-                                    <segment toolTip="Tree View" image="TreeViewTemplate" imageScaling="none" width="32" tag="9"/>
-                                </segments>
-                            </segmentedCell>
-                            <connections>
-                                <binding destination="-2" name="selectedIndex" keyPath="selectedCommitDetailsIndex" id="83"/>
-                            </connections>
-                        </segmentedControl>
-                    </subviews>
-                </customView>
             </subviews>
             <point key="canvasLocation" x="511.5" y="20"/>
         </customView>
@@ -632,11 +585,8 @@ IA
         </customObject>
     </objects>
     <resources>
-        <image name="CherryPickTemplate" width="25" height="18"/>
         <image name="DetailViewTemplate" width="25" height="18"/>
-        <image name="MergeTemplate" width="25" height="18"/>
         <image name="NSQuickLookTemplate" width="19" height="12"/>
-        <image name="RebaseTemplate" width="25" height="18"/>
         <image name="TreeViewTemplate" width="25" height="18"/>
     </resources>
 </document>

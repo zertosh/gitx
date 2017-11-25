@@ -679,29 +679,6 @@
 }
 
 
-#pragma mark Repository Methods
-
-- (IBAction) merge:(id)sender
-{
-	PBGitCommit *selectedCommit = self.selectedCommits.firstObject;
-	if (selectedCommit)
-		[repository mergeWithRefish:selectedCommit];
-}
-
-- (IBAction) cherryPick:(id)sender
-{
-	PBGitCommit *selectedCommit = self.selectedCommits.firstObject;
-	if (selectedCommit)
-		[repository cherryPickRefish:selectedCommit];
-}
-
-- (IBAction) rebase:(id)sender
-{
-	PBGitCommit *selectedCommit = self.selectedCommits.firstObject;
-	if (selectedCommit)
-		[repository rebaseBranch:nil onRefish:selectedCommit];
-}
-
 #pragma mark -
 #pragma mark Quick Look
 
