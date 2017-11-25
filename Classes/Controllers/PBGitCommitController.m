@@ -327,28 +327,6 @@
 	}];
 }
 
-- (IBAction)ignoreFiles:(id) sender
-{
-	NSArray <PBChangedFile *> *selectedFiles = [self selectedFilesForSender:sender];
-	if ([selectedFiles count] == 0)
-		return;
-
-	// Build selected files
-	NSMutableArray *fileList = [NSMutableArray array];
-	for (PBChangedFile *file in selectedFiles) {
-		NSString *name = file.path;
-		if ([name length] > 0)
-			[fileList addObject:name];
-	}
-
-	NSError *error = nil;
-	BOOL success = [self.repository ignoreFilePaths:fileList error:&error];
-	if (!success) {
-		[self.windowController showErrorSheet:error];
-	}
-	[self.repository.index refresh];
-}
-
 static void reselectNextFile(NSArrayController *controller)
 {
 	NSUInteger currentSelectionIndex = controller.selectionIndex;
@@ -605,17 +583,6 @@ BOOL shouldTrashInsteadOfDiscardAnyFileIn(NSArray <PBChangedFile *> *files)
 			}
 		}
 		return YES;
-	}
-	else if (menuItem.action == @selector(ignoreFiles:)) {
-		BOOL isActive = selectedFiles.count > 0 && table.tag == 0;
-		if (isInContextualMenu) {
-			menuItem.title = PBLocalizedStringForArray(selectedFiles,
-													   NSLocalizedString(@"Ignore “%@”", @"Ignore File menu item (single file with name)"),
-													   NSLocalizedString(@"Ignore %i Files", @"Ignore File menu item (multiple files with number)"),
-													   NSLocalizedString(@"Ignore", @"Ignore File menu item (empty selection)"));
-			menuItem.hidden = !isActive;
-		}
-		return isActive;
 	}
 	else if (menuItem.action == @selector(revealInFinder:)) {
 		BOOL active = selectedFiles.count == 1;
