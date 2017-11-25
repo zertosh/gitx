@@ -35,7 +35,6 @@
 		4A5D75DE14A9A90500DF6C68 /* mainSplitterBar.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D759B14A9A90500DF6C68 /* mainSplitterBar.tiff */; };
 		4A5D75DF14A9A90500DF6C68 /* mainSplitterDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D759C14A9A90500DF6C68 /* mainSplitterDimple.tiff */; };
 		4A5D75F114A9A90500DF6C68 /* rewindImage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D75AF14A9A90500DF6C68 /* rewindImage.pdf */; };
-		4A5D75F714A9A90500DF6C68 /* source.css in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D75B514A9A90500DF6C68 /* source.css */; };
 		4A5D75FB14A9A90500DF6C68 /* OpenRecentPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D75BA14A9A90500DF6C68 /* OpenRecentPopup.xib */; };
 		4A5D75FC14A9A90500DF6C68 /* PBCommitHookFailedSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D75BB14A9A90500DF6C68 /* PBCommitHookFailedSheet.xib */; };
 		4A5D75FD14A9A90500DF6C68 /* PBDiffWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A5D75BC14A9A90500DF6C68 /* PBDiffWindow.xib */; };
@@ -310,7 +309,6 @@
 		4A5D759C14A9A90500DF6C68 /* mainSplitterDimple.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = mainSplitterDimple.tiff; sourceTree = "<group>"; };
 		4A5D75AF14A9A90500DF6C68 /* rewindImage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = rewindImage.pdf; sourceTree = "<group>"; };
 		4A5D75B414A9A90500DF6C68 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4A5D75B514A9A90500DF6C68 /* source.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = source.css; sourceTree = "<group>"; };
 		4A5D75BA14A9A90500DF6C68 /* OpenRecentPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenRecentPopup.xib; sourceTree = "<group>"; };
 		4A5D75BB14A9A90500DF6C68 /* PBCommitHookFailedSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PBCommitHookFailedSheet.xib; sourceTree = "<group>"; };
 		4A5D75BC14A9A90500DF6C68 /* PBDiffWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PBDiffWindow.xib; sourceTree = "<group>"; };
@@ -689,7 +687,6 @@
 				4A5D758114A9A90500DF6C68 /* Images */,
 				BFFCB5461E3EFA9F00E0B254 /* Images.xcassets */,
 				4A5D75B414A9A90500DF6C68 /* Info.plist */,
-				4A5D75B514A9A90500DF6C68 /* source.css */,
 				4A5D75B914A9A90500DF6C68 /* XIBs */,
 			);
 			path = Resources;
@@ -1188,7 +1185,6 @@
 				978357C3189C1F5700ADC689 /* RebaseTemplate.pdf in Resources */,
 				4A5D75F114A9A90500DF6C68 /* rewindImage.pdf in Resources */,
 				978357B8189C19A000ADC689 /* AddBranchTemplate.pdf in Resources */,
-				4A5D75F714A9A90500DF6C68 /* source.css in Resources */,
 				978357C1189C1F5700ADC689 /* CherryPickTemplate.pdf in Resources */,
 				978357C7189C23AF00ADC689 /* TreeViewTemplate.pdf in Resources */,
 				4A5D75FB14A9A90500DF6C68 /* OpenRecentPopup.xib in Resources */,
