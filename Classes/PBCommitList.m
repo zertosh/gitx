@@ -170,6 +170,10 @@
 	[super drawRow:rowIndex clipRect:tableViewClipRect];
 }
 
+- (BOOL)canDragRowsWithIndexes:(NSIndexSet *)rowIndexes atPoint:(NSPoint)mouseDownPoint {
+	return FALSE;
+}
+
 - (void)highlightSelectionInClipRect:(NSRect)tableViewClipRect
 {
 	// disable highlighting if the selected row is part of search results
