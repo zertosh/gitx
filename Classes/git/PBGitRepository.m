@@ -289,7 +289,7 @@
 	else
 		_headRef = [[PBGitRevSpecifier alloc] initWithRef:[PBGitRef refFromString:@"HEAD"]];
 
-	_headOID = branchRef.OID;
+	_headOID = [self OIDForRef:[_headRef ref]];
 
 	return _headRef;
 }
