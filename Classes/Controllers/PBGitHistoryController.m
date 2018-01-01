@@ -626,9 +626,34 @@
 #pragma mark -
 #pragma mark Quick Look
 
+@protocol QLPreviewItem;
+
+#pragma mark (QLPreviewPanelController)
+
+- (BOOL) acceptsPreviewPanelControl:(QLPreviewPanel *)panel
+{
+    return YES;
+}
+
+- (void)beginPreviewPanelControl:(QLPreviewPanel *)panel
+{
+	// This document is now responsible of the preview panel
+	// It is allowed to set the delegate, data source and refresh panel.
+	[QLPreviewPanel sharedPreviewPanel].delegate = self;
+	[QLPreviewPanel sharedPreviewPanel].dataSource = self;
+}
+
+- (void)endPreviewPanelControl:(QLPreviewPanel *)panel
+{
+	// This document loses its responsisibility on the preview panel
+	// Until the next call to -beginPreviewPanelControl: it must not
+	// change the panel's delegate, data source or refresh it.
+	return;
+}
+
 #pragma mark <QLPreviewPanelDataSource>
 
-- (NSInteger)numberOfPreviewItemsInPreviewPanel:(id)panel
+- (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel
 {
     return [[fileBrowser selectedRowIndexes] count];
 }
@@ -646,7 +671,7 @@
 - (BOOL)previewPanel:(id)panel handleEvent:(NSEvent *)event
 {
     // redirect all key down events to the table view
-    if ([event type] == NSKeyDown) {
+    if ([event type] == NSEventTypeKeyDown) {
         [fileBrowser keyDown:event];
         return YES;
     }

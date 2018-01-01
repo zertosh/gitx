@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Quartz/Quartz.h>
 #import "PBViewController.h"
 
 @class PBGitCommit;
@@ -21,7 +22,7 @@
 @class GTOID;
 @class PBHistorySearchController;
 
-@interface PBGitHistoryController : PBViewController {
+@interface PBGitHistoryController : PBViewController<QLPreviewPanelDataSource> {
 	IBOutlet NSArrayController *commitController;
 	IBOutlet NSTreeController *treeController;
 	IBOutlet PBWebHistoryController *webHistoryController;
