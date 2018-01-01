@@ -200,7 +200,6 @@
 	PBGitCommit *firstCommit = commits.firstObject;
 	
 	NSString *headBranchName = firstCommit.repository.headRef.ref.shortName;
-	BOOL isOnHeadBranch = firstCommit.isOnHeadBranch;
 	BOOL isHead = [firstCommit.OID isEqual:firstCommit.repository.headOID];
 
 	if (isSingleCommitSelection) {
